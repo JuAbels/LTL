@@ -1,8 +1,14 @@
+"""
+Authors: Julia Abels and Stefan Strang
+         University of Freiburg - 2018
+"""
+
 import sys
 from ltlToPred import translate
 from getInp import getInp
 
 
 if __name__ == "__main__":
-    getInp()
-    #translate("p1 U (p2 & GFp3)")
+    inp = getInp()
+    print(inp)
+    print(translate(inp.strip("\"")))

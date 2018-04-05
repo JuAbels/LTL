@@ -17,9 +17,11 @@ def getInp():
         if(len(sys.argv)==2):
             inp = sys.argv[1]
             if(len(inp.split("."))>1):
-                # here we got an inputfile
+                
+                data = open(inp, "r")
+                return(data.readline().strip().strip("\""))
             else:
-                # here we got an input string
+                return inp
                 
         else:
             usage()
