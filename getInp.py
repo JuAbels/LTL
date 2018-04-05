@@ -6,6 +6,7 @@ def usage():
     """Tell how to use."""
     print("usage: python3 main.py <input>")
     print("input can be textfile(.txt) or string")
+    sys.exit(1)
 
 
 def getInp():
@@ -24,7 +25,7 @@ def getInp():
                 return inp
                 
         else:
-            usage()
+            exit()
     except:
         usage()
     

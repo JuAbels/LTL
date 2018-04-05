@@ -11,4 +11,4 @@ from getInp import getInp
 if __name__ == "__main__":
     inp = getInp()
     print(inp)
-    print(translate(inp.strip("\"")))
+    #print(translate(inp))
