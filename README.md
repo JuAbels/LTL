@@ -15,3 +15,5 @@
 - [ ] möglichen input für den code zusammen bekommen.
 - [ ] randfälle abdecken
 - [ ] Syntax und Semantic von LTL Formeln verstehen und Struktur überlegen
+- [ ] Logiken Hardcoden
+- [ ] Graphendarstellung klar machen und implementieren (stefan)
