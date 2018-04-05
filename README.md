@@ -17,3 +17,5 @@
 - [ ] Syntax und Semantic von LTL Formeln verstehen und Struktur überlegen
 - [ ] Logiken Hardcoden
 - [ ] Graphendarstellung klar machen und implementieren (stefan)
+- [ ] Fehlerbehandlung in getInp.py ist noch nicht flake8 konform
+- [ ] graphviz zum laufen bekommen
