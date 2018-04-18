@@ -16,6 +16,10 @@
 - [ ] randfälle abdecken
 - [ ] Syntax und Semantic von LTL Formeln verstehen und Struktur überlegen
 - [ ] Logiken Hardcoden
-- [ ] Graphendarstellung klar machen und implementieren (stefan)
+
 - [ ] Fehlerbehandlung in getInp.py ist noch nicht flake8 konform
-- [ ] graphviz zum laufen bekommen
+- [ ] outputform in polnisch oder junker implementieren (stefan)
+- [ ] Linearfaktoren zerlegung
+- [ ] + passende ableitungen klarmachen und implementieren
+- [ ] gedanken zu 5tens machen
+- [ ] syntax von ltlfilt
