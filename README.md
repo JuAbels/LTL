@@ -22,3 +22,4 @@
 - [ ] Linearfaktoren zerlegung
 - [ ] + passende ableitungen klarmachen und implementieren
 - [ ] gedanken zu 5tens machen
+- [ ] syntax von ltlfilt
