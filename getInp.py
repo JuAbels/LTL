@@ -34,7 +34,7 @@ def getInp():
             
             data = open(inp, "r")
             back = data.readline().strip().strip("\"")
-            ltlPrint(back)
+            print(ltlPrint(back))
             return(back)
             
         else:
