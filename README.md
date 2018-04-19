@@ -21,3 +21,4 @@
 - [ ] + passende ableitungen klarmachen und implementieren
 - [ ] gedanken zu 5tens machen
 - [ ] syntax von ltlfilt
+- [ ] Fehler bei falscher eingabe von ltl formeln abfangen. etwa falsche klammerung
