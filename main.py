@@ -14,8 +14,10 @@ from toGraphViz import toGraph
 from ltlPrint import ltlPrint
 
 if __name__ == "__main__":
-    inp = getInp()
+    # inp = getInp()
     #print(inp)
     #print(translate(inp))
     #toGraph(["A", "B", "C"], [["A","B"],["B","C"]])
+    #print(ltlPrint('p1 U (p2 & GFp3)'))
+
 
