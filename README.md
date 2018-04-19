@@ -17,9 +17,7 @@
 - [ ] Syntax und Semantic von LTL Formeln verstehen und Struktur überlegen
 - [ ] Logiken Hardcoden
 
-
-- [ ] outputform in polnisch oder junker implementieren (stefan)
-- [ ] Linearfaktoren zerlegung
+- [ ] Linearfaktoren zerlegung (stefan)
 - [ ] + passende ableitungen klarmachen und implementieren
 - [ ] gedanken zu 5tens machen
 - [ ] syntax von ltlfilt
