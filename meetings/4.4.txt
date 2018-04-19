@@ -1,0 +1,22 @@
+ob wir uns schon datenstrukturen überlegt haben. 
+auf den standard angesprochen, da wir ansonsten käse implementieren. er hat sich nicht darum gekümmert und schaut nach. 
+
+ltlfilt
+damit kann mans ins pränex splitten
+
+für jede teilformel ein objekt
+dinge als methoden vllt darauf definieren oder als generelle funktion. 
+gerade bei reduzieren vllt möglichst tief gehen - probleme bei objekten?!
+ob ihm eine andere sprache leiber wär
+
+nochmal nachschauen negation nmf
+temporalfaktoren in frieden lassen
+
+hypergraphen vllt zur graphendarstellung
+möglich das naders zu gestalten
+
+zugang zu repository wird noch gesucht. 
+
+25.04 - nächster termin mittwoch 11 uhr
+
+
