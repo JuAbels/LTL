@@ -11,9 +11,10 @@ import sys
 from ltlToPred import translate
 from getInp import getInp
 from toGraphViz import toGraph
+from ltlPrint import ltlPrint
 
 if __name__ == "__main__":
-    #inp = getInp()
+    inp = getInp()
     #print(inp)
     #print(translate(inp))
     #toGraph(["A", "B", "C"], [["A","B"],["B","C"]])

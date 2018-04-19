@@ -17,7 +17,7 @@
 - [ ] Syntax und Semantic von LTL Formeln verstehen und Struktur überlegen
 - [ ] Logiken Hardcoden
 
-- [ ] Fehlerbehandlung in getInp.py ist noch nicht flake8 konform
+
 - [ ] outputform in polnisch oder junker implementieren (stefan)
 - [ ] Linearfaktoren zerlegung
 - [ ] + passende ableitungen klarmachen und implementieren
