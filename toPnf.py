@@ -62,26 +62,25 @@ def chainList(junk):
     first = junk[0]
     last = junk [-1]
     counter = 0
-    while counter < 2:
+    if( "(" not in junk and ")" not in junk):
+        junkList.append(junk)
+        junk = ""
+    while (len(junk) > 5):
+        # print(junk)
         first = junk[0]
         last = junk [-1]
+        
         if(first in prefix):
-            #print("prefix")
-            #print(junk)
-            if("(" in junk):
-                junkList.append(pref(junk)[0])
             
-                junk = pref(junk)[1]
-            else:
-                backList.append(list(junk))
+            word, junk = pref(junk)
+            junkList.append(word)
             
         elif(first == '(' and last == ')'):
-            #print("chainList")
-            #print(junk)
-            junkList.append(chainList(junk[1:-1]))####
+            
+            junkList.append((chainList(junk[1:-1]))[0])
+            junk = (chainList(junk[1:-1]))[1]
         elif(first == '(' and last != ')'):
-            #print("appendix")
-            #print(junk)
+            
             appe, junk = appendix(junk)
             backList.append(appe)
         else:
@@ -91,7 +90,7 @@ def chainList(junk):
     for i in backList:
          junkList.append(i)
 
-    return junkList
+    return junkList, junk
 
 
 
@@ -105,6 +104,6 @@ def toPnf(inp):
     f = spot.formula(inp)
     junk = f.to_str('spot')
     print(junk)
-    print(chainList(junk))
+    print(chainList(junk)[0])
     
    
