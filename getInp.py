@@ -29,14 +29,11 @@ def getInp():
             else:
                 return inp
         elif(len(sys.argv) == 3):
-            
             inp = sys.argv[1]
-            
             data = open(inp, "r")
             back = data.readline().strip().strip("\"")
             print(ltlPrint(back))
             return(back)
-            
         else:
             exit()
     except:

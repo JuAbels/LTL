@@ -3,8 +3,8 @@
 
 """
 
-#import graphviz as gv
 from graphviz import Digraph
+
 
 def toGraph(nodes, edges):
     """Simplify to render the automat.
@@ -16,11 +16,6 @@ def toGraph(nodes, edges):
 
     """
     g = Digraph('G', filename='hello.gv')
-
-    #g.edge('Hello', 'World')
     for e in edges:
         g.edge(e[0], e[1])
     g.view()
-
-
-        
