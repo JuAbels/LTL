@@ -10,6 +10,6 @@
     
 3. Def 11 nicht relevant
 
-4. LF(&micro;) = {<{&micro;}, tt>} &larr Tuple, Paar
+4. LF(&micro;) = {<{&micro;}, tt>} &larr; Tuple, Paar
 
 
