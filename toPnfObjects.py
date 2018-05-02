@@ -19,6 +19,9 @@ class lFormula:
         self.Atom = None
         self.Neg = False
 
+    def setName(self, name):
+        self.name = name
+
     def setAtom(self):
         self.Atom = True
 
@@ -34,10 +37,10 @@ class lFormula:
     def setSec(self, objekt):
         self.pointSec = objekt
 
+
+
     def getName(self):
         return self.name
-
-
 
     def getFirst(self):
         return self.pointFirst
@@ -47,6 +50,9 @@ class lFormula:
 
     def getAtom(self):
         return self.Atom
+
+    def getNeg(self):
+        return self.Neg
 
 
 def toObjects(inPut):
@@ -80,22 +86,33 @@ def toObjects(inPut):
             if(lObjects[i].getName() in duo):
                 lObjects[i].setFirst(lObjects[i-1])
                 lObjects[i].setSec(first)
-    """print(inp)
-    
-    print(listedFormula)
+                first = lObjects[i]
+    return lObjects, first
+
+def dealQM(lObjects, first):
+    print(i.getName())
+    prev = i.getFirst()
+    if (prev != None):
+        print(prev.getName())
+    prevprev = i.getSec()
+    if (prevprev != None):
+        print(prevprev.getName())
+
+def pushIn(lObjects, first):
+    dealQM()
+    # print(lObjects)
+    """print(first.getName())
     for i in lObjects:
-        print("----------")
+        print("---")
         print(i.getName())
         prev = i.getFirst()
         if (prev != None):
             print(prev.getName())
         prevprev = i.getSec()
         if (prevprev != None):
-            print(prevprev.getName())
-        # print(i.getAtom())   
-    # lObjects[i].setNeg()"""
-    return lObjects, first
+            print(prevprev.getName())"""
 
 def toPnf(inPut):
     lObjects, first = toObjects(inPut)
+    pushIn(lObjects, first)
 
