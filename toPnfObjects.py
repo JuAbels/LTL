@@ -26,10 +26,10 @@ class lFormula:
         self.Atom = True
 
     def setNeg(self):
-        if (self.Atom == False):
-            self.Atom = True
+        if (self.Neg == False):
+            self.Neg = True
         else:
-            self.Atom = False
+            self.Neg = False
 
     def setFirst(self, objekt):
         self.pointFirst = objekt
@@ -89,17 +89,30 @@ def toObjects(inPut):
                 first = lObjects[i]
     return lObjects, first
 
+def redQM(lObjects, ele):
+    if (ele.getFirst().getName() == "!"):
+       ele.setFirst(ele.getFirst().getFirst())
+       ele.getFirst().setNeg()
+       lObjects
+
 def dealQM(lObjects, first):
-    print(i.getName())
-    prev = i.getFirst()
+    if (first.getName() == "!"):
+        lObjects.remove(first)
+        first = first.getFirst()
+        first.setNeg()
+    # print(lObjects)
+    redQM(lObjects, first)
+    print(first.getNeg())
+    print(first.getName())
+    prev = first.getFirst()
     if (prev != None):
         print(prev.getName())
-    prevprev = i.getSec()
+    prevprev = first.getSec()
     if (prevprev != None):
         print(prevprev.getName())
 
 def pushIn(lObjects, first):
-    dealQM()
+    dealQM(lObjects, first)
     # print(lObjects)
     """print(first.getName())
     for i in lObjects:
