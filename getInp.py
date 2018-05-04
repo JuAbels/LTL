@@ -1,7 +1,7 @@
 """Author Stefan Strang - Uni Freiburg."""
 import sys
 from ltlPrint import ltlPrint
-
+import spot
 
 def usage():
     """Tell how to use."""
@@ -9,7 +9,8 @@ def usage():
 
     print("input can be textfile(.txt) or string")
     print("set flag if you want to reprint the formula")
-    print("to print: python3 main.py <input> -pp")
+    print("To print: python3 main.py <input> <flag>")
+    print("possible Flags: -pp [menu]; -spot; -spin; -latex") 
     sys.exit(1)
 
 
@@ -29,11 +30,36 @@ def getInp():
             else:
                 return inp
         elif(len(sys.argv) == 3):
-            inp = sys.argv[1]
-            data = open(inp, "r")
-            back = data.readline().strip().strip("\"")
-            print(ltlPrint(back))
-            return(back)
+            if(sys.argv[2] == "-pp"):
+                inp = sys.argv[1]
+                data = open(inp, "r")
+                back = data.readline().strip().strip("\"")
+                print(ltlPrint(back))
+                return(back)
+            elif(sys.argv[2] == "-spot"):
+                
+                inp = sys.argv[1]
+                data = open(inp, "r")
+                back = data.readline().strip().strip("\"")
+                f = spot.formula(back)
+                print(f.to_str('spot'))
+                return(back)
+            elif(sys.argv[2] == "-spin"):
+                
+                inp = sys.argv[1]
+                data = open(inp, "r")
+                back = data.readline().strip().strip("\"")
+                f = spot.formula(back)
+                print(f.to_str('spin'))
+                return(back)
+            elif(sys.argv[2] == "-latex"):
+                
+                inp = sys.argv[1]
+                data = open(inp, "r")
+                back = data.readline().strip().strip("\"")
+                f = spot.formula(back)
+                print(f.to_str('latex'))
+                return(back)
         else:
             exit()
     except:
