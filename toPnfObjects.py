@@ -56,6 +56,7 @@ class lFormula:
 
 def toObjects(inPut):
     """Iterate over the string and make them to objects."""
+    # not ordered parts could still be problematic
     inp = inPut.split()
     listedFormula = deepcopy(inp)
     lObjects = []
@@ -141,18 +142,28 @@ def dealXFG(ele):
         dealXFG(ele.getSec())
 
 
-def printdealXFG(ele):
+def debugPrint(ele):
     """just a printer for debugging"""
+    print("-----")
     print(ele.getName())
+    print(ele.getNeg())
     if(ele.getFirst() is not None):
-        printdealXFG(ele.getFirst())
+         print(ele.getFirst().getName())
     if(ele.getSec() is not None):
-        printdealXFG(ele.getSec())
+         print(ele.getSec().getName())
+    if(ele.getFirst() is not None):
+        debugPrint(ele.getFirst())
+    if(ele.getSec() is not None):
+        debugPrint(ele.getSec())
 
 
 def pushIn(ele):
     """recursive in-pushing of the negation until atoms are reached"""
     """here not sure whether logic is correct derived"""
+    #print("______")
+    #print(ele.getName())
+    #print(ele.getAtom())
+    #print(ele.getNeg())
     if (ele.getNeg() is True):
         if(ele.getName() == "U"):
             ele.setName("R")
@@ -162,22 +173,30 @@ def pushIn(ele):
             ele.setName("|")
         elif(ele.getName() == "|"):
             ele.setName("&")
-        ele.setNeg()
+        if(ele.getAtom() is not True):
+            ele.setNeg()
         if(ele.getFirst()is not None):
+            #print(ele.getFirst().getName())
             ele.getFirst().setNeg()
-        if(ele.getFirst()is not None):
+        if(ele.getSec()is not None):
             ele.getSec().setNeg()
+            #print(ele.getSec().getName())
+    #print(ele.getName())
+    #print(ele.getNeg())
     if(ele.getFirst() is not None):
         pushIn(ele.getFirst())
     if(ele.getSec() is not None):
         pushIn(ele.getSec())
+    return ele
 
 
 def toPnf(inPut):
     """Head-function to get formula in positive normal form"""
     lObjects, first = toObjects(inPut)
-    lObjects, first = dealEM(lObjects, first)
     dealXFG(first)
-    printdealXFG(first)
+    lObjects, first = dealEM(lObjects, first)
+    
+    # printdealXFG(first)
     pushIn(first)
+    # debugPrint(first)
     return first
