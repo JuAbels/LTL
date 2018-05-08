@@ -3,65 +3,109 @@ Authors: Julia Abels and Stefan Strang
          University of Freiburg - 2018
 """
 
-call = {"tt": "0",
-        "ff": "1",
-        "&": "2"}
+from toPnfObjects import toObjects
+from lf import lf
+
+
+zero = {"tt": 0,
+        "ff": 1}
+
+
+one = {"F": 0,
+       "G": 1,
+       "X": 2}
+
+
+two = {"&": 0,
+       "|": 1,
+       "U": 2,
+       "R": 3}
+
 
 derivat = set()
 
 
-def split(formulare):
-    # split formulare in subformulare
-    first = ""
-    sec = ""
-    for c in formulare:
-        if c != call:
-            if c == " ":
-                continue
-            first += c
+def derivatives(formulare):
+    # translate fromulare in derivative.
+    # get objects in list with all pointers
+    objects, first = toObjects(formulare)
+    print(objects)
+    print("Das ist der Name:", first.getName())
+
+    # declaration for going on with recursion
+    firstForm = first.pointFirst
+    secondForm = first.pointSec
+
+    print(firstForm.getName())
+
+    if secondForm is None:
+        # einstellig
+        if firstForm is None:
+            sol = firstForm.getName()
+            sol = frozenset(sol)
+            derivat.add(sol)
+            print("Aktuelle", derivat)
         else:
-            # da muss noch was gemacht werden, wird nicht funken
-            derivative(formulare[c:])
-    return first, sec
+            derivative(formulare[2:])
+
+    if firstForm.pointSec:
+        # Abfrage ob erste Formel zweistellig
+        print("yes")
+        sol = derivative(formulare[2:])
+        sol = frozenset(sol)
+        derivat.add(sol)
+        print("Aktuelle menge:", derivat)
+
+    if firstForm.pointFirst is None and firstForm.pointSec is None:
+        # caseLiteral for first Formulare
+        derivat.add(firstForm.getName())
+
+    if secondForm.pointSec:
+        # Abfrage ob zweite Formel zweistellig
+        print("yes two")
+        sol = derivative(formulare[4:])
+        sol = frozenset(sol)
+        derivat.add(sol)
+        print("Aktuelle menge:", derivat)
+
+    if secondForm.pointFirst is None and secondForm.pointSec is None:
+        # caseLiteral for second formulare
+        derivat.add(secondForm.getName())
+
+    print(derivat)
+    return derivat
 
 
 def derivative(formulare):
-    # translate fromulare in derivative.
-    # TODO: case for no correct formuulare
-    for i in formulare:
-        if i in call:
-            case = call[i]
-            if case == 0:
-                derivat.add(caseTrue())
-            elif case == 1:
-                derivat.add(caseFalse())
-            else:  # case == 2:
-                first, sec = split(formulare[1:])
-                derivat.add(caseAnd())
-        elif i == " ":
-            continue
-        else:
-            derivat.add(caseLiteral(i))
-    return derivat
+    objects, first = toObjects(formulare)
+    print(objects)
+    print("Das ist der Name:", first.getName())
 
 
 def caseTrue():
     # function for true case
+    # TODO: change, if name of object is given
     return "tt"
 
 
 def caseFalse():
     # function for case fasle.
-    return False
+    return "ff"
 
 
-def caseLiteral(l):
+def caseFormel(formular):
     # function for case literal
-    # literal = {l}
-    return "<%c, tt>" % l
+    # TODO: right form
+    # tuples = lf(formular)
+    # check which form it is
+    pass
 
 
-def caseAnd():
+def caseAnd(first, sec):
     # function for and operation of two formualres
     # case for recursion
-    return "yes"
+    # one = caseLiteral(first)
+    # two = caseLiteral(sec)
+    one = str(first)
+    two = str(sec)
+    return one, two
