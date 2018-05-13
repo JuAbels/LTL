@@ -14,15 +14,19 @@ from lf import lf
 from toPnfObjects import toPnf
 # <<<<<<< HEAD
 from derivative import derivative
+import doctest
 #from toGraph import toGraph
 
 if __name__ == "__main__":
+    doctest.testmod()
     inp = getInp()
     print(inp)
     formulare = translate(inp)
     print("This is Form:", formulare)
-    objects = toPnf(formulare)
-    linFac = lf(objects)
+
+    objects = toPnf(formulare)  # objects to PNF for LF
+    linFac = lf(objects)  # Formel to linear Factors
+
     print("This is formulare: ", linFac)
     print("")
     test = derivative(formulare)  # appeal derivative def
