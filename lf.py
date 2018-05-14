@@ -34,7 +34,7 @@ truth = ["tt", 'ff']
 # negation ! ~
 
 
-def lf(formula, lfset=set()):
+def lf(formula):  # , lfset=set()):
     """Get the set of Linear factors.
 
     >>> lf(tt)
@@ -42,7 +42,7 @@ def lf(formula, lfset=set()):
 
     """
     # objects = toPnf(formula)
-    # lfset = set()
+    lfset = set()
     nameObj = formula.getName()
 
     print("This is the object:", nameObj)
@@ -50,16 +50,17 @@ def lf(formula, lfset=set()):
     if nameObj in doubles:
         first = formula.pointFirst
         second = formula.pointSec
-        print(first.getName(), second.getName())
         # call for function
         if nameObj == '|':
             firstForm = lf(first)
             secondForm = lf(second)
             lfset = firstForm.union(secondForm)
+        elif nameObj == 'U':
+            secSet = caseUntil(formula.pointFirst, formula.pointSec)
     elif nameObj in singles:
         if nameObj == 'X':
             tup = caseNext(formula.pointFirst)
-            lfset.add(tup)
+            lfset = lfset.union(tup)
     else:
         # appeal of helpfunction for new definiton
         tup = caseLiteral(nameObj, formula)
@@ -75,7 +76,7 @@ def caseLiteral(nameObj, formula, lfs=set()):
     if trueFalse and formula.pointFirst is None:
         test = trueFalse.group()
         if test == "t":
-            tup = isTrue()
+            tup = isTrue(nameObj)
             lfs.add(tup)
     else:
         # case for literal
@@ -84,9 +85,9 @@ def caseLiteral(nameObj, formula, lfs=set()):
     return lfs
 
 
-def isTrue():
+def isTrue(tt):
     ''' def for case True '''
-    return ('tt', 'tt')
+    return (tt, tt)
 
 
 def literal(objects):
@@ -106,44 +107,50 @@ def caseNext(formular):
 
     '''
     oneSet = set()
-    # case for a Literal
-    if formular.pointFirst is None:
-        oneSet = oneSet.union(setBasedNorm(formular.getName()))
-    # case for formular is an OR and AND
-    else:
-        first = setBasedNorm(formular.pointFirst.getName())
-        second = setBasedNorm(formular.pointSec.getName())
-        # first = formular.pointFirst
-        # second = formular.pointSec
-        #if second:
-        #    print(makeString(formular))
-        if formular.getName() == '|':
-            # TODO: if one of the formular is not literal
-            oneSet = oneSet.union(first, second)
-        else:
-            print("TEST")
-    oneSet = frozenset(oneSet)
-    return ('tt', oneSet)
-
-
-def makeString(form, solution=""):
-    ''' HELPFunction makes a string '''
-    first = str(form.pointFirst.getName())
-    second = str(form.pointSec.getName())
-    operator = str(form.getName())
-    if form.pointFirst.pointFirst:
-        first = makeString(form.pointFirst)
-    if form.pointSec.pointFirst:
-        second = makeString(form.pointFirst)
-    solution += "%s %s %s" % (first, operator, second)
+    solution = set()
+    tup = setBasedNorm(formular)
+    oneSet = oneSet.union(tup)
+    while oneSet:
+        i = oneSet.pop()
+        solution.add(('tt', i))
     return solution
 
 
 def setBasedNorm(form):
     ''' HELPFunction for set-based conjunctive normal form for case Next '''
     oneSet = set()
-    oneSet.add(form)
-    oneSet = frozenset(oneSet)
+    if form.pointFirst is None:  # case for a Literal
+        oneSet.add(form.getName())
+        return oneSet
+    else:  # case for formular is an OR and AND
+        if form.getName() == '|':  # case for OR
+            first = setBasedNorm(form.pointFirst)
+            second = setBasedNorm(form.pointSec)
+            oneSet = oneSet.union(first, second)
+            return oneSet
+        else:  # case for AND
+            first = setBasedNorm(form.pointFirst)
+            second = setBasedNorm(form.pointSec)
+            second = list(second)
+            while first:
+                element = first.pop()
+                for i in second:
+                    oneSet.add('%s & %s' % (element, i))
+                return oneSet
+
+
+def caseUntil(fromCase, untilCase, oneSet=set()):
+    ''' definition for case UNTIL '''
+    setUntil = lf(untilCase)
+    iterable = lf(fromCase)
+    print("BOTH CASCES:", setUntil, iterable)
+    while iterable:
+        tup = iterable.pop()
+        first = tup[0]
+        second = tup[1]
+        oneSet.add(('%s, %s & %s U %s' % (first, second,
+                                          fromCase.getName(),
+                                          untilCase.getName())))
     return oneSet
 
 
