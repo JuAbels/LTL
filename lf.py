@@ -57,6 +57,8 @@ def lf(formula):  # , lfset=set()):
             lfset = firstForm.union(secondForm)
         elif nameObj == 'U':
             secSet = caseUntil(formula.pointFirst, formula.pointSec)
+        #elif nameObj == '&':
+        #    secSet = caseAnd(formula.pointFirst, formula.pointSec)
     elif nameObj in singles:
         if nameObj == 'X':
             tup = caseNext(formula.pointFirst)
@@ -69,8 +71,9 @@ def lf(formula):  # , lfset=set()):
     return lfset
 
 
-def caseLiteral(nameObj, formula, lfs=set()):
+def caseLiteral(nameObj, formula):  #, lfs=set()):
     ''' HELPFunction for request of single dicate subformulares '''
+    lfs = set()
     trueFalse = re.search(r"[ft]", nameObj)
     # case for "tt" and "ff"
     if trueFalse and formula.pointFirst is None:
@@ -161,3 +164,14 @@ def release(first, second):
     if first == 'ff':
         setOf = lf(second)
         return(setOf)
+
+def caseAnd(first, second):
+     # print(first.getName(), second.getName())
+     myPhi = lf(first)
+     nyPsi = lf(second) 
+     print(myPhi)
+     print(nyPsi)
+
+
+
+
