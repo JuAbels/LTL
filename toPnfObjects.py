@@ -121,19 +121,19 @@ def dealEM(lObjects, first):
 
 
 def dealXFG(ele):
-    """before we can push in to the atoms. which is required for 
+    """before we can push in to the atoms. which is required for
     the pnf we need to transform not defined operators - XFG"""
     # next: 		Xf - () - still to do - not in paper
     if(ele.getName() == "F"):
         ele.setName("U")
         ele.setSec(ele.getFirst())
-        tt = lFormula("tt")
+        tt = lFormula('tt')
         ele.setFirst(tt)
         ele.getFirst().setAtom()
     elif(ele.getName() == "G"):
         ele.setName("R")
         ele.setSec(ele.getFirst())
-        ff = lFormula("ff")
+        ff = lFormula('ff')
         ele.setFirst(ff)
         ele.getFirst().setAtom()
     if(ele.getFirst() is not None):
@@ -195,7 +195,7 @@ def toPnf(inPut):
     lObjects, first = toObjects(inPut)
     dealXFG(first)
     lObjects, first = dealEM(lObjects, first)
-    
+
     # printdealXFG(first)
     pushIn(first)
     # debugPrint(first)

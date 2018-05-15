@@ -15,7 +15,7 @@ U p1 & p2 G F p3
 
 """
 
-from toPnfObjects import toObjects
+from toPnfObjects import lFormula
 from toPnfObjects import toPnf
 import doctest
 import re
@@ -87,7 +87,9 @@ def caseLiteral(nameObj, formula, lfs=set()):
 
 def isTrue(tt):
     ''' def for case True '''
-    return (tt, tt)
+    tt = lFormula('tt')
+    ttName = tt.getName()
+    return (ttName, ttName)
 
 
 def literal(objects):
