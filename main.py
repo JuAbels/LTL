@@ -22,6 +22,7 @@ if __name__ == "__main__":
     inp = getInp()
     print(inp)
     formulare = translate(inp)
+    # formulare = "U p1 & p2 G F p3"
     print("This is Form:", formulare)
 
     objects = toPnf(formulare)  # objects to PNF for LF

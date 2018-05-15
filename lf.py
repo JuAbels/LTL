@@ -16,6 +16,8 @@ U p1 & p2 G F p3
 """
 
 from toPnfObjects import lFormula
+from toPnfObjects import toObjects
+from ltlToPred import translate
 from toPnfObjects import toPnf
 import doctest
 import re
@@ -56,9 +58,16 @@ def lf(formula):  # , lfset=set()):
             secondForm = lf(second)
             lfset = firstForm.union(secondForm)
         elif nameObj == 'U':
+            setUntil = lf(formula.pointSec)
             secSet = caseUntil(formula.pointFirst, formula.pointSec)
-        #elif nameObj == '&':
+            lfset = lfset.union(setUntil, secSet)
+        #  elif nameObj == '&':
         #    secSet = caseAnd(formula.pointFirst, formula.pointSec)
+        elif nameObj == 'V':
+            # firstSet = caseAnd(formula.pointFirst, formula.pointSec)  TODO: case like AND
+            secSet = release(formula.pointFirst, formula.pointSec)
+            firstSet = "NOTRELEVANT"
+            lfset.union(firstSet, secSet)
     elif nameObj in singles:
         if nameObj == 'X':
             tup = caseNext(formula.pointFirst)
@@ -71,7 +80,7 @@ def lf(formula):  # , lfset=set()):
     return lfset
 
 
-def caseLiteral(nameObj, formula):  #, lfs=set()):
+def caseLiteral(nameObj, formula):  # , lfs=set()):
     ''' HELPFunction for request of single dicate subformulares '''
     lfs = set()
     trueFalse = re.search(r"[ft]", nameObj)
@@ -83,7 +92,7 @@ def caseLiteral(nameObj, formula):  #, lfs=set()):
             lfs.add(tup)
     else:
         # case for literal
-        tup = literal(nameObj)
+        tup = literal(formula)
         lfs.add(tup)
     return lfs
 
@@ -98,9 +107,11 @@ def isTrue(tt):
 def literal(objects):
     ''' def for one linteral for linear factors '''
     oneSet = set()  # declaration of set, so that objectname istn't seperate
-    oneSet.add(objects)
+    oneSet.add(objects.getName())
     oneSet = frozenset(oneSet)  # set to frozenset, so that hashable
-    return (oneSet, 'tt')
+    tt = lFormula('tt')
+    ttName = tt.getName()
+    return (oneSet, ttName)
 
 
 def caseNext(formular):
@@ -115,9 +126,11 @@ def caseNext(formular):
     solution = set()
     tup = setBasedNorm(formular)
     oneSet = oneSet.union(tup)
+    tt = lFormula('tt')
+    ttName = tt.getName()
     while oneSet:
         i = oneSet.pop()
-        solution.add(('tt', i))
+        solution.add((ttName, i))
     return solution
 
 
@@ -125,6 +138,7 @@ def setBasedNorm(form):
     ''' HELPFunction for set-based conjunctive normal form for case Next '''
     oneSet = set()
     if form.pointFirst is None:  # case for a Literal
+        # oneSet.add(form) TODO
         oneSet.add(form.getName())
         return oneSet
     else:  # case for formular is an OR and AND
@@ -146,32 +160,33 @@ def setBasedNorm(form):
 
 def caseUntil(fromCase, untilCase, oneSet=set()):
     ''' definition for case UNTIL '''
-    setUntil = lf(untilCase)
     iterable = lf(fromCase)
-    print("BOTH CASCES:", setUntil, iterable)
     while iterable:
         tup = iterable.pop()
         first = tup[0]
         second = tup[1]
-        oneSet.add(('%s, %s & %s U %s' % (first, second,
-                                          fromCase.getName(),
-                                          untilCase.getName())))
+        form = "& %s U %s %s" % (second, fromCase.getName(), untilCase.getName())
+        # TODO: formulare = toObjects(form)  # for case with objects
+        oneSet.add((first, form))
     return oneSet
 
 
-def release(first, second):
+def release(firstCase, secondCase, oneSet=set()):
     ''' definition for release form '''
-    if first == 'ff':
-        setOf = lf(second)
-        return(setOf)
+    iterable = lf(secondCase)
+    while iterable:
+        tup = iterable.pop()
+        first = tup[0]
+        second = tup[1]
+        form = "& %s V %s %s" % (second, firstCase.getName(), secondCase.getName())
+        # TODO: formulare = toObjects(form)  # for case with objects
+        oneSet.add((first, form))
+    return oneSet
+
 
 def caseAnd(first, second):
      # print(first.getName(), second.getName())
      myPhi = lf(first)
-     nyPsi = lf(second) 
+     nyPsi = lf(second)
      print(myPhi)
      print(nyPsi)
-
-
-
-
