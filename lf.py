@@ -43,6 +43,7 @@ def lf(formula):  # , lfset=set()):
     {('tt', 'tt')}
 
     """
+    #print(formula)
     # objects = toPnf(formula)
     lfset = set()
     nameObj = formula.getName()
@@ -61,8 +62,9 @@ def lf(formula):  # , lfset=set()):
             setUntil = lf(formula.pointSec)
             secSet = caseUntil(formula.pointFirst, formula.pointSec)
             lfset = lfset.union(setUntil, secSet)
-        #  elif nameObj == '&':
-        #    secSet = caseAnd(formula.pointFirst, formula.pointSec)
+        elif nameObj == '&':
+            secSet = caseAnd(formula.pointFirst, formula.pointSec)
+            lfset = lfset.union(secSet)
         elif nameObj == 'V':
             # firstSet = caseAnd(formula.pointFirst, formula.pointSec)  TODO: case like AND
             secSet = release(formula.pointFirst, formula.pointSec)
@@ -183,10 +185,40 @@ def release(firstCase, secondCase, oneSet=set()):
         oneSet.add((first, form))
     return oneSet
 
+def defSix(my, ny, first, second): ### das hier ist cheap und nicht durchdacht.
+    total = ([first] + [second])
+    #print("----")
+    #print(total)
+    doubleNeg = False
+    for i in total:
+        # print(i.getName())
+        for j in total:   # n² => yolo
+            if (i.getName() == j.getName() and i.getNeg() != j.getNeg()):
+                doubleNeg = True
+    print(doubleNeg)
+    if(list(my)[0] == 'ff' or list(ny)[0] == 'ff'):
+        return 'ff' ########## oder hier vllt besser lFormula('ff') ?!
+    elif(doubleNeg == True):
+        return 'ff' ########## oder hier vllt besser lFormula('ff') ?!
+    else:
+        return my.union(ny)
 
 def caseAnd(first, second):
-     # print(first.getName(), second.getName())
-     myPhi = lf(first)
-     nyPsi = lf(second)
-     print(myPhi)
-     print(nyPsi)
+    myPhi = list(lf(first))[0]
+    nyPsi = list(lf(second))[0]
+    my = (myPhi)[0]
+    ny = (nyPsi)[0]
+    Phi = myPhi[1]
+    Psi = nyPsi[1]
+    d6 = defSix(((myPhi)[0]), ((nyPsi)[0]), first, second)
+    print("=>")
+    print(my)
+    if d6 == 'ff':
+        return frozenset()
+    else:
+        und = lFormula('&')
+        und.setFirst(Phi)
+        und.setSec(Psi)
+        #print(set({d6, und}))
+        return set({d6, und})
+    
