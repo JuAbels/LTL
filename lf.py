@@ -48,7 +48,7 @@ def lf(formula):  # , lfset=set()):
     lfset = set()
     nameObj = formula.getName()
 
-    print("This is the object:", nameObj)
+    # print("This is the object:", nameObj)
 
     if nameObj in doubles:
         first = formula.pointFirst
@@ -78,7 +78,7 @@ def lf(formula):  # , lfset=set()):
         # appeal of helpfunction for new definiton
         tup = caseLiteral(nameObj, formula)
         lfset = lfset.union(tup)
-    print("This is lfset:", lfset)
+    # print("This is lfset:", lfset)
     return lfset
 
 
@@ -109,7 +109,7 @@ def isTrue(tt):
 def literal(objects):
     ''' def for one linteral for linear factors '''
     oneSet = set()  # declaration of set, so that objectname istn't seperate
-    oneSet.add(objects.getName())
+    oneSet.add(objects)
     oneSet = frozenset(oneSet)  # set to frozenset, so that hashable
     tt = lFormula('tt')
     ttName = tt.getName()
@@ -129,10 +129,11 @@ def caseNext(formular):
     tup = setBasedNorm(formular)
     oneSet = oneSet.union(tup)
     tt = lFormula('tt')
-    ttName = tt.getName()
+    ttName = tt
     while oneSet:
         i = oneSet.pop()
         solution.add((ttName, i))
+    print(solution)
     return solution
 
 
@@ -141,7 +142,7 @@ def setBasedNorm(form):
     oneSet = set()
     if form.pointFirst is None:  # case for a Literal
         # oneSet.add(form) TODO
-        oneSet.add(form.getName())
+        oneSet.add(form)
         return oneSet
     else:  # case for formular is an OR and AND
         if form.getName() == '|':  # case for OR
@@ -163,13 +164,22 @@ def setBasedNorm(form):
 def caseUntil(fromCase, untilCase, oneSet=set()):
     ''' definition for case UNTIL '''
     iterable = lf(fromCase)
+    # print(fromCase.getName(), untilCase.getName())
     while iterable:
         tup = iterable.pop()
         first = tup[0]
         second = tup[1]
-        form = "& %s U %s %s" % (second, fromCase.getName(), untilCase.getName())
-        # TODO: formulare = toObjects(form)  # for case with objects
-        oneSet.add((first, form))
+        # form = "& %s U %s %s" % (second, fromCase.getName(), untilCase.getName())
+        # TODO: formulare = toObjects(form)  # for case with objects 
+        # Done - but just adding the object with the pointers.
+        lAnd = lFormula("&") # hier könnte ein fehler sein, falls nicht immer ein neues objekt erzeugt wird
+        lUntil = lFormula("U")
+        lAnd.setFirst(second)
+        lAnd.setSec(lUntil)
+        lUntil.setFirst(fromCase)
+        lUntil.setSec(untilCase)
+        oneSet.add((first, lAnd))
+    # print(oneSet)
     return oneSet
 
 
@@ -180,45 +190,89 @@ def release(firstCase, secondCase, oneSet=set()):
         tup = iterable.pop()
         first = tup[0]
         second = tup[1]
-        form = "& %s V %s %s" % (second, firstCase.getName(), secondCase.getName())
-        # TODO: formulare = toObjects(form)  # for case with objects
-        oneSet.add((first, form))
+        # form = "& %s V %s %s" % (second, firstCase.getName(), secondCase.getName())
+        lAnd = lFormula("&")
+        lRel = lFormula("R")
+        lRel.setFirst(firstCase)
+        lRel.setSec(secondCase)
+        lAnd.setFirst(second)
+        lAnd.setSec(lRel)
+        oneSet.add((first, lAnd.getName()))
+    cA = caseAnd(firstCase, secondCase)
+    oneSet = oneSet.union(cA)
     return oneSet
 
-def defSix(my, ny, first, second): ### das hier ist cheap und nicht durchdacht.
-    total = ([first] + [second])
-    #print("----")
-    #print(total)
+def defSix(my, ny): #, first, second): 
+    #print(list(my)[0].getName(), list(ny)[0].getName())
+    total = list(my) + list(ny)
+    # print (total)
     doubleNeg = False
     for i in total:
-        # print(i.getName())
+
         for j in total:   # n² => yolo
             if (i.getName() == j.getName() and i.getNeg() != j.getNeg()):
                 doubleNeg = True
-    print(doubleNeg)
+    # print(doubleNeg)
+    if(list(my)[0].getName() == 'ff' or list(ny)[0].getName() == 'ff'):
+        return 'ff' ###lFormula('ff')
+    elif(doubleNeg == True):
+        return 'ff' ########## oder hier vllt besser lFormula('ff') ?!
+    else:
+        #print(.union(ny)
+       
+        return (list(my)[0], list(ny)[0]) #### !!! whaaaack!
+    
+    """total = ([first] + [second])
+    doubleNeg = False
+    for i in total:
+
+        for j in total:   # n² => yolo
+            if (i.getName() == j.getName() and i.getNeg() != j.getNeg()):
+                doubleNeg = True
+    #print(doubleNeg)
     if(list(my)[0] == 'ff' or list(ny)[0] == 'ff'):
         return 'ff' ########## oder hier vllt besser lFormula('ff') ?!
     elif(doubleNeg == True):
         return 'ff' ########## oder hier vllt besser lFormula('ff') ?!
     else:
         return my.union(ny)
+    """
 
+### Achtung! minimalbeispiel. muss auf größere mengen verallgemeinert werden
 def caseAnd(first, second):
-    myPhi = list(lf(first))[0]
-    nyPsi = list(lf(second))[0]
-    my = (myPhi)[0]
+    # print(first.getName())
+    # print(second.getName())
+    myPhi = list(lf(first))
+    nyPsi = list(lf(second))
+    ofSet = set()
+    #print(myPhi)
+
+    #print(nyPsi)
+    for i in myPhi:
+        for j in nyPsi:
+            #print(defSix(i[0],j[0]))
+            if (defSix(i[0],j[0]) != 'ff'):
+                lAnd = lFormula("&")
+                #print(defSix(i[0],j[0]))
+                #print()
+                #print()
+                lAnd.setFirst(myPhi[0][1])
+                lAnd.setSec(nyPsi[0][1])
+                ofSet.add((defSix(i[0],j[0]), lAnd))
+    print(ofSet)
+    return ofSet
+
+"""my = (myPhi)[0]
     ny = (nyPsi)[0]
     Phi = myPhi[1]
     Psi = nyPsi[1]
     d6 = defSix(((myPhi)[0]), ((nyPsi)[0]), first, second)
-    print("=>")
-    print(my)
     if d6 == 'ff':
         return frozenset()
     else:
         und = lFormula('&')
         und.setFirst(Phi)
         und.setSec(Psi)
-        #print(set({d6, und}))
         return set({d6, und})
-    
+"""
+
