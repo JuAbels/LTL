@@ -23,8 +23,6 @@
 - [ ] syntax von ltlfilt
 - [ ] Fehler bei falscher eingabe von ltl formeln abfangen. etwa falsche klammerung
 - LF Definition:
-  * - [ ] Def U (Julia Angefangen)
-  * - [ ] Def R (Julia Angefangen, funktioniert noch nicht, AND wird benötigt)
-  * - [ ] Def AND
+  * - [ ] lf crashtesten & kompatibel machen
   * - [ ] Bei Definitionen abchecken ob auch längere funktionieren
   * - [ ] Verbesserung dass keine Strings sondern Objecte wirklich sind
