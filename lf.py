@@ -139,7 +139,7 @@ def setBasedNorm(form):
     ''' HELPFunction for set-based conjunctive normal form for case Next '''
     oneSet = set()
     if form.pointFirst is None:  # case for a Literal
-        # oneSet.add(form) TODO
+        # oneSet.add(form) 
         oneSet.add(form)
         return oneSet
     else:  # case for formular is an OR and AND
