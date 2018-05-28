@@ -26,3 +26,4 @@
   * - [ ] lf crashtesten & kompatibel machen
   * - [ ] Bei Definitionen abchecken ob auch längere funktionieren
   * - [ ] Verbesserung dass keine Strings sondern Objecte wirklich sind
+  * - [ ] Bei to objects die reihenfolge nochmals exzsesiv testen

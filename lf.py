@@ -43,6 +43,7 @@ def lf(formula):  # , lfset=set()):
     {('tt', 'tt')}
 
     """
+    #print("in lf")
     # objects = toPnf(formula)
     lfset = set()
     nameObj = formula.getName()
@@ -101,7 +102,7 @@ def caseLiteral(nameObj, formula):  # , lfs=set()):
 def isTrue(tt):
     ''' def for case True '''
     tt = lFormula('tt')
-    ttName = tt.getName()
+    ttName = tt #.getName()
     return (ttName, ttName)
 
 
@@ -111,7 +112,7 @@ def literal(objects):
     oneSet.add(objects)
     oneSet = frozenset(oneSet)  # set to frozenset, so that hashable
     tt = lFormula('tt')
-    ttName = tt.getName()
+    ttName = tt#.getName()
     return (oneSet, ttName)
 
 
@@ -202,9 +203,9 @@ def defSix(my, ny):
             if (i.getName() == j.getName() and i.getNeg() != j.getNeg()):
                 doubleNeg = True
     if(list(my)[0].getName() == 'ff' or list(ny)[0].getName() == 'ff'):
-        return 'ff'
+        return lFormula('ff')
     elif(doubleNeg == True):
-        return 'ff'
+        return lFormula('ff')
     else:
         return (list(my)[0], list(ny)[0])
     
