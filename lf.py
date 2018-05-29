@@ -224,3 +224,21 @@ def caseAnd(first, second):
     return ofSet
 
 
+if __name__ == "__main__":
+    inp = "G F p"
+    first = toPnf(inp)
+    #print(first.getName())
+    """for x in lf(first):
+        for j in x:
+             if type(j) == frozenset:
+                 for y in j:
+                    pass# print(y.getName())
+             else:
+                 if(j.getName() == '&'):
+                     print("----------")
+                     print(j.getName())
+                     print(j.getFirst().getName())
+                     print(j.getSec().getName())
+                     print(j.getSec().getFirst().getName())
+                     print(j.getSec().getSec().getName())"""
+

@@ -61,7 +61,7 @@ def derivatives(formulare):
         print(x.getSec().getSec().getSec().getName())"""
     # here we get just on element, but it has to be a tuple.
     # don really understand the solution from def 10
-    return solutionS
+    return solution
     """"
     # translate fromulare in derivative.
     # get objects in list with all pointers
@@ -137,16 +137,19 @@ def getX(): # needs to be clarified
 
 def checkX(my): # can we propose that x is unsatisifable
     XXX = getX() # where do we get the x from?
+    XXX.add('tt')
     #print(my)
     #print("my")
     #print(type(my))
     #status = False # maybe here to bitarray
     if type(my) == frozenset:
         for x in my:
+            #print(x.getName())
             if(x.getName() in XXX and x.getNeg() != True):
                 return True
     else: # so we got a object
-        if(my.getName() in XXX and neg!= True):
+        #print(my.getName())
+        if(my.getName() in XXX and my.getName() != True):
             return True
     return False
     """
@@ -163,15 +166,18 @@ def checkX(my): # can we propose that x is unsatisifable
 
 def caseFormel(formular):
     # function for case literal
-    #print(formular)
+    """print(formular.getName())
+    print(formular.getFirst().getName())
+    print(formular.getSec().getName())"""
     lfPhi = lf(formular)
-    #print(lfPhi)
+    for x in lfPhi:
+         print(x[1].getName())
     solution = set()
     for act in lfPhi:
         #print(act[0], "act")
         #exit()
         current= checkX(act[0])
-        # print(current)
+        #print(current)
         if(current == True):
             solution.add(act[1])
             #print(act[1])
@@ -201,4 +207,9 @@ def caseAnd(literal):
 if __name__ == "__main__":
     literal = "G F p"
     first = toPnf(literal)
-    derivatives(first)
+    der = (derivatives(first))
+    """for x in der:
+        print("----------------")
+        print( x.getName())
+        print( x.getFirst().getName())
+        print( x.getSec().getName())"""
