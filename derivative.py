@@ -208,8 +208,8 @@ if __name__ == "__main__":
     literal = "G F p"
     first = toPnf(literal)
     der = (derivatives(first))
-    """for x in der:
+    for x in der:
         print("----------------")
         print( x.getName())
         print( x.getFirst().getName())
-        print( x.getSec().getName())"""
+        print( x.getSec().getName())

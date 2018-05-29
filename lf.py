@@ -79,6 +79,7 @@ def lf(formula):  # , lfset=set()):
         # appeal of helpfunction for new definiton
         tup = caseLiteral(nameObj, formula)
         lfset = lfset.union(tup)
+    flatten(lfset)
     return lfset
 
 
@@ -96,6 +97,7 @@ def caseLiteral(nameObj, formula):  # , lfs=set()):
         # case for literal
         tup = literal(formula)
         lfs.add(tup)
+
     return lfs
 
 
@@ -223,22 +225,34 @@ def caseAnd(first, second):
                 ofSet.add((defSix(i[0],j[0]), lAnd))
     return ofSet
 
+def concat(inp):
+    if(inp.getName()=='&'):
+        if(inp.getFirst().getName()) == 'tt':
+            inp.setName(inp.getSec().getName())
+            inp.setFirst(inp.getSec().getFirst())
+            inp.setSec(inp.getSec().getSec())
+        if(inp.getSec().getName() == 'tt'): # this part may be wrong but not likely
+            inp.setName(inp.getFirst().getName())
+            inp.setFirst(inp.getFirst().getFirst())
+ 
+            inp.setSec(inp.getFirst().getSec())
+    
+def flatten(linFacs):
+    for x in linFacs:
+        #print(x)
+        for j in x:
+            #print("------")
+            
+            if type(j) == frozenset:
+                for y in j:
+                   concat(y)
+            else:
+                concat(j)
+                
 
 if __name__ == "__main__":
     inp = "G F p"
     first = toPnf(inp)
     #print(first.getName())
-    """for x in lf(first):
-        for j in x:
-             if type(j) == frozenset:
-                 for y in j:
-                    pass# print(y.getName())
-             else:
-                 if(j.getName() == '&'):
-                     print("----------")
-                     print(j.getName())
-                     print(j.getFirst().getName())
-                     print(j.getSec().getName())
-                     print(j.getSec().getFirst().getName())
-                     print(j.getSec().getSec().getName())"""
-
+    linFacs = lf(first)
+    flatten(linFacs)
