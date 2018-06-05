@@ -19,7 +19,7 @@ from toPnfObjects import lFormula
 from toPnfObjects import toObjects
 from ltlToPred import translate
 from toPnfObjects import toPnf
-import doctest
+
 import re
 
 # doubles: U W R V M
@@ -38,9 +38,17 @@ truth = ["tt", 'ff']
 
 def lf(formula):  # , lfset=set()):
     """Get the set of Linear factors.
+    Input: object in positive normal form, that points on rest formula
+    Output: linear factors according to the input formula.
 
-    >>> lf(tt)
-    {('tt', 'tt')}
+    more tests in unittesting.
+
+    >>> from lf import lf
+    >>> from toPnfObjects import toPnf
+    >>> solu = lf(toPnf('tt'))
+    >>> some = [print(x[0].getName(),x[1].getName()) for x in solu]
+    tt tt
+    
 
     """
     #print("in lf")

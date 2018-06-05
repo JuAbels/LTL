@@ -6,7 +6,7 @@ University of Freiburg - 2018
 from toPnfObjects import toObjects
 from toPnfObjects import toPnf
 from lf import lf
-import unittest
+
 """
 zero = {"tt": 0,
         "ff": 1}
