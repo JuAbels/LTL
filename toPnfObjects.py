@@ -55,7 +55,41 @@ class lFormula:
 
 
 def toObjects(inPut):
-    """Iterate over the string and make them to objects."""
+    """Iterate over the string and make them to objects.
+
+    Input: inPut is a ltl formula in polish notation
+    Output: A list with all Objects and more important first Object
+            with all pointers to the following.
+
+    >>> from toPnfObjects import toObjects
+    >>> testObject = toObjects('G F p')[1]
+    >>> testObject.getName()
+    'G'
+    >>> testObject.getAtom() == None
+    True
+    >>> testObject.getNeg()
+    False
+    >>> testObject.getFirst().getName()
+    'F'
+    >>> testObject.getFirst().getFirst().getName()
+    'p'
+    >>> testObject.getFirst().getFirst().getAtom()
+    True
+
+    >>> testObject = toObjects('! p')[1]
+    >>> testObject.getName()
+    '!'
+    >>> testObject.getNeg()
+    False
+    >>> testObject.getFirst().getName()
+    'p'
+    >>> testObject.getFirst().getNeg() == False
+    True
+    >>> testObject.getFirst().getAtom()
+    True
+
+
+    """
     # not ordered parts could still be problematic
     inp = inPut.split()
     listedFormula = deepcopy(inp)
@@ -64,13 +98,10 @@ def toObjects(inPut):
     while len(inp) != 0:
         first = inp.pop()
         lObjects.append(lFormula(first))
-    # lObjects.reverse()
     listedFormula.reverse()
     inp = listedFormula
-    # inpObjects = lObjects
     """going over to objects manipulating them."""
     first = False
-    # sec = False
     for i in range(len(lObjects)):
         if not (lObjects[i].getName() in duo or lObjects[i].getName() in single):
             """setting the Atom attribute. so no pointer goes out"""
@@ -78,9 +109,7 @@ def toObjects(inPut):
             # sec = first
             first = lObjects[i - 1]
         else:
-            """if object is no item them set pointers
-            Diese Stelle ist schlampig gecoded und
-            koennte fehlerpotential haben"""
+            """if object is no item them set pointer."""
             if(lObjects[i].getName() in single):
                 lObjects[i].setFirst(lObjects[i-1])
                 first = lObjects[i]
@@ -111,7 +140,37 @@ def redEM(lObjects, ele):
 
 def dealEM(lObjects, first):
     """Boundary condition for elemination of exclamation marks.
-    also a helper for the recursion of redEM()"""
+    also a helper for the recursion of redEM().
+
+    Input: list with objects are given and the first object pointing on the
+           rest. Including exclamationmarsk.
+    Output: list with objects are given and the first object pointing on the
+           rest. Excluding exclamationmarsk.
+
+    testing for dealEM & redEM
+    >>> from toPnfObjects import toObjects
+    >>> from toPnfObjects import dealXFG
+    >>> from toPnfObjects import dealEM
+    >>> testObj = toObjects('! p')
+    >>> testObj = dealEM(testObj[0], testObj[1])[1]
+    >>> testObj.getName()
+    'p'
+    >>> testObj.getNeg()
+    True
+    >>> testSec = toObjects('! & p ! q')
+    >>> testSec = dealEM(testSec[0], testSec[1])[1]
+    >>> testSec.getName()
+    '&'
+    >>> testSec.getNeg()
+    True
+    >>> testSec.getFirst().getName()
+    'p'
+    >>> testSec.getSec().getName()
+    'q'
+    >>> testSec.getSec().getNeg()
+    True
+
+    """
     if (first.getName() == "!"):
         lObjects.remove(first)
         first = first.getFirst()
@@ -122,7 +181,40 @@ def dealEM(lObjects, first):
 
 def dealXFG(ele):
     """before we can push in to the atoms. which is required for
-    the pnf we need to transform not defined operators - XFG"""
+    the pnf we need to transform not defined operators - XFG.
+
+    Input: An Element that has to be checked. 
+    Output: Nothing. transforms problematic Notation.
+            Objects stay the same, but with different attributes.
+
+
+
+    >>> from toPnfObjects import toObjects
+    >>> from toPnfObjects import dealXFG
+    >>> testObject = toObjects('G F p')[1]
+    >>> dealXFG(testObject)
+    >>> testObject.getName()
+    'R'
+    >>> testObject.getFirst().getName()
+    'ff'
+    >>> testObject.getSec().getName()
+    'U'
+
+    >>> testSec = toObjects('& p G q')[1]
+    >>> dealXFG(testSec)
+    >>> testSec.getName()
+    '&'
+    >>> testSec.getFirst().getName()
+    'p'
+    >>> testSec.getSec().getName()
+    'R'
+    >>> testSec.getSec().getFirst().getName()
+    'ff'
+    >>> testSec.getSec().getSec().getName()
+    'q'
+
+
+    """
     # next: 		Xf - () - still to do - not in paper
     if(ele.getName() == "F"):
         ele.setName("U")
@@ -158,12 +250,33 @@ def debugPrint(ele):
 
 
 def pushIn(ele):
-    """recursive in-pushing of the negation until atoms are reached"""
-    """here not sure whether logic is correct derived"""
-    #print("______")
-    #print(ele.getName())
-    #print(ele.getAtom())
-    #print(ele.getNeg())
+    """recursive in-pushing of the negation until atoms are reached.
+
+    Input:  Elements that are negated.
+    Output: Elements. Only atomic elements are negated.
+
+    >>> from toPnfObjects import toObjects
+    >>> from toPnfObjects import dealXFG
+    >>> from toPnfObjects import dealEM
+    >>> from toPnfObjects import pushIn
+    >>> testObj = toObjects('! & p ! q')
+    >>> testObj = dealEM(testObj[0], testObj[1])[1]
+    >>> testObj = pushIn(testObj)
+    >>> testObj.getName()
+    '|'
+    >>> testObj.getFirst().getName()
+    'p'
+    >>> testObj.getSec().getName()
+    'q'
+    >>> testObj.getFirst().getNeg()
+    True
+    >>> testObj.getSec().getNeg()
+    False
+
+
+    """
+
+
     if (ele.getNeg() is True):
         if(ele.getName() == "U"):
             ele.setName("R")
@@ -176,13 +289,9 @@ def pushIn(ele):
         if(ele.getAtom() is not True):
             ele.setNeg()
         if(ele.getFirst()is not None):
-            #print(ele.getFirst().getName())
             ele.getFirst().setNeg()
         if(ele.getSec()is not None):
             ele.getSec().setNeg()
-            #print(ele.getSec().getName())
-    #print(ele.getName())
-    #print(ele.getNeg())
     if(ele.getFirst() is not None):
         pushIn(ele.getFirst())
     if(ele.getSec() is not None):
@@ -191,12 +300,28 @@ def pushIn(ele):
 
 
 def toPnf(inPut):
-    """Head-function to get formula in positive normal form"""
+    """Head-function to get formula in positive normal form
+    Input: ltl formula in polish notation. 
+    Output: object that points on rest-formula. negation only on atoms
+
+    >>> from toPnfObjects import toPnf
+    >>> first = toPnf('! & p ! q')
+    >>> testObj.getName()
+    '|'
+    >>> testObj.getFirst().getName()
+    'p'
+    >>> testObj.getSec().getName()
+    'q'
+    >>> testObj.getFirst().getNeg()
+    True
+    >>> testObj.getSec().getNeg()
+    False
+
+    """
     lObjects, first = toObjects(inPut)
     dealXFG(first)
     lObjects, first = dealEM(lObjects, first)
 
-    # printdealXFG(first)
     pushIn(first)
-    # debugPrint(first)
+
     return first
