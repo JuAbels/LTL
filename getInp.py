@@ -22,7 +22,7 @@ def getInp(inp = sys.argv[1]):
     Output: The general input or instructions
     
     >>> import os
-    >>> os.remove('testfile.txt')
+
     >>> from getInp import getInp
     >>> f = open('testfile.txt', 'w')
     >>> getInp(inp = 'testfile.txt')
@@ -34,7 +34,7 @@ def getInp(inp = sys.argv[1]):
     >>> f.close()
     >>> getInp(inp = 'testfile.txt')
     ('G F p', '{"p", "p2", "q1", "q2"}')
-
+    >>> os.remove('testfile.txt')
 
     """
     #print(inp)
