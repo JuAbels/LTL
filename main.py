@@ -8,42 +8,36 @@ toGraphViz is now the correct function to print graph
 """
 
 import sys
-from ltlToPred import translate
-from getInp import getInp
-from lf import lf
-from toPnfObjects import toPnf
-# <<<<<<< HEAD
-from derivative import derivative
+from LTL.tools.ltlToPred import translate
+from LTL.tools.getInp import getInp
+# from getInp import getInp
+
+from LTL.tools.lf import lf
+from LTL.tools.toPnfObjects import toPnf
+from LTL.tools.derivative import derivatives
 import doctest
+from LTL.tests.unitTests import test
+
 #from toGraph import toGraph
+
 
 if __name__ == "__main__":
     doctest.testmod()
+    doctest.testfile("./tools/getInp.py")
+    doctest.testfile("./tools/ltlToPred.py")
+    doctest.testfile("./tools/toPnfObjects.py")
+    doctest.testfile("./tools/lf.py")
+    
+    test()
+    #print(sys.argv[0])
+    #print(sys.argv[1])
+    #print(sys.argv[2])
+
+    
     inp = getInp()
-    print(inp)
-    formulare = translate(inp)
-    # formulare = "U p1 & p2 G F p3"
-    print("This is Form:", formulare)
+    #print(inp)
+    formulare = translate(inp[0])
 
     objects = toPnf(formulare)  # objects to PNF for LF
     linFac = lf(objects)  # Formel to linear Factors
-
-    print("This is formulare: ", linFac)
-    print("")
-    test = derivative(formulare)  # appeal derivative def
-    print("This is sol:", test)
-    #derivative(inp)
-    #toGraph(["A", "B", "C"], [["A","B"],["B","C"]])
-# =======
-#from toGraphViz import toGraph
-#from ltlPrint import ltlPrint
-
-# if __name__ == "__main__":
-    # inp = getInp()
-    #print(inp)
-    #print(translate(inp))
-    #toGraph(["A", "B", "C"], [["A","B"],["B","C"]])
-    #print(ltlPrint('p1 U (p2 & GFp3)'))
-
-
-# >>>>>>> 0c97b155e0df62d9bb1f4f344c07846f835b0b3b
+    (derivatives(objects, inp[1])) # inp[1] gives x to the function
