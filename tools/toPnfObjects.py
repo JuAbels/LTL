@@ -61,7 +61,7 @@ def toObjects(inPut):
     Output: A list with all Objects and more important first Object
             with all pointers to the following.
 
-    >>> from toPnfObjects import toObjects
+    >>> from LTL.tools.toPnfObjects import toObjects
     >>> testObject = toObjects('G F p')[1]
     >>> testObject.getName()
     'G'
@@ -148,9 +148,7 @@ def dealEM(lObjects, first):
            rest. Excluding exclamationmarsk.
 
     testing for dealEM & redEM
-    >>> from toPnfObjects import toObjects
-    >>> from toPnfObjects import dealXFG
-    >>> from toPnfObjects import dealEM
+    >>> from LTL.tools.toPnfObjects import toObjects, dealXFG, dealEM
     >>> testObj = toObjects('! p')
     >>> testObj = dealEM(testObj[0], testObj[1])[1]
     >>> testObj.getName()
@@ -189,8 +187,7 @@ def dealXFG(ele):
 
 
 
-    >>> from toPnfObjects import toObjects
-    >>> from toPnfObjects import dealXFG
+    >>> from LTL.tools.toPnfObjects import toObjects, dealXFG
     >>> testObject = toObjects('G F p')[1]
     >>> dealXFG(testObject)
     >>> testObject.getName()
@@ -255,10 +252,7 @@ def pushIn(ele):
     Input:  Elements that are negated.
     Output: Elements. Only atomic elements are negated.
 
-    >>> from toPnfObjects import toObjects
-    >>> from toPnfObjects import dealXFG
-    >>> from toPnfObjects import dealEM
-    >>> from toPnfObjects import pushIn
+    >>> from LTL.tools.toPnfObjects import toObjects, dealXFG, dealEM ,pushIn
     >>> testObj = toObjects('! & p ! q')
     >>> testObj = dealEM(testObj[0], testObj[1])[1]
     >>> testObj = pushIn(testObj)
@@ -304,7 +298,7 @@ def toPnf(inPut):
     Input: ltl formula in polish notation. 
     Output: object that points on rest-formula. negation only on atoms
 
-    >>> from toPnfObjects import toPnf
+    >>> from LTL.tools.toPnfObjects import toPnf
     >>> first = toPnf('! & p ! q')
     >>> testObj.getName()
     '|'

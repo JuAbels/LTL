@@ -1,8 +1,9 @@
 """Author Stefan Strang - Uni Freiburg."""
 import sys
-from ltlPrint import ltlPrint
+from LTL.tools.ltlPrint import ltlPrint
 import spot
 import doctest
+import os
 
 def usage():
     """Tell how to use."""
@@ -23,25 +24,28 @@ def getInp(inp = sys.argv[1]):
     
     >>> import os
 
-    >>> from getInp import getInp
-    >>> f = open('testfile.txt', 'w')
-    >>> getInp(inp = 'testfile.txt')
+    >>> from LTL.tools.getInp import getInp
+    >>> f = open('LTL/tests/testfile.txt', 'w')
+    >>> getInp(inp = 'tests/testfile.txt')
     ('', '')
     >>> f.write('G F p\n')
     6
     >>> f.write('{"p", "p2", "q1", "q2"}')
     23
     >>> f.close()
-    >>> getInp(inp = 'testfile.txt')
+    >>> getInp(inp = 'tests/testfile.txt')
     ('G F p', '{"p", "p2", "q1", "q2"}')
-    >>> os.remove('testfile.txt')
 
+    
     """
-    #print(inp)
+    #print(os.path.dirname(inp))
+    inp = "LTL/"+inp
     try:
         if(len(sys.argv) == 2):
-            #inp = sys.argv[1]
+
+            #print("here")
             if(len(inp.split(".")) > 1):
+                #print("and")
                 data = open(inp, "r")
                 back = (data.readline().strip().strip("\""))
                 #print(back)
@@ -51,6 +55,7 @@ def getInp(inp = sys.argv[1]):
             else:
                 return inp
         elif(len(sys.argv) == 3):
+            print("sec")
             if(sys.argv[2] == "-pp"):
                 #inp = sys.argv[1]
                 data = open(inp, "r")

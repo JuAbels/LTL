@@ -15,10 +15,10 @@ U p1 & p2 G F p3
 
 """
 
-from toPnfObjects import lFormula
-from toPnfObjects import toObjects
-from ltlToPred import translate
-from toPnfObjects import toPnf
+from LTL.tools.toPnfObjects import lFormula, toObjects, toPnf
+#from LTL.tools.toPnfObjects import toObjects
+from LTL.tools.ltlToPred import translate
+#from LTL.tools.toPnfObjects import toPnf
 
 import re
 
@@ -43,8 +43,8 @@ def lf(formula):  # , lfset=set()):
 
     more tests in unittesting.
 
-    >>> from lf import lf
-    >>> from toPnfObjects import toPnf
+    >>> from LTL.tools.lf import lf
+    >>> from LTL.tools.toPnfObjects import toPnf
     >>> solu = lf(toPnf('tt'))
     >>> some = [print(x[0].getName(),x[1].getName()) for x in solu]
     tt tt

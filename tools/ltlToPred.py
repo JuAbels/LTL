@@ -8,7 +8,7 @@ def translate(inp):
     input: ltl no matter what form.
     output: ltl in polish notation
 
-    >>> from ltlToPred import translate
+    >>> from LTL.tools.ltlToPred import translate
     >>> translate('[]<>p0')
     'G F p0'
     >>> translate('p1 U (p2 & GFp3)')

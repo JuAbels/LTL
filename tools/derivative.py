@@ -3,9 +3,9 @@ Authors: Julia Abels & Stefan Strang
 University of Freiburg - 2018
 
 """
-from toPnfObjects import toObjects
-from toPnfObjects import toPnf
-from lf import lf
+from LTL.tools.toPnfObjects import toObjects
+from LTL.tools.toPnfObjects import toPnf
+from LTL.tools.lf import lf
 
 """
 zero = {"tt": 0,
