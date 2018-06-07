@@ -7,28 +7,155 @@ This is module for explicit testing of large functiosn of the fosaccs2018.
 """
 
 import unittest
+import gc
 from unittest.case import TestCase
+from LTL.tools.lf import lf
+from LTL.tools.toPnfObjects import toPnf
 
-
-class testLf(unittest.TestCase):
+class testLfdef8(unittest.TestCase):
     def setUp(self):
-        print("setup")
-    
+        pass
     def tearDown(self):
-        print("tear down")
-    def test(self):
+        pass
+    def testDummy(self):
         self.assertEqual( 1, 1)
 
+    # some tests from defintion 8
+    def testlfL(self):
+        objects = toPnf('l')
+        linFac = lf(objects) 
+        testHelper = []
+        for i in linFac:
+            first = i[0]
+            sec = i[1]
+        if type(first) == frozenset:
+            for x in first:
+                first = x
+        self.assertEqual(('l', 'tt'), (first.getName(), sec.getName()))
+        del first
+        del sec
+
+    def testlfF(self):
+        objects = toPnf('ff')
+        linFac = lf(objects) 
+        self.assertEqual(set(), linFac)
+        del linFac
+
+    def testLfOrSimple(self):
+        objects = toPnf('| p q')
+        linFac = lf(objects)
+        helper = set()
+        for x in linFac:
+            helper.add(x[1].getName())
+            
+            for y in x[0]: 
+                helper.add(y.getName())
+                
+        self.assertEqual({'tt','q','p'}, helper)
+        first = objects.getFirst()
+        second = objects.getSec()
+        
+        del first 
+        del second
+        objects.setFirst(None)
+        objects.setSec(None)
+        del objects
+
+    def testLfAndSimple(self):
+        objects = toPnf('& p q')
+        linFac = lf(objects)
+        #print(linFac)
+        check = []
+        for x in linFac:
+            for y in x:
+                if type(y) == tuple:
+                    for z in y:
+                        check.append(z.getName())
+                else:
+                    check.append(y.getName())
+        self.assertEqual(['p','q','tt'],check)
+        first = objects.getFirst()
+        second = objects.getSec()
+        
+        del first 
+        del second
+        objects.setFirst(None)
+        objects.setSec(None)
+        del objects
+        #print(objects)
+    def testlfNextSimple(self):
+        objects = toPnf('X p')
+        linFac = lf(objects)
+        #print(linFac)
+        solution = []
+        for x in linFac:
+            for y in x: 
+                solution.append(y.getName())
+        self.assertEqual([ 'tt', 'p'], solution)
+        #print(objects.getName())
+        first =  objects.getFirst()
+        del first
+        objects.setFirst(None)
+        del objects
+    def testlfUntilSimple(self):
+        objects = toPnf('U p q')
+        linFac = lf(objects)
+        #print(linFac)
+        solution = set()
+        for x in linFac:
+            for y in x: 
+                if type(y) == frozenset:
+                    for z in y:
+                        solution.add(z.getName())
+                else:
+                    solution.add(y.getName())
+        self.assertEqual(solution, {'tt','U','p','q'})
+        #print(objects.getName())
+        first = objects.getFirst()
+        sec = objects.getSec()
+        del first
+        del sec
+        objects.setFirst(None)
+        objects.setSec(None)
+        del objects
+
+
+    def testReleaseSimple(self):
+        gc.collect()
+        ob = toPnf('R p q')
+        linFaca = lf(ob)
+        sol = set()
+        for x in linFaca:
+            for y in x:
+                if type(y) == frozenset:
+                    for i in y:
+                        sol.add(i.getName()) 
+                elif type(y) == tuple:
+                    for t in y:
+                        sol.add(t.getName()) 
+                else:
+
+                    sol.add(y.getName())
+        self.assertEqual(sol, {'tt', 'q','p','R'})
+        first = ob.getFirst()
+        sec = ob.getSec()
+        del first
+        del sec
+        ob.setFirst(None)
+        ob.setSec(None)
+        del ob
+        
+
+
+    def __del__(self):
+        pass
 
 def test():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
     
-    suite.addTests(loader.loadTestsFromTestCase(testLf))
-    
+    suite.addTests(loader.loadTestsFromTestCase(testLfdef8))
+
     runner = unittest.TextTestRunner(verbosity=3)
     result = runner.run(suite)
-    print(result)
-
-if __name__ == '__main__':
-    unittest.main()
+    #print(globals())

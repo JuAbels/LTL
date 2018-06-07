@@ -87,6 +87,7 @@ def lf(formula):  # , lfset=set()):
         # appeal of helpfunction for new definiton
         tup = caseLiteral(nameObj, formula)
         lfset = lfset.union(tup)
+    
     flatten(lfset)
     return lfset
 
@@ -206,6 +207,7 @@ def release(firstCase, secondCase, oneSet=set()):
     return oneSet
 
 def defSix(my, ny): 
+    #print(my, ny)
     total = list(my) + list(ny)
     doubleNeg = False
     for i in total:
@@ -234,11 +236,15 @@ def caseAnd(first, second):
     return ofSet
 
 def concat(inp):
+    if(type(inp) == tuple):
+        return
     if(inp.getName()=='&'):
         if(inp.getFirst().getName()) == 'tt':
             inp.setName(inp.getSec().getName())
             inp.setFirst(inp.getSec().getFirst())
             inp.setSec(inp.getSec().getSec())
+        if(inp.getSec() == None):
+            return
         if(inp.getSec().getName() == 'tt'): # this part may be wrong but not likely
             inp.setName(inp.getFirst().getName())
             inp.setFirst(inp.getFirst().getFirst())

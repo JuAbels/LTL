@@ -53,6 +53,9 @@ class lFormula:
     def getNeg(self):
         return self.Neg
 
+    def __del__(self):
+        pass
+
 
 def toObjects(inPut):
     """Iterate over the string and make them to objects.
