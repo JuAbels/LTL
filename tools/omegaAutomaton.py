@@ -3,9 +3,7 @@ Authors: Julia Abels & Stefan Strang
 University of Freiburg - 2018
 """
 
-from LTL.tools.toPnfObjects import lFormula, toObjects, toPnf
-from LTL.tools.ltlToPred import translate
-from LTL.tools.lf import lf, setBasedNorm
+from LTL.tools.lf import setBasedNorm
 from LTL.tools.derivative import derivatives
 
 """Class to generate the omega Automaton"""
@@ -16,13 +14,12 @@ xSet = "p, p2, q1, q2"
 class Automaton:
 
     def __init__(self, formula):
-        # self.element = element
-        self.formula = formula
-        self.state = set()
-        self.alphabet = xSet
-        self.transition = set()
-        self.start = set()
-        self.goal = set()
+        self.formula = formula   # the formula with all the pointer
+        self.state = set()       # set with state status
+        self.alphabet = xSet     # set of alphabet TODO: per input
+        self.transition = set()  # set for the transition of automaton
+        self.start = set()       # set of start status
+        self.goal = set()        # set of the goal status
 
     def setTransition(self):
         """
