@@ -12,6 +12,7 @@ from LTL.tools.ltlToPred import translate
 from LTL.tools.getInp import getInp
 from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
+from LTL.tools.omegaAutomaton import Automaton
 from LTL.tools.derivative import derivatives
 import doctest
 from LTL.tests.unitTests import test
@@ -41,7 +42,7 @@ if __name__ == "__main__":
 
     formulare = translate(inp[0])
 
-    #objects = toPnf('& p q')#formulare)  # objects to PNF for LF
+    objects = toPnf('& p2 q1')#formulare)  # objects to PNF for LF
 
 
     #print(lin1)
@@ -53,6 +54,9 @@ if __name__ == "__main__":
             else:
                 for y in z:
                     print(y.getName())"""
-    #linFac = lf(objects)  # Formel to linear Factors
-    #(derivatives(objects, inp[1])) # inp[1] gives x to the function
+    print("Test")
+    Automaton(objects).setTransition()
+    Automaton(objects).setStart()
+    # linFac = lf(objects)  # Formel to linear Factors
+    # (derivatives(objects, inp[1])) # inp[1] gives x to the function
     tests()

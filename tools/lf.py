@@ -48,7 +48,7 @@ def lf(formula, lfset=set()):
     >>> solu = lf(toPnf('tt'))
     >>> some = [print(x[0].getName(),x[1].getName()) for x in solu]
     tt tt
-    
+
 
     """
     #print("in lf")
@@ -75,7 +75,7 @@ def lf(formula, lfset=set()):
             secSet = caseAnd(formula.pointFirst, formula.pointSec)
             lfset = lfset.union(secSet)
         elif nameObj == 'V':
-            # firstSet = caseAnd(formula.pointFirst, formula.pointSec)  now in the def release 
+            # firstSet = caseAnd(formula.pointFirst, formula.pointSec)  now in the def release
             secSet = release(formula.pointFirst, formula.pointSec)
             firstSet = "NOTRELEVANT"
             lfset.union(firstSet, secSet)
@@ -87,7 +87,7 @@ def lf(formula, lfset=set()):
         # appeal of helpfunction for new definiton
         tup = caseLiteral(nameObj, formula)
         lfset = lfset.union(tup)
-    
+
     flatten(lfset)
     return lfset
 
@@ -151,7 +151,7 @@ def setBasedNorm(form):
     ''' HELPFunction for set-based conjunctive normal form for case Next '''
     oneSet = set()
     if form.pointFirst is None:  # case for a Literal
-        # oneSet.add(form) 
+        # oneSet.add(form)
         oneSet.add(form)
         return oneSet
     else:  # case for formular is an OR and AND
@@ -167,7 +167,10 @@ def setBasedNorm(form):
             while first:
                 element = first.pop()
                 for i in second:
-                    oneSet.add('%s & %s' % (element, i))
+                    AND = toObjects("&")[1]
+                    AND.setFirst(element)
+                    AND.setSec(i)
+                    oneSet.add(AND)
                 return oneSet
 
 
@@ -178,7 +181,7 @@ def caseUntil(fromCase, untilCase, oneSet=set()):
         tup = iterable.pop()
         first = tup[0]
         second = tup[1]
-        lAnd = lFormula("&") 
+        lAnd = lFormula("&")
         lUntil = lFormula("U")
         lAnd.setFirst(second)
         lAnd.setSec(lUntil)
@@ -206,7 +209,7 @@ def release(firstCase, secondCase, oneSet=set()):
     oneSet = oneSet.union(cA)
     return oneSet
 
-def defSix(my, ny): 
+def defSix(my, ny):
     #print(my, ny)
     total = list(my) + list(ny)
     doubleNeg = False
@@ -220,7 +223,7 @@ def defSix(my, ny):
         return lFormula('ff')
     else:
         return (list(my)[0], list(ny)[0])
-    
+
 
 def caseAnd(first, second):
     myPhi = list(lf(first))
@@ -248,21 +251,21 @@ def concat(inp):
         if(inp.getSec().getName() == 'tt'): # this part may be wrong but not likely
             inp.setName(inp.getFirst().getName())
             inp.setFirst(inp.getFirst().getFirst())
- 
+
             inp.setSec(inp.getFirst().getSec())
-    
+
 def flatten(linFacs):
     for x in linFacs:
         #print(x)
         for j in x:
             #print("------")
-            
+
             if type(j) == frozenset:
                 for y in j:
                    concat(y)
             else:
                 concat(j)
-                
+
 
 if __name__ == "__main__":
     inp = "G F p"
