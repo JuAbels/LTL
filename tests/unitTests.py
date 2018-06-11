@@ -118,37 +118,56 @@ class testLfdef8(unittest.TestCase):
         objects.setFirst(None)
         objects.setSec(None)
         del objects
-
-
-    def testReleaseSimple(self):
-        gc.collect()
-        ob = toPnf('R p q')
-        linFaca = lf(ob)
-        sol = set()
-        for x in linFaca:
-            for y in x:
+    def testlfGFu(self):
+        objects = toPnf('G F u')
+        linFac = lf(objects)
+        #print(linFac)
+        solution = set()
+        for x in linFac:
+            for y in x: 
                 if type(y) == frozenset:
-                    for i in y:
-                        sol.add(i.getName()) 
-                elif type(y) == tuple:
-                    for t in y:
-                        sol.add(t.getName()) 
+                    for z in y:
+                        solution.add(z.getName())
                 else:
-
-                    sol.add(y.getName())
-        self.assertEqual(sol, {'tt', 'q','p','R'})
-        first = ob.getFirst()
-        sec = ob.getSec()
+                    solution.add(y.getName())
+        self.assertEqual(solution, {'u','R','tt','&'})
+        #print(objects.getName())
+        """first = objects.getFirst()
+        sec = objects.getSec()
         del first
         del sec
-        ob.setFirst(None)
-        ob.setSec(None)
-        del ob
-        
+        objects.setFirst(None)
+        objects.setSec(None)
+        del objects"""
+    def testlfFu(self):
+        objects = toPnf('F p')
+        linFac = lf(objects)
+        #print(linFac)
+        solution = set()
+        for x in linFac:
+            for y in x: 
+                if type(y) == frozenset:
+                    for z in y:
+                        solution.add(z.getName())
+                else:
+                    solution.add(y.getName())
+        self.assertEqual(solution, {'tt','p','U'})
+        #print(objects.getName())
+        """first = objects.getFirst()
+        sec = objects.getSec()
+        del first
+        del sec
+        objects.setFirst(None)
+        objects.setSec(None)
+        del objects"""
+
+
 
 
     def __del__(self):
         pass
+
+
 
 def test():
     loader = unittest.TestLoader()
@@ -158,4 +177,7 @@ def test():
 
     runner = unittest.TextTestRunner(verbosity=3)
     result = runner.run(suite)
-    #print(globals())
+
+
+if __name__ == "__main__":
+    unittest.main()

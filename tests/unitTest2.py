@@ -38,6 +38,7 @@ class testLfex1(unittest.TestCase):
         self.assertEqual({'tt','p','U'}, solution)
         first = objects.getFirst()
         sec = objects.getSec()
+        # print("!!!!!!!",objects.getName())
         del first
         del sec
         objects.setFirst(None)
@@ -53,5 +54,5 @@ def test2():
     
     su.addTests(load.loadTestsFromTestCase(testLfex1))
     
-    runn = unittest.TextTestRunner(verbosity=3)
-    result = runn.run(su)
+    runn = unittest.TextTestRunner(verbosity=1)
+    result2 = runn.run(su)

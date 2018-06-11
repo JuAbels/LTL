@@ -20,6 +20,7 @@ from LTL.tests.unitTestDef8ex2 import testgfp
 import gc
 import os
 import shutil
+import subprocess
 
 def tests():
     doctest.testmod()
@@ -27,11 +28,11 @@ def tests():
     doctest.testfile("./tools/ltlToPred.py")
     doctest.testfile("./tools/toPnfObjects.py")
     doctest.testfile("./tools/lf.py")
+    doctest.testfile("./tests/unitTestDef8ex2.py")
 
     test()
-
     test2()
-
+    gc.collect()
     testgfp()
 
 if __name__ == "__main__":
@@ -40,8 +41,18 @@ if __name__ == "__main__":
 
     formulare = translate(inp[0])
 
-    objects = toPnf('& p q')#formulare)  # objects to PNF for LF
+    #objects = toPnf('& p q')#formulare)  # objects to PNF for LF
 
-    linFac = lf(objects)  # Formel to linear Factors
+
+    #print(lin1)
+    #print(lin2)
+    """for x in lin2:
+        for z in x:
+            if type(z) != frozenset:
+                print(z.getName())
+            else:
+                for y in z:
+                    print(y.getName())"""
+    #linFac = lf(objects)  # Formel to linear Factors
     #(derivatives(objects, inp[1])) # inp[1] gives x to the function
     tests()

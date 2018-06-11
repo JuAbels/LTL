@@ -36,7 +36,7 @@ truth = ["tt", 'ff']
 # negation ! ~
 
 
-def lf(formula):  # , lfset=set()):
+def lf(formula, lfset=set()):
     """Get the set of Linear factors.
     Input: object in positive normal form, that points on rest formula
     Output: linear factors according to the input formula.
@@ -53,7 +53,7 @@ def lf(formula):  # , lfset=set()):
     """
     #print("in lf")
     # objects = toPnf(formula)
-    lfset = set()
+    #lfset = set()
     nameObj = formula.getName()
     if nameObj in doubles:
         first = formula.pointFirst
