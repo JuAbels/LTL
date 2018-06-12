@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     formulare = translate(inp[0])
 
-    objects = toPnf('& p2 q1')#formulare)  # objects to PNF for LF
+    objects = toPnf('R q1 p')#formulare)  # objects to PNF for LF
 
 
     #print(lin1)
@@ -54,9 +54,11 @@ if __name__ == "__main__":
             else:
                 for y in z:
                     print(y.getName())"""
-    print("Test")
-    Automaton(objects).setTransition()
+    # print("Test", objects.pointFirst())
+    # Automaton(objects).setTransition()
     Automaton(objects).setStart()
+    Automaton(objects).setStatus()
+    Automaton(objects).setGoals()
     # linFac = lf(objects)  # Formel to linear Factors
     # (derivatives(objects, inp[1])) # inp[1] gives x to the function
     tests()

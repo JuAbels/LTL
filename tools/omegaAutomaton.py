@@ -5,6 +5,8 @@ University of Freiburg - 2018
 
 from LTL.tools.lf import setBasedNorm
 from LTL.tools.derivative import derivatives
+from LTL.tools.iteratedDerivative import itePartialDeriv
+from LTL.tools.toPnfObjects import toObjects
 
 """Class to generate the omega Automaton"""
 
@@ -38,7 +40,34 @@ class Automaton:
         """
         norm = setBasedNorm(self.formula)
         self.start = self.start.union(norm)
-        while self.start:
-            x = self.start.pop()
-            print(x.getName(), x.pointFirst.getName(), x.pointSec.getName())
         return self.start
+
+    def setStatus(self):
+        """
+        Calculate the status of the omega automaton.
+        """
+        status = itePartialDeriv(self.formula)
+        self.state = self.state.union(status)
+        test = self.state  # Testcase
+        while test:
+            x = test.pop()
+            print(x.getName())
+        return self.state
+
+    def setGoals(self):
+        """
+        Calculate goal states of omega automaton.
+        """
+        TT = toObjects("tt")[1]
+        TT.setAtom()
+        self.goal.add(TT)
+        releaseSet = self.state
+        rel = set()
+        while releaseSet:           # Laufzeit ist so scheiße, muss evtl anders
+            x = releaseSet.pop()    # gemacht, wenn relevant
+            # sprint(x.getName())
+            if x.getName() == 'R':
+                rel.add(x)
+        self.goal = self.goal.union(rel)
+        # print(self.goal)
+        return self.goal
