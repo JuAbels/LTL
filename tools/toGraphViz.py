@@ -6,7 +6,7 @@
 from graphviz import Digraph
 
 
-def toGraph(nodes, edges):
+def toGraph():  # nodes, edges):
     """Simplify to render the automat.
 
     Input: list of nodes and edges
@@ -15,7 +15,8 @@ def toGraph(nodes, edges):
     Output: Nothing - prints the graph
 
     """
-    g = Digraph('G', filename='hello.gv')
+    """g = Digraph('G', filename='hello.gv')
     for e in edges:
         g.edge(e[0], e[1])
-    g.view()
+    g.view()"""
+    print("ok")

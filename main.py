@@ -13,6 +13,8 @@ from LTL.tools.getInp import getInp
 from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.omegaAutomaton import Automaton
+from LTL.tools.omegaAutomaton import printAutomaton
+from LTL.tools.omegaAutomaton import setTable
 from LTL.tools.derivative import derivatives
 import doctest
 from LTL.tests.unitTests import test
@@ -23,6 +25,7 @@ import gc
 import os
 import shutil
 import subprocess
+from LTL.tools.toGraphViz import toGraph
 
 
 
@@ -49,12 +52,9 @@ if __name__ == "__main__":
     derivatives(objects, inp[1]) # inp[1] gives x to the function
     testMain()
 
-    # print("Test", objects.pointFirst())
-    # Automaton(objects).setTransition()
-    Automaton(objects).setStart()
-    Automaton(objects).setStatus()
-    Automaton(objects).setGoals()
+    printAutomaton(objects)
+    setTable(objects)
+    toGraph()
     # linFac = lf(objects)  # Formel to linear Factors
     # (derivatives(objects, inp[1])) # inp[1] gives x to the function
     testMain()
-
