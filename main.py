@@ -14,6 +14,7 @@ from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.omegaAutomaton import Automaton
 from LTL.tools.omegaAutomaton import printAutomaton
+from LTL.tools.omegaAutomaton import setTable
 from LTL.tools.derivative import derivatives
 import doctest
 from LTL.tests.unitTests import test
@@ -50,10 +51,8 @@ if __name__ == "__main__":
     derivatives(objects, inp[1]) # inp[1] gives x to the function
     testMain()
 
-    # print("Test", objects.pointFirst())
-    # Automaton(objects).setTransition()
     printAutomaton(objects)
-    Automaton(objects).setStatus()
+    setTable(objects)
     # linFac = lf(objects)  # Formel to linear Factors
     # (derivatives(objects, inp[1])) # inp[1] gives x to the function
     testMain()
