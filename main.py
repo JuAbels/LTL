@@ -33,12 +33,8 @@ if __name__ == "__main__":
 
     formulare = translate(inp[0])
 
-<<<<<<< HEAD
-    objects = toPnf('X p3')#formulare)  # objects to PNF for LF
-=======
     objects = toPnf('& p q')#formulare)  # objects to PNF for LF
     #objects = toPnf('R q1 p')#formulare)  # objects to PNF for LF
->>>>>>> d4d9f909e8661f478d8c09713494588c7b107722
 
 
     #print(lin1)
@@ -61,4 +57,3 @@ if __name__ == "__main__":
     # linFac = lf(objects)  # Formel to linear Factors
     # (derivatives(objects, inp[1])) # inp[1] gives x to the function
     testMain()
-
