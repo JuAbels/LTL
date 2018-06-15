@@ -19,6 +19,7 @@ from LTL.tools.toPnfObjects import lFormula, toObjects, toPnf
 #from LTL.tools.toPnfObjects import toObjects
 from LTL.tools.ltlToPred import translate
 #from LTL.tools.toPnfObjects import toPnf
+import gc
 
 import re
 
@@ -36,7 +37,7 @@ truth = ["tt", 'ff']
 # negation ! ~
 
 
-def lf(formula, lfset=set()):
+def lf(formula):
     """Get the set of Linear factors.
     Input: object in positive normal form, that points on rest formula
     Output: linear factors according to the input formula.
@@ -51,37 +52,43 @@ def lf(formula, lfset=set()):
 
 
     """
+    lfset=set()
+    #print(lfset)
     #print("in lf")
     # objects = toPnf(formula)
     #lfset = set()
     nameObj = formula.getName()
     if nameObj in doubles:
-        first = formula.pointFirst
-        second = formula.pointSec
+        
+        first = formula.getFirst()
+        second = formula.getSec()
+        """print(nameObj)
+        print(first.getName())
+        print(second.getName())"""
         # call for function
         if nameObj == '|':
             firstForm = lf(first)
             secondForm = lf(second)
             lfset = firstForm.union(secondForm)
         elif nameObj == 'U':
-            setUntil = lf(formula.pointSec)
-            secSet = caseUntil(formula.pointFirst, formula.pointSec)
+            setUntil = lf(second)
+            secSet = caseUntil(first, second)
             lfset = lfset.union(setUntil, secSet)
         elif nameObj == 'R':
             # setUntil = lf(formula.pointSec) ?! allready in def release
-            secSet = release(formula.pointFirst, formula.pointSec)
+            secSet = release(first, second)
             lfset = lfset.union(secSet)
         elif nameObj == '&':
-            secSet = caseAnd(formula.pointFirst, formula.pointSec)
+            secSet = caseAnd(first, second)
             lfset = lfset.union(secSet)
         elif nameObj == 'V':
             # firstSet = caseAnd(formula.pointFirst, formula.pointSec)  now in the def release
-            secSet = release(formula.pointFirst, formula.pointSec)
+            secSet = release(first, second)
             firstSet = "NOTRELEVANT"
             lfset.union(firstSet, secSet)
     elif nameObj in singles:
         if nameObj == 'X':
-            tup = caseNext(formula.pointFirst)
+            tup = caseNext(first)
             lfset = lfset.union(tup)
     else:
         # appeal of helpfunction for new definiton
@@ -89,6 +96,9 @@ def lf(formula, lfset=set()):
         lfset = lfset.union(tup)
 
     flatten(lfset)
+
+    #print(">>>>>>")
+    #print(lfset)
     return lfset
 
 
@@ -174,9 +184,10 @@ def setBasedNorm(form):
                 return oneSet
 
 
-def caseUntil(fromCase, untilCase, oneSet=set()):
+def caseUntil(fromCase, untilCase):
     ''' definition for case UNTIL '''
     iterable = lf(fromCase) # maybe allready in lf
+    oneSet=set()
     while iterable:
         tup = iterable.pop()
         first = tup[0]
@@ -191,9 +202,10 @@ def caseUntil(fromCase, untilCase, oneSet=set()):
     return oneSet
 
 
-def release(firstCase, secondCase, oneSet=set()):
+def release(firstCase, secondCase):
     ''' definition for release form '''
     iterable = lf(secondCase)
+    oneSet = set()
     while iterable:
         tup = iterable.pop()
         first = tup[0]
