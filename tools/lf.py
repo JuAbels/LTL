@@ -88,7 +88,7 @@ def lf(formula):
             lfset.union(firstSet, secSet)
     elif nameObj in singles:
         if nameObj == 'X':
-            tup = caseNext(first)
+            tup = caseNext(formula.getFirst())
             lfset = lfset.union(tup)
     else:
         # appeal of helpfunction for new definiton
@@ -123,6 +123,7 @@ def caseLiteral(nameObj, formula):  # , lfs=set()):
 def isTrue(tt):
     ''' def for case True '''
     tt = lFormula('tt')
+    tt.setAtom()
     ttName = tt #.getName()
     return (ttName, ttName)
 
@@ -133,6 +134,7 @@ def literal(objects):
     oneSet.add(objects)
     oneSet = frozenset(oneSet)  # set to frozenset, so that hashable
     tt = lFormula('tt')
+    tt.setAtom()
     ttName = tt#.getName()
     return (oneSet, ttName)
 

@@ -4,8 +4,8 @@ University of Freiburg - 2018
 
 Operators:
 next: 		Xf - ()
-eventually 	Ff - <>
-always 		Gf - []
+eventually 	Ff - <> => tt U f
+always 		Gf - [] => ff R f
 strong until 	f U g
 weak until	f W g
 weak release 	f R g	f V g
@@ -29,16 +29,48 @@ class testDefintion10Ex1(unittest.TestCase):
         self.assertEqual( 1, 1)
     def testEx1(self):
         objects = toPnf('G F p1')
-        print(objects.getName())
+        #print(objects.getName())
         derCaseAnd = derivatives(objects, '{p1}')
         solution = []
-        print(derCaseAnd)
-        #for x in derCaseAnd:
+        # print(derCaseAnd)
+        for x in derCaseAnd:
             #print(x.getName())
-            #solution.append(x.getName())
-        #self.assertEqual(len(solution), 2)
-        #self.assertEqual(solution[1], '&')
-
+            solution.append(x.getName())
+        self.assertEqual(len(solution), 2)
+        #self.assertEqual(solution[1], 'R')
+    def testEx2(self):
+        objects = toPnf('F p1')
+        #print(objects.getName())
+        derCaseAnd = derivatives(objects, '{p1}')
+        solution = []
+        # print(derCaseAnd)
+        for x in derCaseAnd:
+            #print(x.getName())
+            solution.append(x.getName())
+        self.assertEqual(len(solution), 2)
+        #self.assertEqual(solution[1], 'U')
+    def testNotEx1(self):
+        objects = toPnf('G F p1')
+        #print(objects.getName())
+        derCaseAnd = derivatives(objects, '{x}')
+        solution = []
+        # print(derCaseAnd)
+        for x in derCaseAnd:
+            #print(x.getName())
+            solution.append(x.getName())
+        self.assertEqual(len(solution), 1)
+        self.assertEqual(solution[0], '&')
+    def testNotEx2(self):
+        objects = toPnf('F p1')
+        #print(objects.getName())
+        derCaseAnd = derivatives(objects, '{x}')
+        solution = []
+        # print(derCaseAnd)
+        for x in derCaseAnd:
+            #print(x.getName())
+            solution.append(x.getName())
+        self.assertEqual(len(solution), 1)
+        self.assertEqual(solution[0], 'U')
 
 def testEx():
     loader = unittest.TestLoader()
