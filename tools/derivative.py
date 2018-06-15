@@ -44,7 +44,7 @@ def derivatives(formulare, inp1):
         solution = caseFalse(formulare)
     elif(formulare.getName() == "&"):
         #print("case and")
-        solution = caseAnd(formulare, inp1)
+        solution = solution.union(caseAnd(formulare, inp1))
     else:
         solution = caseFormel(formulare, inp1)
     return solution
@@ -66,7 +66,7 @@ def getX(inp1):
     inp1 = inp1.strip().strip("\"")[1:-1].split(",")
     for i in inp1:
         solution.update({i.strip().strip("\"")})
-    #print(solution) 
+    #print(solution)
     return solution # {"p", "p2", "q1", "q2"}
 
 def checkX(my, inp1): # can we propose that x is unsatisifable
@@ -109,15 +109,13 @@ def caseAnd(literal, inp1):
     partMy = caseFormel(literal.getFirst(),inp1)
     partPhi = caseFormel(literal.getSec(),inp1)
     solution= set()
-    #print(partMy, "partmy")
-    #print(partPhi, "partphi")
+    # print(partMy, "partmy")
+    # print(partPhi, "partphi")
     for i in partMy:
         for j in partPhi:
             AND = toObjects("&")[1]
             AND.setFirst(i)
             AND.setSec(j)
             solution.add(AND)
-    #print(solution)
+    # print(solution)
     return solution
-
-
