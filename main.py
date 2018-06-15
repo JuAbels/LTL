@@ -25,6 +25,7 @@ import gc
 import os
 import shutil
 import subprocess
+from LTL.tools.toGraphViz import toGraph
 
 
 
@@ -53,6 +54,7 @@ if __name__ == "__main__":
 
     printAutomaton(objects)
     setTable(objects)
+    toGraph()
     # linFac = lf(objects)  # Formel to linear Factors
     # (derivatives(objects, inp[1])) # inp[1] gives x to the function
     testMain()
