@@ -26,6 +26,7 @@ import os
 import shutil
 import subprocess
 from LTL.tools.toGraphViz import toGraph
+from LTL.tools.toGraphViz import calcEdges
 
 
 
@@ -53,8 +54,12 @@ if __name__ == "__main__":
     testMain()
 
     printAutomaton(objects)
-    setTable(objects)
-    toGraph()
+    matrix = setTable(objects)
+    nodes = matrix[0]
+    liste = calcEdges(matrix)
+    toGraph(nodes, liste)
+    print("test")
+    # toGraph()
     # linFac = lf(objects)  # Formel to linear Factors
     # (derivatives(objects, inp[1])) # inp[1] gives x to the function
     testMain()
