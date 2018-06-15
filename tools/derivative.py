@@ -6,6 +6,7 @@ University of Freiburg - 2018
 from LTL.tools.toPnfObjects import toObjects
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
+from collections import Iterable
 
 """
 zero = {"tt": 0,
@@ -70,7 +71,11 @@ def getX(inp1):
     return solution # {"p", "p2", "q1", "q2"}
 
 def checkX(my, inp1): # can we propose that x is unsatisifable
-    XXX = getX(inp1) # where do we get the x from?
+    if (isinstance(my, Iterable)):
+        for x in my:
+            if x.getName() == inp1:
+                return True
+    XXX = getX(inp1) 
     XXX.add('tt')
     if type(my) == frozenset:
         #print("frozenset")
@@ -78,7 +83,7 @@ def checkX(my, inp1): # can we propose that x is unsatisifable
             if(x.getName().strip("\"") in XXX and x.getNeg() != True):
                 return True
     else: # so we got a object
-        if(my.getName() in XXX and my.getName() != True):
+        if(((my.getName() in XXX) and (my.getName() != True))):
             #print(my.getName())
             return True
     #for x in my:
@@ -89,11 +94,15 @@ def checkX(my, inp1): # can we propose that x is unsatisifable
 def caseFormel(formular, inp1):
     # function for case literal
     lfPhi = lf(formular)
-    for x in lfPhi:
-         pass
+    #for x in lfPhi:
+         #pass
+         #print(x[0].getName())
          #print(x[1].getName())
     solution = set()
     for act in lfPhi:
+        #print("act",act)
+        #print("\n")
+        #print(inp1)
         current= checkX(act[0], inp1)
         #print(current)
         if(current == True):
@@ -109,8 +118,10 @@ def caseAnd(literal, inp1):
     partMy = caseFormel(literal.getFirst(),inp1)
     partPhi = caseFormel(literal.getSec(),inp1)
     solution= set()
-    # print(partMy, "partmy")
-    # print(partPhi, "partphi")
+    #print("")
+    #print(partMy, "partmy")
+    #print("")
+    #print(partPhi, "partphi")
     for i in partMy:
         for j in partPhi:
             AND = toObjects("&")[1]
