@@ -150,7 +150,7 @@ def caseNext(formular):
 def setBasedNorm(form):
     ''' HELPFunction for set-based conjunctive normal form for case Next '''
     oneSet = set()
-    if form.pointFirst is None:  # case for a Literal
+    if form.getName() != '|' or form.getName() != '&':  # case for a Literal
         # oneSet.add(form)
         oneSet.add(form)
         return oneSet

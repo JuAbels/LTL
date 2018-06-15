@@ -71,3 +71,44 @@ class Automaton:
         self.goal = self.goal.union(rel)
         # print(self.goal)
         return self.goal
+
+
+def printAutomaton(objects):
+    """
+    Function for printing all the states of the omega Automaton.
+
+    objects: start of the formulare, hand commit of main funciton.
+    """
+    states = Automaton(objects).setStatus()
+    transition = Automaton(objects).setTransition()
+    start = Automaton(objects).setStart()
+    goals = Automaton(objects).setGoals()
+
+    test = states
+    states = set()
+    while test:
+        element = test.pop()
+        states.add(element.getName())
+
+    test = transition
+    transition = set()
+    while test:
+        element = test.pop()
+        transition.add(element.getName())
+
+    test = start
+    start = set()
+    while test:
+        element = test.pop()
+        start.add(element.getName())
+
+    test = goals
+    goals = set()
+    while test:
+        element = test.pop()
+        goals.add(element.getName())
+
+    print(states)
+    print(transition)
+    print(start)
+    print(goals)
