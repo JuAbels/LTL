@@ -37,7 +37,7 @@ derivat = set()
 def derivatives(formulare, inp1):
     # fuction so that decides which part of the Defintion has to be applied.
     solution= set()
-    X = inp1
+    #X = inp1
     if(formulare.getName() == 'tt'):
         solution = caseTrue(formulare)
     elif(formulare.getName() == 'ff'):
