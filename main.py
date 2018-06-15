@@ -17,23 +17,13 @@ import doctest
 from LTL.tests.unitTests import test
 from LTL.tests.unitTest2 import test2
 from LTL.tests.unitTestDef8ex2 import testgfp
+from LTL.tests.testMain import testMain
 import gc
 import os
 import shutil
 import subprocess
 
-def tests():
-    doctest.testmod()
-    doctest.testfile("./tools/getInp.py")
-    doctest.testfile("./tools/ltlToPred.py")
-    doctest.testfile("./tools/toPnfObjects.py")
-    doctest.testfile("./tools/lf.py")
-    doctest.testfile("./tests/unitTestDef8ex2.py")
 
-    test()
-    test2()
-    gc.collect()
-    testgfp()
 
 if __name__ == "__main__":
 
@@ -41,7 +31,7 @@ if __name__ == "__main__":
 
     formulare = translate(inp[0])
 
-    #objects = toPnf('& p q')#formulare)  # objects to PNF for LF
+    objects = toPnf('& p q')#formulare)  # objects to PNF for LF
 
 
     #print(lin1)
@@ -54,5 +44,5 @@ if __name__ == "__main__":
                 for y in z:
                     print(y.getName())"""
     #linFac = lf(objects)  # Formel to linear Factors
-    #(derivatives(objects, inp[1])) # inp[1] gives x to the function
-    tests()
+    derivatives(objects, inp[1]) # inp[1] gives x to the function
+    testMain()
