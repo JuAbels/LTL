@@ -38,5 +38,6 @@ def test10ex1():
         solution.append(x.getName())
     helper = (len(solution) == 2)
     helper2 = (solution[1] == '&')
-    print(len(helper))
-    print(helper2)
+    if helper == True and helper2 == True:
+        return True
+    

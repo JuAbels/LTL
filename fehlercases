@@ -1,3 +1,3 @@
 fehlercases
-& R p2 X p3 U p1 p3
+& R p2 X p3 U p1 p3   fehler beim builden der pointer und fehler beim konkaten in lf
 R | q1 p2 p3
