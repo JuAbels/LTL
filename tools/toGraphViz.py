@@ -28,8 +28,8 @@ def calcEdges(matrix):
         for j in range(rows):
             tup = []
             if matrix[i + 1][j] == '1':
-                tup.append(matrix[0][i])
-                tup.append(matrix[0][j])
-        if tup != []:
-            edges.append(tup)
+                tup.append(matrix[0][i])  # first place, start of path
+                tup.append(matrix[0][j])  # path goes to
+            if tup != []:  # if there exist a path, append to edges
+                edges.append(tup)
     return edges

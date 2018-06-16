@@ -59,7 +59,7 @@ def lf(formula):
     #lfset = set()
     nameObj = formula.getName()
     if nameObj in doubles:
-        
+
         first = formula.getFirst()
         second = formula.getSec()
         """print(nameObj)
@@ -162,11 +162,7 @@ def caseNext(formular):
 def setBasedNorm(form):
     ''' HELPFunction for set-based conjunctive normal form for case Next '''
     oneSet = set()
-    if form.getName() != '|' or form.getName() != '&':  # case for a Literal
-        # oneSet.add(form)
-        oneSet.add(form)
-        return oneSet
-    else:  # case for formular is an OR and AND
+    if form.getName() == '&' or form.getName() == '|':  # case for formular is an OR and AND
         if form.getName() == '|':  # case for OR
             first = setBasedNorm(form.pointFirst)
             second = setBasedNorm(form.pointSec)
@@ -183,7 +179,10 @@ def setBasedNorm(form):
                     AND.setFirst(element)
                     AND.setSec(i)
                     oneSet.add(AND)
-                return oneSet
+            return oneSet
+    else:  # case for a Literal
+        oneSet.add(form)
+        return oneSet
 
 
 def caseUntil(fromCase, untilCase):
