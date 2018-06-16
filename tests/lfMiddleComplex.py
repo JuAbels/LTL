@@ -33,23 +33,14 @@ class linfacs(unittest.TestCase):
         objects = toPnf('U p1 p2')
         linFac = lf(objects)
         self.assertEqual(len(linFac), 2)
-        helper = flat(linFac)
-        self.assertEqual(len(helper),4)
-        ron = []
-        for x in helper:
-            if(x.getAtom() != True):
-                ron.append(x.getName())
-                ron.append(x.getFirst().getName())
-                ron.append(x.getSec().getName())
-        self.assertEqual(ron, ['U','p1','p2'])
+        print(linFac)
     def testMPart2(self):
         objects = toPnf('U p1 R p2 p3')
         linFac = lf(objects)
         part21 = lf(toPnf('R p2 p3'))
-        print(">>>>>>")
-        for x in part21:
-            print(flat(x))
-        
+        #print(">>>>>>")
+        flatted = flat(part21)
+        #print(flatted)
         
     def testMedium(self):
         objects = toPnf('U p1 & p2 G F p3')
