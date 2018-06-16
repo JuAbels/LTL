@@ -225,6 +225,10 @@ def release(firstCase, secondCase):
 
 def defSix(my, ny):
     #print(my, ny)
+    if type(my) != frozenset:
+        my = {my}
+    if type(ny) != frozenset:
+        ny = {ny}
     total = list(my) + list(ny)
     doubleNeg = False
     for i in total:

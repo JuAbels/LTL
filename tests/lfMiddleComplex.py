@@ -27,26 +27,42 @@ class linfacs(unittest.TestCase):
         pass
     def tearDown(self):
         pass
-    def testDummy(self):
+    """def testDummy(self):
         self.assertEqual( 1, 1)
     def testMPart1(self):
         objects = toPnf('U p1 p2')
         linFac = lf(objects)
         self.assertEqual(len(linFac), 2)
-        print(linFac)
+        print(linFac)"""
     def testMPart2(self):
         objects = toPnf('U p1 R p2 p3')
         linFac = lf(objects)
         part21 = lf(toPnf('R p2 p3'))
-        #print(">>>>>>")
-        flatted = flat(part21)
-        #print(flatted)
-        
+        sollPart21 = set()
+        for x in part21:
+            for y in x:
+               if type(y) == tuple or type(y) == frozenset:
+                   for z in y:
+                       sollPart21.add(z.getName())
+               else:
+                   sollPart21.add(y.getName())
+        self.assertEqual({'p2','p3','tt','p3','R'}, sollPart21)
+        fullterm = set()
+        for x in linFac:
+            for y in x:
+               #print(y)
+               if type(y) == tuple or type(y) == frozenset:
+                   for z in y:
+                       fullterm.add(z.getName())
+               else:
+                   fullterm.add(y.getName())
+        self.assertEqual(fullterm, {'p2','p3','tt','R','p1','U'})
+   
     def testMedium(self):
         objects = toPnf('U p1 & p2 G F p3')
-        #linFac = lf(objects)
-
-
+        print("\n")
+        lines = lf(objects)
+        
 def lfMedium():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
