@@ -5,6 +5,10 @@ def flat(linFac):
             if type(y) == frozenset:
                 for z in y:
                     helper.append(z)
+
+            if type(y) == tuple:
+                for z in y:
+                    helper.append(z)
             else:
                 helper.append(y)
     return helper
