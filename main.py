@@ -15,6 +15,7 @@ from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.omegaAutomaton import Automaton
 from LTL.tools.omegaAutomaton import printAutomaton
 from LTL.tools.omegaAutomaton import setTable
+from LTL.tools.omegaAutomaton import automat
 from LTL.tools.derivative import derivatives
 import doctest
 from LTL.tests.unitTests import test
@@ -54,11 +55,14 @@ if __name__ == "__main__":
     derivatives(objects, inp[1]) # inp[1] gives x to the function
     testMain()
 
-    printAutomaton(objects)
-    matrix = setTable(objects)
+    states, transition, start, goals = automat(objects)
+    matrix = setTable(objects, states)
+    setGoal = goals
+    states, transition, start, goals = printAutomaton(objects, states, transition, start, setGoal)
     nodes = matrix[0]
     liste = calcEdges(matrix)
-    toGraph(nodes, liste)
+    start = Automaton(objects).setStart()
+    toGraph(nodes, liste, goals, start)
     print("test")
     # toGraph()
     # linFac = lf(objects)  # Formel to linear Factors

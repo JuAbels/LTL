@@ -86,13 +86,13 @@ def automat(objects):
     return states, transition, start, goals
 
 
-def printAutomaton(objects):
+def printAutomaton(objects, states, transition, start, goals):
     """
     Function for printing all the states of the omega Automaton.
 
     objects: start of the formulare, hand commit of main funciton.
     """
-    states, transition, start, goals = automat(objects)
+    # states, transition, start, goals = automat(objects)
     test = states
     states = set()
     while test:
@@ -129,8 +129,10 @@ def printAutomaton(objects):
     print("Start:\t \t", start)
     print("F:\t \t", goals)
 
+    return states, transition, start, goals
 
-def setTable(objects):
+
+def setTable(objects, states):
     """
     Function to compute table for graph.
 
@@ -140,7 +142,7 @@ def setTable(objects):
             first position is the status of the second list etc.
     """
     matrix = []  # End Matrix
-    states = Automaton(objects).setStatus()  # calculate states of the automaton
+    # states = Automaton(objects).setStatus()  # calculate states of the automaton
 
     state = calculateList(states)
 

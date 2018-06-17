@@ -6,7 +6,7 @@
 from graphviz import Digraph
 
 
-def toGraph(nodes, edges):
+def toGraph(nodes, edges, goals, start):
     """Simplify to render the automat.
 
     Input: list of nodes and edges
@@ -18,6 +18,19 @@ def toGraph(nodes, edges):
     g = Digraph('G', filename='hello.gv')
     for e in edges:
         g.edge(e[0], e[1])
+        if e[1] in goals:
+            g.node(e[1], shape='doublecircle')
+    for e in start:
+        g.node('start', color='white')
+        if e.Atom is None:
+            # if e.getName() in g.node:
+                # continue
+            if e.pointSec is None:
+                g.edge('start', e.pointFirst.getName())
+            else:
+                g.edge('start', e.pointFirst.getName())
+                g.edge('start', e.pointSec.getName())
+                # g.edge(node, e)
     g.view()
 
 
