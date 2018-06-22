@@ -58,6 +58,7 @@ def lf(formula):
     # objects = toPnf(formula)
     #lfset = set()
     nameObj = formula.getName()
+    #print(nameObj)
     if nameObj in doubles:
         
         first = formula.getFirst()
@@ -71,16 +72,38 @@ def lf(formula):
             secondForm = lf(second)
             lfset = firstForm.union(secondForm)
         elif nameObj == 'U':
+            #print('>>>>>>>>>>>>>>>>>>>>>case U')
+            #print(first.getName())
+            #print(second.getName())
             setUntil = lf(second)
+            #print(setUntil)
             secSet = caseUntil(first, second)
+
             lfset = lfset.union(setUntil, secSet)
+            
         elif nameObj == 'R':
             # setUntil = lf(formula.pointSec) ?! allready in def release
+            """print("in r")
+            print(first.getName())
+            print(second.getName())"""
             secSet = release(first, second)
+            #print(secSet)
+
             lfset = lfset.union(secSet)
+            """for x in lfset:
+                print("-----")
+                #print(x)
+                for y in x:
+                    if type(y) == tuple or type(y) == frozenset:
+                        for z in y:
+                            print(z.getName())
+                else:
+                    print(y.getName())"""
         elif nameObj == '&':
+
             secSet = caseAnd(first, second)
             lfset = lfset.union(secSet)
+            
         elif nameObj == 'V':
             # firstSet = caseAnd(formula.pointFirst, formula.pointSec)  now in the def release
             secSet = release(first, second)
@@ -224,12 +247,23 @@ def release(firstCase, secondCase):
     return oneSet
 
 def defSix(my, ny):
-    #print(my, ny)
-    if type(my) != frozenset:
-        my = {my}
-    if type(ny) != frozenset:
-        ny = {ny}
+    #print(my)
+    #print(ny)
+    #print("----")
+    if type(my) == tuple  or type(ny) == tuple:
+        if type(my) == tuple:
+            my = list(my)
+        if type(ny) == tuple:
+            ny = list(ny)
+    else:
+        if type(my) != frozenset:
+            my = {my}
+        if type(ny) != frozenset:
+            ny = {ny}
+
     total = list(my) + list(ny)
+    #print(total)
+    #print("----")
     doubleNeg = False
     for i in total:
         for j in total:
@@ -240,20 +274,56 @@ def defSix(my, ny):
     elif(doubleNeg == True):
         return lFormula('ff')
     else:
-        return (list(my)[0], list(ny)[0])
+        #print(my, ny)
+        solution = []
+        for x in list(my):
+            solution.append(x)
+        for x in list(ny):
+            solution.append(x)
+        #print(solution)
+        #print(">>>>",list(my), list(ny))
+        return solution #(list(my)[0], list(ny)[0])
 
 
 def caseAnd(first, second):
+    #print("&")
+    #print(first.getName())
+    #print(second.getName())
     myPhi = list(lf(first))
     nyPsi = list(lf(second))
+    """print("-----")
+    print(myPhi)
+    print(nyPsi)
+    print("xxxxx")
+    for x in nyPsi:
+        print(x)
+        for y in x:
+            if type(y) == frozenset:
+                for z in y:
+                    print(z.getName())
+            else:
+                print(y.getName())"""
     ofSet = set()
+    #print(">>>>>>>>>>>>")
     for i in myPhi:
+        #print(i)
         for j in nyPsi:
+            #print(j)
             if (defSix(i[0],j[0]) != 'ff'):
+                #print("enter")
                 lAnd = lFormula("&")
-                lAnd.setFirst(myPhi[0][1])
-                lAnd.setSec(nyPsi[0][1])
-                ofSet.add((defSix(i[0],j[0]), lAnd))
+                lAnd.setFirst(i[1])
+                lAnd.setSec(j[1])
+                ofSet.add((frozenset(defSix(i[0],j[0])), lAnd))
+    #print("######")
+    """print(ofSet)
+    for x in ofSet:
+        for y in x:
+            if type(y) == tuple:
+                for z in y:
+                    print(z.getName())
+            else:
+                print(y.getName())"""
     return ofSet
 
 def concat(inp):

@@ -65,15 +65,17 @@ class testLfdef8(unittest.TestCase):
         objects = toPnf('& p q')
         linFac = lf(objects)
         #print(linFac)
-        check = []
+        check = set()
+        #print(linFac)
         for x in linFac:
             for y in x:
-                if type(y) == tuple:
+                if type(y) == tuple or type(y) == frozenset:
                     for z in y:
-                        check.append(z.getName())
+                        check.add(z.getName())
                 else:
-                    check.append(y.getName())
-        self.assertEqual(['p','q','tt'],check)
+                    check.add(y.getName())
+        #print(check)
+        self.assertEqual({'p','q','tt'},check)
         first = objects.getFirst()
         second = objects.getSec()
         
