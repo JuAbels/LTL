@@ -20,17 +20,32 @@ def toGraph(nodes, edges, goals, start):
         g.edge(e[0], e[1])
         if e[1] in goals:
             g.node(e[1], shape='doublecircle')
+    counter = 0
+    startElements = []
     for e in start:
-        g.node('start', color='white')
         if e.Atom is None:
-            # if e.getName() in g.node:
-                # continue
-            if e.pointSec is None:
-                g.edge('start', e.pointFirst.getName())
+            if e.pointSec is None and e.pointFirst.getName() not in startElements:
+                startElements.append(e.pointFirst.getName())
             else:
-                g.edge('start', e.pointFirst.getName())
-                g.edge('start', e.pointSec.getName())
-                # g.edge(node, e)
+                if e.pointFirst.getName() in startElements:
+                    if e.pointSec.getName() not in startElements:
+                        startElements.append(e.pointSec.getName())
+                    else:
+                        continue
+                elif e.pointSec.getName() in startElements:
+                    if e.pointFirst.getName() not in startElements:
+                        startElements.append(e.pointFirst.getName())
+                    else:
+                        continue
+                else:
+                    startElements.append(e.pointFirst.getName())
+                    startElements.append(e.pointSec.getName())
+    print(startElements)
+    for e in startElements:
+        # g.node('start', color='white')
+        g.node('%d' % (counter), shape='point')
+        g.edge('%d' % (counter), e)
+        counter += 1
     g.view()
 
 
