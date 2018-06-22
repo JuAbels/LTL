@@ -32,7 +32,8 @@ from LTL.tools.toGraphViz import calcEdges
 
 
 if __name__ == "__main__":
-
+    print(len(sys.argv))
+    exit()
     inp = getInp()
 
     formulare = translate(inp[0])
@@ -53,7 +54,7 @@ if __name__ == "__main__":
                     print(y.getName())"""
     #linFac = lf(objects)  # Formel to linear Factors
     derivatives(objects, inp[1]) # inp[1] gives x to the function
-    testMain()
+    #testMain()
 
     states, transition, start, goals = automat(objects)
     matrix = setTable(objects, states)
