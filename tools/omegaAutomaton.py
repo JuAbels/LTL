@@ -14,7 +14,7 @@ import random
 
 """Class to generate the omega Automaton"""
 
-xSet = "{p, p2, q1, q2}"
+xSet = "{p, p2, q1, q2, p3, p4}"
 
 
 class Automaton:
@@ -86,13 +86,13 @@ def automat(objects):
     return states, transition, start, goals
 
 
-def printAutomaton(objects):
+def printAutomaton(objects, states, transition, start, goals):
     """
     Function for printing all the states of the omega Automaton.
 
     objects: start of the formulare, hand commit of main funciton.
     """
-    states, transition, start, goals = automat(objects)
+    # states, transition, start, goals = automat(objects)
     test = states
     states = set()
     while test:
@@ -109,7 +109,14 @@ def printAutomaton(objects):
     start = set()
     while test:
         element = test.pop()
-        start.add(element.getName())
+        if element.pointFirst and element.pointSec:
+            start.add("%s %s %s" % (element.pointFirst.getName(),
+                      element.getName(), element.pointSec.getName()))
+        elif element.pointFirst and element.pointSec is None:
+            start.add("%s %s %s" % (element.getName(),
+                      element.pointFirst.getName()))
+        else:
+            start.add(element.getName())
 
     test = goals
     goals = set()
@@ -122,8 +129,10 @@ def printAutomaton(objects):
     print("Start:\t \t", start)
     print("F:\t \t", goals)
 
+    return states, transition, start, goals
 
-def setTable(objects):
+
+def setTable(objects, states):
     """
     Function to compute table for graph.
 
@@ -133,12 +142,16 @@ def setTable(objects):
             first position is the status of the second list etc.
     """
     matrix = []  # End Matrix
-    states = Automaton(objects).setStatus()  # calculate states of the automaton
-    state = list(states)
+    # states = Automaton(objects).setStatus()  # calculate states of the automaton
+
+    state = calculateList(states)
+
     TT = toObjects("tt")[1]
     TT.setAtom()
     state.append(TT)  # append of case "tt", because need for final state
+
     names = []  # List for order of states, first line matrix later.
+
     for i in state:  # run-through all states and check there is a path to another state
         names.append(i.getName())
         trans = derivatives(i, xSet)  # calculate translation for state
@@ -156,3 +169,21 @@ def setTable(objects):
     matrix = np.array(matrix)
     print(matrix)
     return matrix
+
+
+def calculateList(states):
+    """ Helpfunction
+    Change Set to List.
+
+    states: set of states
+    returns: list with no doubeled elements.
+    """
+    solList = []
+    testList = []
+    while states:
+        element = states.pop()
+        testCase = element.getName()
+        if testCase not in testList:
+            solList.append(element)
+            testList.append(testCase)
+    return solList
