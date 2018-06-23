@@ -330,17 +330,19 @@ def concat(inp):
     if(type(inp) == tuple):
         return
     if(inp.getName()=='&'):
-        if(inp.getFirst().getName()) == 'tt':
+        if(inp.getFirst().getName() == 'tt' and inp.getSec() != None):
             inp.setName(inp.getSec().getName())
             inp.setFirst(inp.getSec().getFirst())
             inp.setSec(inp.getSec().getSec())
         if(inp.getSec() == None):
             return
-        if(inp.getSec().getName() == 'tt'): # this part may be wrong but not likely
+        if(inp.getSec().getName() == 'tt' and inp.getFirst()!= None): # this part may be wrong but not likely
             inp.setName(inp.getFirst().getName())
-            inp.setFirst(inp.getFirst().getFirst())
-
-            inp.setSec(inp.getFirst().getSec())
+            if(inp.getName() in doubles or inp.getName() in singles):
+                inp.setFirst(inp.getFirst().getFirst())
+                inp.setSec(inp.getFirst().getSec())
+            else:
+                inp.setAtom()
 
 def flatten(linFacs):
     for x in linFacs:

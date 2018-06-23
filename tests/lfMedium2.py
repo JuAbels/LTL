@@ -31,7 +31,7 @@ class linfacs(unittest.TestCase):
     def testDummy(self):
         self.assertEqual( 1, 1)
     # & R p2 X p3 U p1 p3 
-    def tesNext(self):
+    def testNext(self):
         objects = toPnf('U p1 p3')
         linFac = lf(objects)
         #print(linFac)
@@ -68,27 +68,29 @@ class linfacs(unittest.TestCase):
         # {({p2,tt},& tt p3) ,(tt, & R p2 X p3 p3)}
         self.assertEqual(helper, {'p2','&','tt','p3'})
         objects = toPnf('& R p2 X p3 U p1 p3')
-        #print("====>",objects.getName())
-        #print("====>",objects.getFirst().getName())
-        #print("====>",objects.getFirst().getFirst().getName())
-        #print("====>",objects.getFirst().getSec().getName())
-        #print("====>",objects.getSec().getName())
-        #print("====>",objects.getSec().getFirst().getName())
-        #print("====>",objects.getSec().getSec().getName())
+        """print("====>",objects.getName())
+        print("====>",objects.getFirst().getName())
+        print("====>",objects.getFirst().getFirst().getName())
+        print("====>",objects.getFirst().getSec().getName())
+        print("====>",objects.getSec().getName())
+        print("====>",objects.getSec().getFirst().getName())
+        print("====>",objects.getSec().getSec().getName())"""
         linFac = lf(objects)
-        total = set()
+        #total = set()
         self.assertEqual(len(linFac),4)
-        """for x in linFac:
-            print("------")
-            print(x)
-            helper = set()
+        between = set()
+        for x in linFac:
+            #between = set()
+            #print(x)
+            #helper = set()
             for y in x:
                 if type(y) == frozenset:
                     for z in y:
-                        print(z.getName())
+                        between.add(z.getName())
                 else:
-                    print(y.getName())
-            #print(helper)"""
+                    between.add(y.getName())
+            #total.update(between)
+        self.assertEqual({'&','p3','p1','p2','tt'}, between)    
         
 def lfMedium2():
     #print("=======> jub")
