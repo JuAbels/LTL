@@ -16,3 +16,7 @@ from LTL.tests.unitTestDef8ex2 import testgfp
 from LTL.tests.testDef10 import test10
 from LTL.tests.testDef10Ex import testEx
 from LTL.tests.testDef10ExDoc import test10ex1
+
+
+def demo1():
+    pass

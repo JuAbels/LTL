@@ -285,6 +285,7 @@ def defSix(my, ny):
 
 
 def caseAnd(first, second):
+    #print("---")
     #print("&")
     #print(first.getName())
     #print(second.getName())

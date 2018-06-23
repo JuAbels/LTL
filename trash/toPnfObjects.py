@@ -56,38 +56,6 @@ class lFormula:
     def __del__(self):
         pass
 
-#def setPointer(obj, lObjects):
-#    print(obj)
-#    print(len(lObjects))
-
-
-
-def pointers(obj, lObjects):
-    #print(obj.getName(), obj.getAtom())
-    if (obj.getName() in single and obj.getName() not in duo):
-        obj.setFirst(lObjects[0])
-        lObjects = lObjects[1:]
-        if (obj.getFirst().getAtom != True):
-            pointers(obj.getFirst(), lObjects) 
-# lObjects is not returned and saved short. so diffuse values come in
-    elif (obj.getName() not in single and obj.getName() in duo):
-        obj.setFirst(lObjects[0])
-        if len(lObjects )> 0:
-            lObjects = lObjects[1:]
-        if (obj.getFirst().getAtom != True):
-            lObjects = pointers(obj.getFirst(), lObjects)[0]
-        # print(">>", lObjects[0].getName())
-        if len(lObjects) > 0:
-            obj.setSec(lObjects[0])
-        if (obj.getSec().getAtom != True):
-            lObjects = pointers(obj.getSec(), lObjects)[0]
-        lObjects = lObjects[1:]
-        #if (obj.getSec().getAtom != True):
-        #    pointers(obj.getFirst(), lObjects)
-
-
-    return lObjects, obj
-
 
 def toObjects(inPut):
     """Iterate over the string and make them to objects.
@@ -125,48 +93,54 @@ def toObjects(inPut):
 
 
     """
+    print(inPut)
     # not ordered parts could still be problematic
     inp = inPut.split()
+    print(inp)
     listedFormula = deepcopy(inp)
     lObjects = []
     """make the objects. stil empty and no pointer"""
-    # set items or set pointer
-    
-    #print(inPut)
-    #print(inp)
-    for x in inp:
-        lObjects.append(lFormula(x))
+    while len(inp) != 0:
+        first = inp.pop()
+        #print(first)
+        lObjects.append(lFormula(first))
+    print(lObjects)
+    listedFormula.reverse()
+    inp = listedFormula
+    """going over to objects manipulating them."""
+    first = False
     for x in lObjects:
-        if(x.getName() not in single and x.getName() not in duo):
-            x.setAtom()
-    deepLObjects = deepcopy(lObjects)
-    stuff = pointers(lObjects[0], lObjects[1:])
-    lObjects = stuff[0]
-    #print(lObjects)
+        print(x.getName())
+    for i in range(len(lObjects)):
+        if not (lObjects[i].getName() in duo or lObjects[i].getName() in single):
+            """setting the Atom attribute. so no pointer goes out"""
+            lObjects[i].setAtom()
+            # sec = first
+            first = lObjects[i - 1]
+        else:
+            """if object is no item them set pointer."""
+            if(lObjects[i].getName() in single):
+                lObjects[i].setFirst(lObjects[i-1])
+                first = lObjects[i]
+            if(lObjects[i].getName() in duo):
+                lObjects[i].setFirst(lObjects[i-1])
+                lObjects[i].setSec(first)
+                first = lObjects[i]
+    return lObjects, first
 
-    """print("-----")
-    print(stuff[1].getName())
-    print(stuff[1].getFirst().getName())
-    print(stuff[1].getFirst().getFirst().getName())
-    print(stuff[1].getFirst().getSec().getName())
-    print(stuff[1].getSec().getName())
-    print(stuff[1].getSec().getFirst().getName())
-    print(stuff[1].getSec().getSec().getName())"""
-    #print(deepLObjects, stuff[1])
-    return deepLObjects, stuff[1] #lObjects, lObjects[0] # first
 
 def redEM(lObjects, ele):
     """Eleminate "!" which are still objects. put them als negation
     to the following object"""
     if (ele.getFirst() is not None):
         if (ele.getFirst().getName() == "!"):
-            #lObjects.remove(ele.getFirst())
+            lObjects.remove(ele.getFirst())
             ele.setFirst(ele.getFirst().getFirst())
             ele.getFirst().setNeg()
         lObjects = redEM(lObjects, ele.getFirst())
     if (ele.getSec() is not None):
         if (ele.getSec().getName() == "!"):
-            #lObjects.remove(ele.getSec())
+            lObjects.remove(ele.getSec())
             ele.setSec(ele.getSec().getFirst())
             ele.getSec().setNeg()
         lObjects = redEM(lObjects, ele.getSec())
@@ -205,7 +179,7 @@ def dealEM(lObjects, first):
 
     """
     if (first.getName() == "!"):
-        #lObjects.remove(first)
+        lObjects.remove(first)
         first = first.getFirst()
         first.setNeg()
     lObjects = redEM(lObjects, first)
@@ -347,7 +321,7 @@ def toPnf(inPut):
     False
 
     """
-    #print(inPut)
+    print(inPut)
     lObjects, first = toObjects(inPut)
     #print(first.getName())
     #print(first.getFirst().getName())
@@ -358,19 +332,3 @@ def toPnf(inPut):
     pushIn(first)
 
     return first
-
-
-if __name__ == "__main__":
-    """solver = toPnf('& R p2 X p3 U p1 p3') #     toPnf('& R p2 X p3 U p1 p3')
-    print(solver.getName())
-    print(solver.getFirst().getName())
-    print(solver.getFirst().getFirst().getName())
-    print(solver.getFirst().getSec().getName())
-    print(solver.getFirst().getSec().getFirst().getName())
-    print(solver.getSec().getName())
-    print(solver.getSec().getFirst().getName())
-    print(solver.getSec().getSec().getName())"""
-    #first = toPnf('! & p ! q')
-    #print(first.getName())
-    #import doctest
-    #doctest.testmod()

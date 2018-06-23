@@ -39,6 +39,7 @@ def getInp(inp = sys.argv[1]):
     
     """
     #print(os.path.dirname(inp))
+    #print(inp)
     inp = "LTL/"+inp
     try:
         if(len(sys.argv) == 2):

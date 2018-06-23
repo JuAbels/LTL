@@ -23,17 +23,18 @@ from LTL.tools.flat import flat
 from LTL.tools.flat import toWords
 
 class linfacs(unittest.TestCase):
+    #print("!!!!!!!!!!!!!!!!!!!!!!!")
     def setUp(self):
         pass
     def tearDown(self):
         pass
-    """def testDummy(self):
+    def testDummy(self):
         self.assertEqual( 1, 1)
     def testMPart1(self):
         objects = toPnf('U p1 p2')
         linFac = lf(objects)
         self.assertEqual(len(linFac), 2)
-        print(linFac)"""
+        #print(linFac)
     def testMPart2(self):
         objects = toPnf('U p1 R p2 p3')
         linFac = lf(objects)
