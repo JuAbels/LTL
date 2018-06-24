@@ -11,6 +11,8 @@ single = "XFG!"
 duo = "UWRMV&|"
 
 """Class to init objects which are part of the L-Formula"""
+
+
 class lFormula:
 
     def __init__(self, name):
@@ -56,35 +58,25 @@ class lFormula:
     def __del__(self):
         pass
 
-#def setPointer(obj, lObjects):
-#    print(obj)
-#    print(len(lObjects))
-
-
 
 def pointers(obj, lObjects):
-    #print(obj.getName(), obj.getAtom())
     if (obj.getName() in single and obj.getName() not in duo):
         obj.setFirst(lObjects[0])
         lObjects = lObjects[1:]
-        if (obj.getFirst().getAtom != True):
-            pointers(obj.getFirst(), lObjects) 
+        if (obj.getFirst().getAtom is not True):
+            pointers(obj.getFirst(), lObjects)
 # lObjects is not returned and saved short. so diffuse values come in
-    elif (obj.getName() not in single and obj.getName() in duo):
+    elif (obj.getName() not in single and obj.getName() in duo and len(lObjects) != 0):
         obj.setFirst(lObjects[0])
-        if len(lObjects )> 0:
+        if len(lObjects) > 0:
             lObjects = lObjects[1:]
-        if (obj.getFirst().getAtom != True):
+        if (obj.getFirst().getAtom is not True):
             lObjects = pointers(obj.getFirst(), lObjects)[0]
-        # print(">>", lObjects[0].getName())
         if len(lObjects) > 0:
             obj.setSec(lObjects[0])
-        if (obj.getSec().getAtom != True):
+        if (obj.getSec().getAtom is not True):
             lObjects = pointers(obj.getSec(), lObjects)[0]
         lObjects = lObjects[1:]
-        #if (obj.getSec().getAtom != True):
-        #    pointers(obj.getFirst(), lObjects)
-
 
     return lObjects, obj
 
@@ -125,15 +117,9 @@ def toObjects(inPut):
 
 
     """
-    # not ordered parts could still be problematic
     inp = inPut.split()
-    listedFormula = deepcopy(inp)
     lObjects = []
     """make the objects. stil empty and no pointer"""
-    # set items or set pointer
-    
-    #print(inPut)
-    #print(inp)
     for x in inp:
         lObjects.append(lFormula(x))
     for x in lObjects:
@@ -142,31 +128,19 @@ def toObjects(inPut):
     deepLObjects = deepcopy(lObjects)
     stuff = pointers(lObjects[0], lObjects[1:])
     lObjects = stuff[0]
-    #print(lObjects)
+    return deepLObjects, stuff[1]
 
-    """print("-----")
-    print(stuff[1].getName())
-    print(stuff[1].getFirst().getName())
-    print(stuff[1].getFirst().getFirst().getName())
-    print(stuff[1].getFirst().getSec().getName())
-    print(stuff[1].getSec().getName())
-    print(stuff[1].getSec().getFirst().getName())
-    print(stuff[1].getSec().getSec().getName())"""
-    #print(deepLObjects, stuff[1])
-    return deepLObjects, stuff[1] #lObjects, lObjects[0] # first
 
 def redEM(lObjects, ele):
     """Eleminate "!" which are still objects. put them als negation
     to the following object"""
     if (ele.getFirst() is not None):
         if (ele.getFirst().getName() == "!"):
-            #lObjects.remove(ele.getFirst())
             ele.setFirst(ele.getFirst().getFirst())
             ele.getFirst().setNeg()
         lObjects = redEM(lObjects, ele.getFirst())
     if (ele.getSec() is not None):
         if (ele.getSec().getName() == "!"):
-            #lObjects.remove(ele.getSec())
             ele.setSec(ele.getSec().getFirst())
             ele.getSec().setNeg()
         lObjects = redEM(lObjects, ele.getSec())
@@ -205,7 +179,6 @@ def dealEM(lObjects, first):
 
     """
     if (first.getName() == "!"):
-        #lObjects.remove(first)
         first = first.getFirst()
         first.setNeg()
     lObjects = redEM(lObjects, first)
@@ -216,7 +189,7 @@ def dealXFG(ele):
     """before we can push in to the atoms. which is required for
     the pnf we need to transform not defined operators - XFG.
 
-    Input: An Element that has to be checked. 
+    Input: An Element that has to be checked.
     Output: Nothing. transforms problematic Notation.
             Objects stay the same, but with different attributes.
 
@@ -247,7 +220,6 @@ def dealXFG(ele):
 
 
     """
-    # next: 		Xf - () - still to do - not in paper
     if(ele.getName() == "F"):
         ele.setName("U")
         ele.setSec(ele.getFirst())
@@ -272,9 +244,9 @@ def debugPrint(ele):
     print(ele.getName())
     print(ele.getNeg())
     if(ele.getFirst() is not None):
-         print(ele.getFirst().getName())
+        print(ele.getFirst().getName())
     if(ele.getSec() is not None):
-         print(ele.getSec().getName())
+        print(ele.getSec().getName())
     if(ele.getFirst() is not None):
         debugPrint(ele.getFirst())
     if(ele.getSec() is not None):
@@ -305,7 +277,6 @@ def pushIn(ele):
 
     """
 
-
     if (ele.getNeg() is True):
         if(ele.getName() == "U"):
             ele.setName("R")
@@ -330,7 +301,7 @@ def pushIn(ele):
 
 def toPnf(inPut):
     """Head-function to get formula in positive normal form
-    Input: ltl formula in polish notation. 
+    Input: ltl formula in polish notation.
     Output: object that points on rest-formula. negation only on atoms
 
     >>> from LTL.tools.toPnfObjects import toPnf
@@ -347,30 +318,8 @@ def toPnf(inPut):
     False
 
     """
-    #print(inPut)
     lObjects, first = toObjects(inPut)
-    #print(first.getName())
-    #print(first.getFirst().getName())
-    #print(first.getSec().getName())
     dealXFG(first)
     lObjects, first = dealEM(lObjects, first)
-
     pushIn(first)
-
     return first
-
-
-if __name__ == "__main__":
-    """solver = toPnf('& R p2 X p3 U p1 p3') #     toPnf('& R p2 X p3 U p1 p3')
-    print(solver.getName())
-    print(solver.getFirst().getName())
-    print(solver.getFirst().getFirst().getName())
-    print(solver.getFirst().getSec().getName())
-    print(solver.getFirst().getSec().getFirst().getName())
-    print(solver.getSec().getName())
-    print(solver.getSec().getFirst().getName())
-    print(solver.getSec().getSec().getName())"""
-    #first = toPnf('! & p ! q')
-    #print(first.getName())
-    #import doctest
-    #doctest.testmod()

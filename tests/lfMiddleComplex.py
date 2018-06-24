@@ -60,9 +60,21 @@ class linfacs(unittest.TestCase):
         self.assertEqual(fullterm, {'p2','p3','tt','R','p1','U'})
    
     def testMedium(self):
-        objects = toPnf('U p1 & p2 G F p3')
-        print("\n")
+        # 'U p1 & p2 G F p3'
+        objects = toPnf('F p3')
+        print("================>")
+        #print(objects.getName())
         lines = lf(objects)
+        #print("----")
+        solution = set()
+        for x in lines:
+           for y in x:
+               if type(y) == frozenset:
+                   for z in y:
+                       solution.add(z.getName())
+               else:
+                   solution.add(y.getName())
+        self.assertEqual(solution, {'p3','tt','U'})
         
 def lfMedium():
     loader = unittest.TestLoader()

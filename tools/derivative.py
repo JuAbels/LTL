@@ -4,47 +4,18 @@ University of Freiburg - 2018
 
 """
 from LTL.tools.toPnfObjects import toObjects
-from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
 from collections import Iterable
-
-"""
-zero = {"tt": 0,
-        "ff": 1}
-
-
-one = {"F": 0,
-       "G": 1,
-       "X": 2}
-
-
-two = {"&": 0,
-       "|": 1,
-       "U": 2,
-       "R": 3}
-
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <>
-always 		Gf - []
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-derivat = set()
-"""
 
 
 def derivatives(formulare, inp1):
     # fuction so that decides which part of the Defintion has to be applied.
-    solution= set()
-    #X = inp1
+    solution = set()
     if(formulare.getName() == 'tt'):
         solution = caseTrue(formulare)
     elif(formulare.getName() == 'ff'):
         solution = caseFalse(formulare)
     elif(formulare.getName() == "&"):
-        #print("case and")
         solution = solution.union(caseAnd(formulare, inp1))
     else:
         solution = caseFormel(formulare, inp1)
@@ -62,52 +33,40 @@ def caseFalse(literal):
     # give back the whole object. knows if Neg. is flipped or not
     return frozenset({literal})
 
+
 def getX(inp1):
     solution = set()
     inp1 = inp1.strip().strip("\"")[1:-1].split(",")
     for i in inp1:
         solution.update({i.strip().strip("\"")})
-    #print(solution)
-    return solution # {"p", "p2", "q1", "q2"}
+    return solution
 
-def checkX(my, inp1): # can we propose that x is unsatisifable
+
+def checkX(my, inp1):  # can we propose that x is unsatisifable
     if (isinstance(my, Iterable)):
         for x in my:
             if x.getName() == inp1:
                 return True
-    XXX = getX(inp1) 
+    XXX = getX(inp1)
     XXX.add('tt')
     if type(my) == frozenset:
-        #print("frozenset")
         for x in my:
-            if(x.getName().strip("\"") in XXX and x.getNeg() != True):
+            if(x.getName().strip("\"") in XXX and x.getNeg() is not True):
                 return True
-    else: # so we got a object
-        if(((my.getName() in XXX) and (my.getName() != True))):
-            #print(my.getName())
+    else:  # so we got a object
+        if(((my.getName() in XXX) and (my.getName() is not True))):
             return True
-    #for x in my:
-    #    print(x.getName())
     return False
 
 
 def caseFormel(formular, inp1):
     # function for case literal
     lfPhi = lf(formular)
-    #for x in lfPhi:
-         #pass
-         #print(x[0].getName())
-         #print(x[1].getName())
     solution = set()
     for act in lfPhi:
-        #print("act",act)
-        #print("\n")
-        #print(inp1)
-        current= checkX(act[0], inp1)
-        #print(current)
-        if(current == True):
+        current = checkX(act[0], inp1)
+        if(current is True):
             solution.add(act[1])
-    #print(solution)
     return solution
 
 
@@ -115,18 +74,13 @@ def caseAnd(literal, inp1):
     # function for and operation of two formualas
     # Input has to be an & with the pointers to the interessting subformulas
 
-    partMy = caseFormel(literal.getFirst(),inp1)
-    partPhi = caseFormel(literal.getSec(),inp1)
-    solution= set()
-    #print("")
-    #print(partMy, "partmy")
-    #print("")
-    #print(partPhi, "partphi")
+    partMy = caseFormel(literal.getFirst(), inp1)
+    partPhi = caseFormel(literal.getSec(), inp1)
+    solution = set()
     for i in partMy:
         for j in partPhi:
             AND = toObjects("&")[1]
             AND.setFirst(i)
             AND.setSec(j)
             solution.add(AND)
-    # print(solution)
     return solution

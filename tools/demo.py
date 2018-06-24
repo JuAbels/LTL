@@ -19,4 +19,5 @@ from LTL.tests.testDef10ExDoc import test10ex1
 
 
 def demo1():
-    pass
+    print("insert demo here")
+    

@@ -68,13 +68,7 @@ class linfacs(unittest.TestCase):
         # {({p2,tt},& tt p3) ,(tt, & R p2 X p3 p3)}
         self.assertEqual(helper, {'p2','&','tt','p3'})
         objects = toPnf('& R p2 X p3 U p1 p3')
-        """print("====>",objects.getName())
-        print("====>",objects.getFirst().getName())
-        print("====>",objects.getFirst().getFirst().getName())
-        print("====>",objects.getFirst().getSec().getName())
-        print("====>",objects.getSec().getName())
-        print("====>",objects.getSec().getFirst().getName())
-        print("====>",objects.getSec().getSec().getName())"""
+
         linFac = lf(objects)
         #total = set()
         self.assertEqual(len(linFac),4)
