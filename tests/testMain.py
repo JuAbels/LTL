@@ -19,11 +19,12 @@ from LTL.tests.testDef10ExDoc import test10ex1
 from LTL.tests.lfMiddleComplex import lfMedium
 from LTL.tests.lfMedium2 import lfMedium2
 from LTL.tests.structureTest import structure
+from LTL.tests.pdMedium1 import pdMedium
 
 
 
 def testMain():
-    #print("stupid shit")
+    """#print("stupid shit")
     doctest.testmod()
     # testing the strucutre
     doctest.testfile("../tools/getInp.py")
@@ -43,6 +44,8 @@ def testMain():
     # testing partial derivatives
     test10()
     testEx()
-    test10ex1()
+    test10ex1()"""
+    pdMedium()
+    
     
 
