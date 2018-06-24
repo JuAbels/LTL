@@ -80,7 +80,7 @@ def getInp():
 
 
             elif(sys.argv[2] == "-demo"):
-                demo1()
+                return 'demo', 'demo'
                 
         else:
             exit()
