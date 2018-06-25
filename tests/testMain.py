@@ -17,15 +17,20 @@ from LTL.tests.testDef10 import test10
 from LTL.tests.testDef10Ex import testEx
 from LTL.tests.testDef10ExDoc import test10ex1
 from LTL.tests.lfMiddleComplex import lfMedium
+from LTL.tests.lfMedium2 import lfMedium2
+from LTL.tests.structureTest import structure
+from LTL.tests.pdMedium1 import pdMedium
 
 
 
 def testMain():
+    """#print("stupid shit")
     doctest.testmod()
     # testing the strucutre
     doctest.testfile("../tools/getInp.py")
     doctest.testfile("../tools/ltlToPred.py")
     doctest.testfile("../tools/toPnfObjects.py")
+    structure()
     # testing linear factors
     doctest.testfile("../tools/lf.py")
     doctest.testfile("../tests/unitTestDef8ex2.py")
@@ -34,9 +39,13 @@ def testMain():
     test2()
     testgfp()
     lfMedium()
+    lfMedium2()
+    
     # testing partial derivatives
     test10()
     testEx()
-    test10ex1()
-
+    test10ex1()"""
+    pdMedium()
+    
+    
 
