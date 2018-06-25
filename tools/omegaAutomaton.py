@@ -11,7 +11,7 @@ import numpy as np
 
 """Class to generate the omega Automaton"""
 
-xSet = "{p, p2, q1, q2, p3, p4}"
+xSet = "{p1, p2, q1, q2, p3, p4}"
 
 
 class Automaton:
@@ -53,14 +53,14 @@ class Automaton:
         self.state = self.state.union(status)
         return self.state
 
-    def setGoals(self):
+    def setGoals(self, formula):
         """
         Calculate goal states of omega automaton.
         """
         TT = toObjects("tt")[1]
         TT.setAtom()
         self.goal.add(TT)
-        releaseSet = self.state
+        releaseSet = Automaton(formula).setStatus()
         rel = set()
         while releaseSet:           # Laufzeit ist so scheiße, muss evtl anders
             x = releaseSet.pop()    # gemacht, wenn relevant
@@ -79,7 +79,7 @@ def automat(objects):
     states = Automaton(objects).setStatus()
     transition = Automaton(objects).setTransition(states)
     start = Automaton(objects).setStart()
-    goals = Automaton(objects).setGoals()
+    goals = Automaton(objects).setGoals(objects)
     return states, transition, start, goals
 
 
@@ -129,7 +129,7 @@ def printAutomaton(objects, states, transition, start, goals):
     return states, transition, start, goals
 
 
-def setTable(objects, states):
+def setTable(states):
     """
     Function to compute table for graph.
 
@@ -138,37 +138,16 @@ def setTable(objects, states):
             Futhermore, the first line has the order of the statuses. Thereby
             first position is the status of the second list etc.
     """
-    matrix = []  # End Matrix
-    # states = Automaton(objects).setStatus()
-    # calculate states of the automaton
-
+    dictionary = {}  # End Matrix
     state = calculateList(states)
-
-    TT = toObjects("tt")[1]
-    TT.setAtom()
-    state.append(TT)  # append of case "tt", because need for final state
-
-    names = []  # List for order of states, first line matrix later.
-
-    # run-through all states and check there is a path to another state
     for i in state:
-        names.append(i.getName())
+        # dictionary[i.getName()] = []
         trans = derivatives(i, xSet)  # calculate translation for state
         # change to list -> easier to iterate
+        # TODO: ich brauch die ganze Formel
         trans = [i.getName() for i in trans]
-        tup = []  # list for 1 and 0's.
-        for j in state:
-            j = j.getName()
-            if j in trans:  # check if state in transition, then append 1
-                tup.append(1)
-            else:
-                tup.append(0)  # otherwise 0
-        matrix.append(tup)
-    matrix.insert(0, names)
-    matrix.pop()  # last line not relevant, because "tt" is not relevant
-    matrix = np.array(matrix)
-    print(matrix)
-    return matrix
+        dictionary[i.getName()] = trans
+    return dictionary
 
 
 def calculateList(states):

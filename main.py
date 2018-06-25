@@ -28,6 +28,7 @@ from LTL.tests.testMain import testMain
 # import subprocess
 from LTL.tools.toGraphViz import toGraph
 from LTL.tools.toGraphViz import calcEdges
+from copy import deepcopy
 
 
 if __name__ == "__main__":
@@ -39,6 +40,7 @@ if __name__ == "__main__":
 
     objects = toPnf('& p2 | p3 U p4 p2')  # formulare)  # objects to PNF for LF
     # objectss = toPnf('& R p2 X p3 U p1 p3')
+    objects = toPnf('& p1 | p3 U X p4 R p2 p3')
     # objects = toPnf('R q1 p')#formulare)  # objects to PNF for LF
 
     # print(lin1)
@@ -55,15 +57,15 @@ if __name__ == "__main__":
     # testMain()
 
     states, transition, start, goals = automat(objects)
-    matrix = setTable(objects, states)
-    setGoal = goals
-    states, transition, start, goals = printAutomaton(objects, states,
+    setGoals = deepcopy(goals)
+    statesTable = deepcopy(states)
+    setStart = deepcopy(start)
+    dictionary = setTable(states)
+    states, transition, start, goals = printAutomaton(objects, statesTable,
                                                       transition, start,
-                                                      setGoal)
-    nodes = matrix[0]
-    liste = calcEdges(matrix)
-    start = Automaton(objects).setStart()
-    toGraph(nodes, liste, goals, start)
+                                                      goals)
+    liste = calcEdges(dictionary)
+    toGraph(liste, goals, setStart, states)
     print("test")
     # toGraph()
     # linFac = lf(objects)  # Formel to linear Factors
