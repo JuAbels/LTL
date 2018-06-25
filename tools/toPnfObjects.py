@@ -66,7 +66,8 @@ def pointers(obj, lObjects):
         if (obj.getFirst().getAtom is not True):
             pointers(obj.getFirst(), lObjects)
 # lObjects is not returned and saved short. so diffuse values come in
-    elif (obj.getName() not in single and obj.getName() in duo and len(lObjects) != 0):
+    elif (obj.getName() not in single and obj.getName() in duo and
+          len(lObjects) != 0):
         obj.setFirst(lObjects[0])
         if len(lObjects) > 0:
             lObjects = lObjects[1:]

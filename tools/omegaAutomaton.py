@@ -8,9 +8,6 @@ from LTL.tools.derivative import derivatives
 from LTL.tools.iteratedDerivative import itePartialDeriv
 from LTL.tools.toPnfObjects import toObjects
 import numpy as np
-import sys
-import os
-import random
 
 """Class to generate the omega Automaton"""
 
@@ -142,7 +139,8 @@ def setTable(objects, states):
             first position is the status of the second list etc.
     """
     matrix = []  # End Matrix
-    # states = Automaton(objects).setStatus()  # calculate states of the automaton
+    # states = Automaton(objects).setStatus()
+    # calculate states of the automaton
 
     state = calculateList(states)
 
@@ -152,10 +150,12 @@ def setTable(objects, states):
 
     names = []  # List for order of states, first line matrix later.
 
-    for i in state:  # run-through all states and check there is a path to another state
+    # run-through all states and check there is a path to another state
+    for i in state:
         names.append(i.getName())
         trans = derivatives(i, xSet)  # calculate translation for state
-        trans = [i.getName() for i in trans]  # change to list -> easier to iterate
+        # change to list -> easier to iterate
+        trans = [i.getName() for i in trans]
         tup = []  # list for 1 and 0's.
         for j in state:
             j = j.getName()

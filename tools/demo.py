@@ -3,28 +3,27 @@ Authors: Stefan Strang
 University of Freiburg - 2018
 
 """
-
+# import doctest
+# from LTL.tests.unitTests import test
+# from LTL.tests.unitTest2 import test2
+# from LTL.tests.unitTestDef8ex2 import testgfp
+# from LTL.tests.testDef10 import test10
+# from LTL.tests.testDef10Ex import testEx
+# from LTL.tests.testDef10ExDoc import test10ex1
+from LTL.tools.toPnfObjects import toPnf
+from LTL.tools.lf import lf
+from LTL.tools.derivative import derivatives
+# from LTL.tools.omegaAutomaton import Automaton
+# from LTL.tools.omegaAutomaton import printAutomaton
+# from LTL.tools.omegaAutomaton import setTable
+# from LTL.tools.omegaAutomaton import automat
+# from LTL.tools.ltlToPred import translate
+import os
 """from LTL.tools.ltlToPred import translate
 from LTL.tools.getInp import getInp
 from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.derivative import derivatives"""
-import doctest
-from LTL.tests.unitTests import test
-from LTL.tests.unitTest2 import test2
-from LTL.tests.unitTestDef8ex2 import testgfp
-from LTL.tests.testDef10 import test10
-from LTL.tests.testDef10Ex import testEx
-from LTL.tests.testDef10ExDoc import test10ex1
-from LTL.tools.toPnfObjects import toPnf
-from LTL.tools.lf import lf
-from LTL.tools.derivative import derivatives
-from LTL.tools.omegaAutomaton import Automaton
-from LTL.tools.omegaAutomaton import printAutomaton
-from LTL.tools.omegaAutomaton import setTable
-from LTL.tools.omegaAutomaton import automat
-from LTL.tools.ltlToPred import translate
-import os
 
 
 def demo1():
@@ -41,8 +40,8 @@ def demo1():
     os.system('clear')
     print("pointing on following")
     print(".getFirst() and .getSec()")
-    print("=>" ,formula.getFirst().getName(), formula.getFirst())
-    print("=>" ,formula.getSec().getName(),formula.getSec())
+    print("=>", formula.getFirst().getName(), formula.getFirst())
+    print("=>", formula.getSec().getName(), formula.getSec())
 
     input()
     os.system('clear')
@@ -78,7 +77,7 @@ def demo1():
     print("print(lf(toPnf('U p1 & p2 G F p3')))")
     linfac = lf(toPnf('U p1 & p2 G F p3'))
     input()
-    #print('U p1 & p2 G F p3')
+    # print('U p1 & p2 G F p3')
     print(linfac)
     input()
     os.system('clear')
@@ -86,7 +85,8 @@ def demo1():
     input()
     print(derivatives(toPnf('G F p1'), '{p1}'))
     input()
-    print("what should be something like \n {R ff U tt p1, & U tt p1 R ff U tt p1}")
+    print("what should be something like \n {R ff U tt p1, & U tt p1 R ff ",
+          "U tt p1}")
     for x in derivatives(toPnf('G F p1'), '{p1}'):
         print(x.getName())
         print(x.getFirst().getName())
@@ -115,7 +115,8 @@ def demo1():
     print("3. printing ltl formulas")
     print("4. implementation of lf(def8)")
     print("5. implementation of partial derivatives(def10)")
-    print("6. implementation of the AFA(def 16?!?!), aswell as printing them?!?!??!")
+    print("6. implementation of the AFA(def 16?!?!), aswell as printing"
+          "them?!?!??!")
     input()
     os.system('clear')
     print("what is missing?")
@@ -123,4 +124,3 @@ def demo1():
     print("more tests for lf and partial derivatives")
     print("Defintion 17 ")
     print('corrections on the afa?!?')
-

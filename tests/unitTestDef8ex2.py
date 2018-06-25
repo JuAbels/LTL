@@ -6,9 +6,9 @@ This is module for explicit testing of large functiosn of the fosaccs2018.
 
 """
 
-import unittest
-import gc
-from unittest.case import TestCase
+# import unittest
+# import gc
+# from unittest.case import TestCase
 from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
 
@@ -30,4 +30,4 @@ def testgfp():
                     solution.add(t.getName())
             else:
                 solution.add(y.getName())
-    return solution == set({'u','R','tt','&'})
+    return solution == set({'u', 'R', 'tt', '&'})

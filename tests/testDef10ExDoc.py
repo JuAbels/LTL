@@ -14,11 +14,12 @@ derivat = set()
 
 """
 
-import unittest
-import gc
-from unittest.case import TestCase
+# import unittest
+# import gc
+# from unittest.case import TestCase
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.derivative import derivatives
+
 
 def test10ex1():
     """
@@ -29,15 +30,14 @@ def test10ex1():
 
     """
     objects = toPnf('G F p1')
-    #print(objects.getName())
+    # print(objects.getName())
     derCaseAnd = derivatives(objects, 'p1')
     solution = []
-    #print(derCaseAnd)
+    # print(derCaseAnd)
     for x in derCaseAnd:
-        #print(x.getName())
+        # print(x.getName())
         solution.append(x.getName())
     helper = (len(solution) == 2)
     helper2 = (solution[1] == '&')
-    if helper == True and helper2 == True:
+    if helper is True and helper2 is True:
         return True
-    

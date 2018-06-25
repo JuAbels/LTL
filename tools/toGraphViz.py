@@ -24,7 +24,8 @@ def toGraph(nodes, edges, goals, start):
     startElements = []
     for e in start:
         if e.Atom is None:
-            if e.pointSec is None and e.pointFirst.getName() not in startElements:
+            if e.pointSec is None and e.pointFirst.getName() not in \
+               startElements:
                 startElements.append(e.pointFirst.getName())
             else:
                 if e.pointFirst.getName() in startElements:

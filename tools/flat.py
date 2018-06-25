@@ -13,6 +13,7 @@ def flat(linFac):
                 helper.append(y)
     return helper
 
+
 def toWords(liste):
     helper = []
     for x in liste:

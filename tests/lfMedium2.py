@@ -15,26 +15,30 @@ derivat = set()
 """
 
 import unittest
-import gc
-from unittest.case import TestCase
+# import gc
+# from unittest.case import TestCase
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
-from LTL.tools.flat import flat
-from LTL.tools.flat import toWords
+# from LTL.tools.flat import flat
+# from LTL.tools.flat import toWords
+
 
 class linfacs(unittest.TestCase):
-    #print("jubjubjub")
+    # print("jubjubjub")
     def setUp(self):
         pass
+
     def tearDown(self):
         pass
+
     def testDummy(self):
-        self.assertEqual( 1, 1)
-    # & R p2 X p3 U p1 p3 
+        self.assertEqual(1, 1)
+    # & R p2 X p3 U p1 p3
+
     def testNext(self):
         objects = toPnf('U p1 p3')
         linFac = lf(objects)
-        #print(linFac)
+        # print(linFac)
         solu = set()
         for x in linFac:
             for y in x:
@@ -45,10 +49,10 @@ class linfacs(unittest.TestCase):
                     solu.add(y.getName())
         # linfacs have to be something like
         # {(p3,tt),(p1 , & tt U p1 p3)}
-        self.assertEqual(solu,{'tt','p1','p3','U'})
+        self.assertEqual(solu, {'tt', 'p1', 'p3', 'U'})
         objects = toPnf('X p3')
         linFac = lf(objects)
-        #print(linFac)
+        # print(linFac)
         soluX = []
         for x in linFac:
             for y in x:
@@ -61,37 +65,39 @@ class linfacs(unittest.TestCase):
             for y in x:
                 if type(y) == frozenset:
                     for z in y:
-                       helper.add(z.getName())
+                        helper.add(z.getName())
                 else:
-                    helper.add(y.getName() )
-        # linfactors have to be something like 
+                    helper.add(y.getName())
+        # linfactors have to be something like
         # {({p2,tt},& tt p3) ,(tt, & R p2 X p3 p3)}
-        self.assertEqual(helper, {'p2','&','tt','p3'})
+        self.assertEqual(helper, {'p2', '&', 'tt', 'p3'})
         objects = toPnf('& R p2 X p3 U p1 p3')
 
         linFac = lf(objects)
-        #total = set()
-        self.assertEqual(len(linFac),4)
+        # total = set()
+        self.assertEqual(len(linFac), 4)
         between = set()
         for x in linFac:
-            #between = set()
-            #print(x)
-            #helper = set()
+            # between = set()
+            # print(x)
+            # helper = set()
             for y in x:
                 if type(y) == frozenset:
                     for z in y:
                         between.add(z.getName())
                 else:
                     between.add(y.getName())
-            #total.update(between)
-        self.assertEqual({'&','p3','p1','p2','tt'}, between)    
-        
+            # total.update(between)
+        self.assertEqual({'&', 'p3', 'p1', 'p2', 'tt'}, between)
+
+
 def lfMedium2():
-    #print("=======> jub")
+    # print("=======> jub")
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
-    
+
     suite.addTests(loader.loadTestsFromTestCase(linfacs))
 
     runner = unittest.TextTestRunner(verbosity=3)
     result = runner.run(suite)
+    print(result)

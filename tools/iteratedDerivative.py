@@ -26,7 +26,8 @@ def itePartialDeriv(formulare):
         state2 = itePartialDeriv(formulare.pointSec)
         solution = solution.union(state1.union(state2))
         return solution
-    elif formulare.getName() == 'X' or formulare.getName() == 'F' or formulare.getName() == 'G':
+    elif formulare.getName() == 'X' or formulare.getName() == 'F' or \
+            formulare.getName() == 'G':
         state = itePartialDeriv(formulare.pointFirst)
         form.add(formulare)
         solution = solution.union(form.union(state))

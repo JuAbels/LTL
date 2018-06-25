@@ -2,7 +2,7 @@
 import sys
 from LTL.tools.ltlPrint import ltlPrint
 from LTL.tests.testMain import testMain
-from LTL.tools.demo import demo1
+# from LTL.tools.demo import demo1
 import spot
 
 
@@ -14,7 +14,7 @@ def usage():
     print("string-example: '& p1 p2 {'p1','q'}'")
     print("set flag if you want to reprint the formula")
     print("To print: python3 main.py <input> <flag>")
-    
+
     print("possible Flags: -pp [menu]; -spot; -spin; -latex")
     print("Flags for testing: -test")
     print("Flags for demo-mode: -demo")
@@ -27,7 +27,7 @@ def getInp():
     Input: Nothing, read out of file or command line.
     Output: The general input or instructions
 
-    
+
     """
 
     try:
@@ -35,7 +35,7 @@ def getInp():
             inp = "LTL/" + sys.argv[1]
         else:
             inp = sys.argv[1]
-        #print(len(sys.argv))
+        # print(len(sys.argv))
         if(len(sys.argv) == 2):
             if(len(inp.split(".")) > 1):
                 data = open(inp, "r")
@@ -45,7 +45,7 @@ def getInp():
             else:
                 print(inp)
                 inp = inp.split('{')
-                print (inp)
+                print(inp)
                 return inp[0], '{' + inp[1]
         elif(len(sys.argv) == 3):
             if(sys.argv[2] == "-pp"):
@@ -78,10 +78,9 @@ def getInp():
             elif(sys.argv[2] == "-test"):
                 testMain()
 
-
             elif(sys.argv[2] == "-demo"):
                 return 'demo', 'demo'
-                
+
         else:
             exit()
     except:

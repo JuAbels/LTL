@@ -131,7 +131,8 @@ def caseNext(formular):
 def setBasedNorm(form):
     ''' HELPFunction for set-based conjunctive normal form for case Next '''
     oneSet = set()
-    if form.getName() == '&' or form.getName() == '|':  # case for formular is an OR and AND
+    # case for formular is an OR and AND
+    if form.getName() == '&' or form.getName() == '|':
         if form.getName() == '|':  # case for OR
             first = setBasedNorm(form.pointFirst)
             second = setBasedNorm(form.pointSec)
@@ -246,7 +247,8 @@ def concat(inp):
             inp.setSec(inp.getSec().getSec())
         if(inp.getSec() is None):
             return
-        if(inp.getSec().getName() == 'tt' and inp.getFirst() is not None):  # this part may be wrong but not likely
+        # this part may be wrong but not likely
+        if(inp.getSec().getName() == 'tt' and inp.getFirst() is not None):
             inp.setName(inp.getFirst().getName())
             if(inp.getName() in doubles or inp.getName() in singles):
                 inp.setFirst(inp.getFirst().getFirst())
