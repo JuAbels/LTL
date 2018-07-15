@@ -56,15 +56,23 @@ if __name__ == "__main__":
     derivatives(objects, inp[1])  # inp[1] gives x to the function
     # testMain()
 
+    # Calculate all states of atumaton
     states, transition, start, goals = automat(objects)
     setGoals = deepcopy(goals)
     statesTable = deepcopy(states)
     setStart = deepcopy(start)
     dictionary = setTable(states)
+    # print all states of Automaton
     states, transition, start, goals = printAutomaton(objects, statesTable,
                                                       transition, start,
                                                       goals)
     liste = calcEdges(dictionary)
+    print(liste, "lise")
+    print(goals, "goals")
+    print(setStart, "Start")
+    print(states, "States")
+    # liste := list of edges, goals := goals states,
+    # setStart := start elements, status := all states.
     toGraph(liste, goals, setStart, states)
     print("test")
     # toGraph()

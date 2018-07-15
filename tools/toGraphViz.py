@@ -4,6 +4,7 @@
 """
 
 from graphviz import Digraph
+from LTL.tools.omegaAutomaton import stringName
 
 
 def toGraph(edges, goals, start, statesPrint):
@@ -31,10 +32,12 @@ def toGraph(edges, goals, start, statesPrint):
         # Node one for start path.
         g.node('%d' % (counter1), shape='point')
         if e.pointFirst and e.pointSec:
+            first = stringName(e.pointFirst)
+            second = stringName(e.pointSec)
             g.node('%d' % (counter1 + 1), label='', shape='diamond')
             g.edge('%d' % (counter1), '%d' % (counter1 + 1))
-            g.edge('%d' % (counter1 + 1), e.pointFirst.getName())
-            g.edge('%d' % (counter1 + 1), e.pointSec.getName())
+            g.edge('%d' % (counter1 + 1), first)
+            g.edge('%d' % (counter1 + 1), second)
         else:  # case for one literal status.
             g.edge('%d' % (counter1), e.getName())
         # TODO: einstellige Elemente.

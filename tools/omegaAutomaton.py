@@ -94,13 +94,13 @@ def printAutomaton(objects, states, transition, start, goals):
     states = set()
     while test:
         element = test.pop()
-        states.add(element.getName())
+        states.add(stringName(element))
 
     test = transition
     transition = set()
     while test:
         element = test.pop()
-        transition.add(element.getName())
+        transition.add(stringName(element))
 
     test = start
     start = set()
@@ -119,7 +119,7 @@ def printAutomaton(objects, states, transition, start, goals):
     goals = set()
     while test:
         element = test.pop()
-        goals.add(element.getName())
+        goals.add(stringName(element))
 
     print("Q: \t \t", states)
     print("Transition: \t", transition)
@@ -145,9 +145,45 @@ def setTable(states):
         trans = derivatives(i, xSet)  # calculate translation for state
         # change to list -> easier to iterate
         # TODO: ich brauch die ganze Formel
-        trans = [i.getName() for i in trans]
-        dictionary[i.getName()] = trans
+        trans = [stringName(i) for i in trans]
+        key = stringName(i)
+        dictionary[key] = trans
     return dictionary
+
+
+def stringName(formulare):
+    """
+    Helpfunction to transform a formulare sign to the cottect formulare.
+
+    formulare: one formulare sign.
+    return: string of formulare.
+    """
+    pointFirst = []  # list for fist subformulare of sign
+    pointSec = []  # list for second subformulare of sign
+    form = ''
+    if formulare.pointFirst and formulare.pointSec:
+        # case for binary formulare
+        if formulare.pointFirst:
+            # case for first
+            first = stringName(formulare.pointFirst)
+            pointFirst.append(first)
+        if formulare.pointSec:
+            # case for second
+            second = stringName(formulare.pointSec)
+            pointFirst.append(second)
+    if formulare.Atom:
+        # case if formulare atom
+        form = form + formulare.getName()
+    else:
+        # case for transform binary form
+        form = form + formulare.getName()
+        if pointFirst:
+            for i in pointFirst:
+                form = form + " " + i
+        if pointSec:
+            for i in pointSec:
+                form = form + " " + i
+    return form
 
 
 def calculateList(states):
