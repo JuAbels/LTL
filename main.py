@@ -16,6 +16,7 @@ from LTL.tools.omegaAutomaton import Automaton
 from LTL.tools.omegaAutomaton import printAutomaton
 from LTL.tools.omegaAutomaton import setTable
 from LTL.tools.omegaAutomaton import automat
+from LTL.tools.omegaAutomaton import writeAutomaton
 from LTL.tools.derivative import derivatives
 # import doctest
 # from LTL.tests.unitTests import test
@@ -33,10 +34,9 @@ from copy import deepcopy
 
 if __name__ == "__main__":
     print(len(sys.argv))
-    # exit()
     inp = getInp()
-    # exit()
     formulare = translate(inp[0])
+    file_automat = inp[2]
 
     objects = toPnf('& p2 | p3 U p4 p2')  # formulare)  # objects to PNF for LF
     # objectss = toPnf('& R p2 X p3 U p1 p3')
@@ -56,8 +56,9 @@ if __name__ == "__main__":
     derivatives(objects, inp[1])  # inp[1] gives x to the function
     # testMain()
 
-    # Calculate all states of atumaton
-    states, transition, start, goals = automat(objects)
+    writeAutomaton(file_automat, objects)
+
+    states, transition, start, goals, table = automat(objects)
     setGoals = deepcopy(goals)
     statesTable = deepcopy(states)
     setStart = deepcopy(start)
@@ -67,10 +68,6 @@ if __name__ == "__main__":
                                                       transition, start,
                                                       goals)
     liste = calcEdges(dictionary)
-    print(liste, "lise")
-    print(goals, "goals")
-    print(setStart, "Start")
-    print(states, "States")
     # liste := list of edges, goals := goals states,
     # setStart := start elements, status := all states.
     toGraph(liste, goals, setStart, states)

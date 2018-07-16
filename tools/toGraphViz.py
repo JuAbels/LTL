@@ -5,6 +5,7 @@
 
 from graphviz import Digraph
 from LTL.tools.omegaAutomaton import stringName
+from LTL.tools.toPnfObjects import toPnf
 
 
 def toGraph(edges, goals, start, statesPrint):
@@ -18,15 +19,19 @@ def toGraph(edges, goals, start, statesPrint):
     """
     g = Digraph('G', filename='hello.gv')
     # counter2 = 0
+    counter0 = 0
     for e in edges:
-        g.edge(e[0], e[1])
+        if e[1][0] == '&':
+            first, second = splitString(e[1])
+            g.node('%d' % (counter0), label='', shape='diamond')
+            g.edge(e[0], '%d' % (counter0))
+            g.edge('%d' % (counter0), first)
+            g.edge('%d' % (counter0), second)
+        else:
+            g.edge(e[0], e[1])
         if e[1] in goals:
             g.node(e[1], shape='doublecircle')
-        '''if e[1] not in statesPrint:
-            g.node('%d' % (counter2), label='', shape='diamond')
-            # TODO: Formel: g.edge('%d' % (counter2), e[1].pointFirst.getName())
-            # g.edge('%d' % (counter2), e[1].pointSec.getName())
-            counter2 += 2'''
+        counter0 += 2
     counter1 = 0
     for e in start:
         # Node one for start path.
@@ -39,10 +44,23 @@ def toGraph(edges, goals, start, statesPrint):
             g.edge('%d' % (counter1 + 1), first)
             g.edge('%d' % (counter1 + 1), second)
         else:  # case for one literal status.
-            g.edge('%d' % (counter1), e.getName())
-        # TODO: einstellige Elemente.
+            g.edge('%d' % (counter1), stringName(e))
         counter1 += 2
     g.view()
+
+
+def splitString(formualre):
+    '''
+    Helpfunction to split the string
+
+    formulare: string of fomulare whitch is going to be split.
+    return: first  := first subfomulare of function.
+            second := second subfomulare of function.
+    '''
+    objects = toPnf(formualre)
+    first = stringName(objects.pointFirst)
+    second = stringName(objects.pointSec)
+    return first, second
 
 
 def calcEdges(dictionary):
@@ -59,5 +77,4 @@ def calcEdges(dictionary):
                 tup.append(matrix[0][j])  # path goes to
             if tup != []:  # if there exist a path, append to edges
                 edges.append(tup)'''
-    print(edges)
     return edges

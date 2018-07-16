@@ -7,7 +7,7 @@ from LTL.tools.lf import setBasedNorm
 from LTL.tools.derivative import derivatives
 from LTL.tools.iteratedDerivative import itePartialDeriv
 from LTL.tools.toPnfObjects import toObjects
-import numpy as np
+from copy import deepcopy
 
 """Class to generate the omega Automaton"""
 
@@ -23,6 +23,7 @@ class Automaton:
         self.transition = set()  # set for the transition of automaton
         self.start = set()       # set of start status
         self.goal = set()        # set of the goal status
+        self.transitionsTable = {}
 
     def setStart(self):
         """
@@ -43,7 +44,9 @@ class Automaton:
         for i in states:
             derivative = derivatives(i, self.alphabet)
             self.transition = self.transition.union(derivative)
-        return self.transition
+            i = stringName(i)
+            self.transitionsTable[i] = derivative
+        return self.transition, self.transitionsTable
 
     def setStatus(self):
         """
@@ -77,10 +80,10 @@ def automat(objects):
     Compute elements of omega automat.
     """
     states = Automaton(objects).setStatus()
-    transition = Automaton(objects).setTransition(states)
+    transition, table = Automaton(objects).setTransition(states)
     start = Automaton(objects).setStart()
     goals = Automaton(objects).setGoals(objects)
-    return states, transition, start, goals
+    return states, transition, start, goals, table
 
 
 def printAutomaton(objects, states, transition, start, goals):
@@ -106,25 +109,13 @@ def printAutomaton(objects, states, transition, start, goals):
     start = set()
     while test:
         element = test.pop()
-        if element.pointFirst and element.pointSec:
-            start.add("%s %s %s" % (element.pointFirst.getName(),
-                      element.getName(), element.pointSec.getName()))
-        elif element.pointFirst and element.pointSec is None:
-            start.add("%s %s %s" % (element.getName(),
-                      element.pointFirst.getName()))
-        else:
-            start.add(element.getName())
+        start.add(stringName(element))
 
     test = goals
     goals = set()
     while test:
         element = test.pop()
         goals.add(stringName(element))
-
-    print("Q: \t \t", states)
-    print("Transition: \t", transition)
-    print("Start:\t \t", start)
-    print("F:\t \t", goals)
 
     return states, transition, start, goals
 
@@ -141,7 +132,6 @@ def setTable(states):
     dictionary = {}  # End Matrix
     state = calculateList(states)
     for i in state:
-        # dictionary[i.getName()] = []
         trans = derivatives(i, xSet)  # calculate translation for state
         # change to list -> easier to iterate
         # TODO: ich brauch die ganze Formel
@@ -162,15 +152,13 @@ def stringName(formulare):
     pointSec = []  # list for second subformulare of sign
     form = ''
     if formulare.pointFirst and formulare.pointSec:
-        # case for binary formulare
-        if formulare.pointFirst:
-            # case for first
-            first = stringName(formulare.pointFirst)
-            pointFirst.append(first)
-        if formulare.pointSec:
-            # case for second
-            second = stringName(formulare.pointSec)
-            pointFirst.append(second)
+        first = stringName(formulare.pointFirst)
+        pointFirst.append(first)
+        second = stringName(formulare.pointSec)
+        pointFirst.append(second)
+    elif formulare.pointFirst and formulare.pointSec is None:
+        first = stringName(formulare.pointFirst)
+        pointFirst.append(first)
     if formulare.Atom:
         # case if formulare atom
         form = form + formulare.getName()
@@ -184,6 +172,39 @@ def stringName(formulare):
             for i in pointSec:
                 form = form + " " + i
     return form
+
+
+def writeAutomaton(file_in, objects):
+    '''
+    Function to write every informations of Automaton in an textfile.
+
+    file_in: file to write infromation
+    object: formulare
+    '''
+    states, transition, start, goals, table = automat(objects)
+    states, transition, start, goals = printAutomaton(objects, states,
+                                                      transition, start,
+                                                      goals)
+    with open(file_in, 'w') as out:
+        out.write("States of the Automaton \n" +
+                  "=" * 23 + '\n' + '\n' +
+                  "Q: \t \t" + str(states) + '\n' +
+                  "Transition: \t" + str(transition) + '\n' +
+                  "Start:\t \t" + str(start) + '\n' +
+                  "F:\t \t" + str(goals) + '\n' + '\n' + '\n' +
+                  "Transition Table \n" +
+                  "=" * 16 + '\n' + '\n' +
+                  "States \t \t | " + Automaton(objects).alphabet +
+                  '\n' + "\t \t | \n"
+                  )
+        for i in table:
+            value = set()
+            for j in table[i]:
+                value.add(stringName(j))
+            if len(i) > 10:
+                out.write(i + "\t | " + str(value) + "\n")
+            else:
+                out.write(i + "\t \t | " + str(value) + "\n")
 
 
 def calculateList(states):
