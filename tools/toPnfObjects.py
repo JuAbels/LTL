@@ -10,6 +10,8 @@ single = "XFG!"
 
 duo = "UWRMV&|"
 
+alphabet = set()
+
 """Class to init objects which are part of the L-Formula"""
 
 
@@ -120,12 +122,16 @@ def toObjects(inPut):
     """
     inp = inPut.split()
     lObjects = []
+    global alphabet
     """make the objects. stil empty and no pointer"""
     for x in inp:
         lObjects.append(lFormula(x))
     for x in lObjects:
         if(x.getName() not in single and x.getName() not in duo):
             x.setAtom()
+            if x.getName() not in alphabet:
+                alphabet.add(x.getName())
+            # x.setAlpabet()
     deepLObjects = deepcopy(lObjects)
     stuff = pointers(lObjects[0], lObjects[1:])
     lObjects = stuff[0]
@@ -324,3 +330,8 @@ def toPnf(inPut):
     lObjects, first = dealEM(lObjects, first)
     pushIn(first)
     return first
+
+
+def returnAlphabet():
+    global alphabet
+    return alphabet

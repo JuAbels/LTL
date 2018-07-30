@@ -7,7 +7,8 @@ from LTL.tools.lf import setBasedNorm
 from LTL.tools.derivative import derivatives
 from LTL.tools.iteratedDerivative import itePartialDeriv
 from LTL.tools.toPnfObjects import toObjects
-from copy import deepcopy
+from LTL.tools.toPnfObjects import returnAlphabet
+import itertools as it
 
 """Class to generate the omega Automaton"""
 
@@ -19,11 +20,24 @@ class Automaton:
     def __init__(self, formula):
         self.formula = formula   # the formula with all the pointer
         self.state = set()       # set with state status
-        self.alphabet = xSet     # set of alphabet TODO: per input
+        self.alphabet = xSet    # set of alphabet TODO: per input
         self.transition = set()  # set for the transition of automaton
         self.start = set()       # set of start status
         self.goal = set()        # set of the goal status
         self.transitionsTable = {}
+
+        self.alphabetTEST = ""
+
+        self.printState = set()
+        self.printTransition = set()
+        self.printStart = set()
+        self.printGoal = set()
+
+    def setName(self, nombre):
+        self.formulare = nombre
+
+    def getName(self):
+        return self.name
 
     def setStart(self):
         """
@@ -31,22 +45,21 @@ class Automaton:
         """
         norm = setBasedNorm(self.formula)
         self.start = self.start.union(norm)
-        return self.start
 
-    def setTransition(self, states):
+    def setTransition(self):
         """
         return the Transition of the omega Automaton with the alphabet and
         the formel.
 
             return: set with pointer.
         """
+        states = self.state
         states = list(states)
         for i in states:
             derivative = derivatives(i, self.alphabet)
             self.transition = self.transition.union(derivative)
             i = stringName(i)
             self.transitionsTable[i] = derivative
-        return self.transition, self.transitionsTable
 
     def setStatus(self):
         """
@@ -54,7 +67,6 @@ class Automaton:
         """
         status = itePartialDeriv(self.formula)
         self.state = self.state.union(status)
-        return self.state
 
     def setGoals(self, formula):
         """
@@ -64,66 +76,92 @@ class Automaton:
         TT.setAtom()
         self.goal.add(TT)
         releaseSet = Automaton(formula).setStatus()
+        print(releaseSet, "HIER")
         rel = set()
         while releaseSet:           # Laufzeit ist so scheiße, muss evtl anders
             x = releaseSet.pop()    # gemacht, wenn relevant
             # sprint(x.getName())
+            print(x.getName())
             if x.getName() == 'R':
                 rel.add(x)
         self.goal = self.goal.union(rel)
-        # print(self.goal)
-        return self.goal
+
+    def setAlpabet(self, listAlpha):
+        """
+        Calculate all subfunctions of possible atoms.
+
+        listAlpha: set of all atoms in formulare.
+        """
+        # TODO: empty set also?
+        stringAlpha = set()
+        setAlpha = it.chain.from_iterable(it.combinations(listAlpha, n) for n in range(len(listAlpha)+1))
+        for i in setAlpha:
+            stringAlpha.add(i)
+        self.alphabetTEST = self.alphabetTEST + str(stringAlpha)
+        print(self.alphabetTEST, type(self.alphabetTEST))
+
+    def setPrintState(self):
+        test = self.state
+        while test:
+            element = test.pop()
+            self.printState.add(stringName(element))
+
+    def setPrintTransition(self):
+        test = self.transition
+        while test:
+            element = test.pop()
+            self.printTransition.add(stringName(element))
+
+    def setPrintStart(self):
+        test = self.start
+        while test:
+            element = test.pop()
+            self.printStart.add(stringName(element))
+
+    def setPrintGoal(self):
+        test = self.goal
+        while test:
+            element = test.pop()
+            self.printGoal.add(stringName(element))
 
 
-def automat(objects):
+def automat(objects, alphabet):
     """
     Compute elements of omega automat.
+
+    objects: fomulare for the Automaton.
+    alphabet: set of atoms.
     """
-    states = Automaton(objects).setStatus()
-    transition, table = Automaton(objects).setTransition(states)
-    start = Automaton(objects).setStart()
-    goals = Automaton(objects).setGoals(objects)
-    return states, transition, start, goals, table
+    automat = Automaton(objects)
+    automat.setStatus()
+    automat.setTransition()
+    automat.setStart()
+    automat.setGoals(objects)
+    automat.setAlpabet(alphabet)
+    return automat
 
 
-def printAutomaton(objects, states, transition, start, goals):
+def printAutomaton(objects):
     """
-    Function for printing all the states of the omega Automaton.
-
-    objects: start of the formulare, hand commit of main funciton.
+    Compute elements of omega automat for printing.
     """
-    # states, transition, start, goals = automat(objects)
-    test = states
-    states = set()
-    while test:
-        element = test.pop()
-        states.add(stringName(element))
-
-    test = transition
-    transition = set()
-    while test:
-        element = test.pop()
-        transition.add(stringName(element))
-
-    test = start
-    start = set()
-    while test:
-        element = test.pop()
-        start.add(stringName(element))
-
-    test = goals
-    goals = set()
-    while test:
-        element = test.pop()
-        goals.add(stringName(element))
-
-    return states, transition, start, goals
+    automat = Automaton(objects)
+    automat.setStatus()
+    automat.setTransition()
+    automat.setStart()
+    automat.setGoals(objects)
+    automat.setPrintState()
+    automat.setPrintTransition()
+    automat.setPrintStart()
+    automat.setPrintGoal()
+    return automat
 
 
 def setTable(states):
     """
     Function to compute table for graph.
 
+    states: all states of automaton.
     return: Matrix with 1 and 0, where 1 means there exists a path from the
             start state to the other states.
             Futhermore, the first line has the order of the statuses. Thereby
@@ -132,12 +170,12 @@ def setTable(states):
     dictionary = {}  # End Matrix
     state = calculateList(states)
     for i in state:
+        state = calculateList(states)
         trans = derivatives(i, xSet)  # calculate translation for state
-        # change to list -> easier to iterate
-        # TODO: ich brauch die ganze Formel
         trans = [stringName(i) for i in trans]
         key = stringName(i)
         dictionary[key] = trans
+    dictionary.pop('tt', None)
     return dictionary
 
 
@@ -174,32 +212,30 @@ def stringName(formulare):
     return form
 
 
-def writeAutomaton(file_in, objects):
+def writeAutomaton(file_in, objects, automaton):
     '''
     Function to write every informations of Automaton in an textfile.
 
     file_in: file to write infromation
     object: formulare
+    automaton: the Automat
     '''
-    states, transition, start, goals, table = automat(objects)
-    states, transition, start, goals = printAutomaton(objects, states,
-                                                      transition, start,
-                                                      goals)
+    # test = returnAlphabet()
     with open(file_in, 'w') as out:
         out.write("States of the Automaton \n" +
                   "=" * 23 + '\n' + '\n' +
-                  "Q: \t \t" + str(states) + '\n' +
-                  "Transition: \t" + str(transition) + '\n' +
-                  "Start:\t \t" + str(start) + '\n' +
-                  "F:\t \t" + str(goals) + '\n' + '\n' + '\n' +
+                  "Q: \t \t" + str(automaton.printState) + '\n' +
+                  "Transition: \t" + str(automaton.printTransition) + '\n' +
+                  "Start:\t \t" + str(automaton.printStart) + '\n' +
+                  "F:\t \t" + str(automaton.printGoal) + '\n' + '\n' + '\n' +
                   "Transition Table \n" +
                   "=" * 16 + '\n' + '\n' +
                   "States \t \t | " + Automaton(objects).alphabet +
                   '\n' + "\t \t | \n"
                   )
-        for i in table:
+        for i in automaton.transitionsTable:
             value = set()
-            for j in table[i]:
+            for j in automaton.transitionsTable[i]:
                 value.add(stringName(j))
             if len(i) > 10:
                 out.write(i + "\t | " + str(value) + "\n")

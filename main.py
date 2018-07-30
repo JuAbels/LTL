@@ -12,12 +12,15 @@ from LTL.tools.ltlToPred import translate
 from LTL.tools.getInp import getInp
 # from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
+from LTL.tools.toPnfObjects import returnAlphabet
 from LTL.tools.omegaAutomaton import Automaton
-from LTL.tools.omegaAutomaton import printAutomaton
 from LTL.tools.omegaAutomaton import setTable
 from LTL.tools.omegaAutomaton import automat
 from LTL.tools.omegaAutomaton import writeAutomaton
+from LTL.tools.omegaAutomaton import printAutomaton
 from LTL.tools.derivative import derivatives
+from LTL.tools.tableauDecision import decisionTableGraph
+
 # import doctest
 # from LTL.tests.unitTests import test
 # from LTL.tests.unitTest2 import test2
@@ -29,7 +32,6 @@ from LTL.tests.testMain import testMain
 # import subprocess
 from LTL.tools.toGraphViz import toGraph
 from LTL.tools.toGraphViz import calcEdges
-from copy import deepcopy
 
 
 if __name__ == "__main__":
@@ -38,41 +40,34 @@ if __name__ == "__main__":
     formulare = translate(inp[0])
     file_automat = inp[2]
 
-    objects = toPnf('& p2 | p3 U p4 p2')  # formulare)  # objects to PNF for LF
-    # objectss = toPnf('& R p2 X p3 U p1 p3')
+    # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
+    # objects = toPnf('& R X p3 U p1 p3')
     objects = toPnf('& p1 | p3 U X p4 R p2 p3')
-    # objects = toPnf('R q1 p')#formulare)  # objects to PNF for LF
+    alphabet = returnAlphabet()  # get all atoms of object formel
+    print(alphabet,  "alphabet")
 
-    # print(lin1)
-    # print(lin2)
-    """for x in lin2:
-        for z in x:
-            if type(z) != frozenset:
-                print(z.getName())
-            else:
-                for y in z:
-                    print(y.getName())"""
-    # linFac = lf(objects)  # Formel to linear Factors
     derivatives(objects, inp[1])  # inp[1] gives x to the function
-    # testMain()
 
-    writeAutomaton(file_automat, objects)
+    # decisionTableGraph(objects)
 
-    states, transition, start, goals, table = automat(objects)
-    setGoals = deepcopy(goals)
-    statesTable = deepcopy(states)
-    setStart = deepcopy(start)
-    dictionary = setTable(states)
-    # print all states of Automaton
-    states, transition, start, goals = printAutomaton(objects, statesTable,
-                                                      transition, start,
-                                                      goals)
+    test = automat(objects, alphabet)
+    print(test.goal, "WAS")
+    print(test.state, "WAS")
+    print(test.start, "WAS")
+    print(test.transition, "WAS")
+    print(test.transitionsTable)
+    printAuto = printAutomaton(objects)
+    print(printAuto.printStart, "WAS")
+    print(printAuto.printState, "WAS")
+    print(printAuto.printTransition, "WAS")
+    print(printAuto.printGoal, "WAS")
+    writeAutomaton(file_automat, objects, printAuto)
+
+    dictionary = setTable(test.state)
+    print(dictionary, "dictionary")
+
     liste = calcEdges(dictionary)
-    # liste := list of edges, goals := goals states,
-    # setStart := start elements, status := all states.
-    toGraph(liste, goals, setStart, states)
+    print(liste)
+    # toGraph(liste, printAuto.printGoal, test.start)
     print("test")
-    # toGraph()
-    # linFac = lf(objects)  # Formel to linear Factors
-    # (derivatives(objects, inp[1])) # inp[1] gives x to the function
     testMain()

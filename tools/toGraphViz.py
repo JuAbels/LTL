@@ -1,4 +1,4 @@
-"""Author Stefan Strang - Uni Freiburg.
+"""Author Stefan Strang, Julia Abels - Uni Freiburg.
 
 
 """
@@ -8,13 +8,17 @@ from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 
 
-def toGraph(edges, goals, start, statesPrint):
+def toGraph(edges, goals, start):
     """Simplify to render the automat.
 
     Input: list of nodes and edges
            Format nodes: ["A", "B", "C"]
            Format edges: [["A","B"],["B","C"]]
     Output: Nothing - prints the graph
+
+    edges: list of edges with path.
+    goals: set of goal states (strings).
+    start: set of states from automaton.
 
     """
     g = Digraph('G', filename='hello.gv')
@@ -70,11 +74,4 @@ def calcEdges(dictionary):
         for j in dictionary[i]:
             tup = [i, j]
             edges.append(tup)
-        '''for j in range(rows):
-            tup = []
-            if matrix[i + 1][j] == '1':
-                tup.append(matrix[0][i])  # first place, start of path
-                tup.append(matrix[0][j])  # path goes to
-            if tup != []:  # if there exist a path, append to edges
-                edges.append(tup)'''
     return edges
