@@ -20,13 +20,13 @@ class Automaton:
     def __init__(self, formula):
         self.formula = formula   # the formula with all the pointer
         self.state = set()       # set with state status
-        self.alphabet = xSet    # set of alphabet TODO: per input
+        self.alphabet = []   # set of alphabet TODO: per input
         self.transition = set()  # set for the transition of automaton
         self.start = set()       # set of start status
         self.goal = set()        # set of the goal status
         self.transitionsTable = {}
 
-        self.alphabetTEST = ""
+        self.alphabetTEST = []
 
         self.printState = set()
         self.printTransition = set()
@@ -54,12 +54,15 @@ class Automaton:
             return: set with pointer.
         """
         states = self.state
-        states = list(states)
-        for i in states:
-            derivative = derivatives(i, self.alphabet)
-            self.transition = self.transition.union(derivative)
-            i = stringName(i)
-            self.transitionsTable[i] = derivative
+        states = calculateList(states)
+        for j in self.alphabet:
+            '''for i in states:
+                derivative = derivatives(i, j)
+                self.transition = self.transition.union(derivative)
+                i = stringName(i)
+                self.transitionsTable[i] = derivative'''
+            derivative = setTable(states, j)
+            self.transitionsTable[j] = derivative
 
     def setStatus(self):
         """
@@ -93,12 +96,13 @@ class Automaton:
         listAlpha: set of all atoms in formulare.
         """
         # TODO: empty set also?
-        stringAlpha = set()
         setAlpha = it.chain.from_iterable(it.combinations(listAlpha, n) for n in range(len(listAlpha)+1))
         for i in setAlpha:
-            stringAlpha.add(i)
-        self.alphabetTEST = self.alphabetTEST + str(stringAlpha)
-        print(self.alphabetTEST, type(self.alphabetTEST))
+            stringAlpha = "{"
+            for j in i:
+                stringAlpha = stringAlpha + j + ","
+            stringAlpha = stringAlpha + "}"
+            self.alphabet.append(stringAlpha)
 
     def setPrintState(self):
         test = self.state
@@ -133,19 +137,20 @@ def automat(objects, alphabet):
     alphabet: set of atoms.
     """
     automat = Automaton(objects)
+    automat.setAlpabet(alphabet)
     automat.setStatus()
     automat.setTransition()
     automat.setStart()
     automat.setGoals(objects)
-    automat.setAlpabet(alphabet)
     return automat
 
 
-def printAutomaton(objects):
+def printAutomaton(objects, alphabet):
     """
     Compute elements of omega automat for printing.
     """
     automat = Automaton(objects)
+    automat.setAlpabet(alphabet)
     automat.setStatus()
     automat.setTransition()
     automat.setStart()
@@ -157,7 +162,7 @@ def printAutomaton(objects):
     return automat
 
 
-def setTable(states):
+def setTable(state, setAtom):
     """
     Function to compute table for graph.
 
@@ -168,10 +173,10 @@ def setTable(states):
             first position is the status of the second list etc.
     """
     dictionary = {}  # End Matrix
-    state = calculateList(states)
+    # state = calculateList(states)
     for i in state:
-        state = calculateList(states)
-        trans = derivatives(i, xSet)  # calculate translation for state
+        # state = calculateList(states)
+        trans = derivatives(i, setAtom)  # calculate translation for state
         trans = [stringName(i) for i in trans]
         key = stringName(i)
         dictionary[key] = trans

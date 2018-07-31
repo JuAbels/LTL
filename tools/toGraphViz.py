@@ -16,7 +16,7 @@ def toGraph(edges, goals, start):
            Format edges: [["A","B"],["B","C"]]
     Output: Nothing - prints the graph
 
-    edges: list of edges with path.
+    edges: dictionary of list of edges with path, key is set of atoms.
     goals: set of goal states (strings).
     start: set of states from automaton.
 
@@ -24,18 +24,27 @@ def toGraph(edges, goals, start):
     g = Digraph('G', filename='hello.gv')
     # counter2 = 0
     counter0 = 0
-    for e in edges:
-        if e[1][0] == '&':
-            first, second = splitString(e[1])
-            g.node('%d' % (counter0), label='', shape='diamond')
-            g.edge(e[0], '%d' % (counter0))
-            g.edge('%d' % (counter0), first)
-            g.edge('%d' % (counter0), second)
-        else:
-            g.edge(e[0], e[1])
-        if e[1] in goals:
-            g.node(e[1], shape='doublecircle')
-        counter0 += 2
+    colors = ['green', 'red', 'antiquewhite4', 'aquamarine4',
+              'brown', 'burlywood', 'cadetblue', 'chartreuse',
+              'chocolate', 'coral', 'cyan3', 'darkorchid1',
+              'deeppink1', 'darkslateblue', 'darkgreen', 'blue4'
+              'darkgoldenrod3', 'goldenrod', 'darksalmon', 'darkolivegreen']
+    countColor = 0
+    for p in edges:
+        # g.attr('edge', color=colors)
+        for e in edges[p]:
+            if e[1][0] == '&':
+                first, second = splitString(e[1])
+                g.node('%d' % (counter0), label='', shape='diamond')
+                g.edge(e[0], '%d' % (counter0), color=colors[countColor])
+                g.edge('%d' % (counter0), first, color=colors[countColor])
+                g.edge('%d' % (counter0), second, color=colors[countColor])
+            else:
+                g.edge(e[0], e[1], color=colors[countColor])
+            if e[1] in goals:
+                g.node(e[1], shape='doublecircle')
+            counter0 += 2
+        countColor += 1
     counter1 = 0
     for e in start:
         # Node one for start path.
@@ -69,9 +78,13 @@ def splitString(formualre):
 
 def calcEdges(dictionary):
     # states = len(dictionary)
-    edges = []
-    for i in dictionary:
-        for j in dictionary[i]:
-            tup = [i, j]
-            edges.append(tup)
-    return edges
+    edgesDict = {}
+    for x in dictionary:
+        print(x)
+        edges = []
+        for i in dictionary[x]:
+            for j in dictionary[x][i]:
+                tup = [i, j]
+                edges.append(tup)
+        edgesDict[x] = edges
+    return edgesDict
