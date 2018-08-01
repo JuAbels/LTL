@@ -8,6 +8,15 @@ from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 
 
+colors = ['green', 'red', 'antiquewhite4', 'aquamarine4',
+          'brown', 'burlywood', 'cadetblue', 'chartreuse',
+          'chocolate', 'coral', 'cyan3', 'darkorchid1',
+          'deeppink1', 'darkslateblue', 'darkgreen', 'blue4'
+          'darkgoldenrod3', 'goldenrod', 'darksalmon', 'darkolivegreen']
+
+# TODO: bessere Version für den Graphen
+
+
 def toGraph(edges, goals, start):
     """Simplify to render the automat.
 
@@ -21,44 +30,43 @@ def toGraph(edges, goals, start):
     start: set of states from automaton.
 
     """
+    global colors
     g = Digraph('G', filename='hello.gv')
-    # counter2 = 0
+    counter1 = -1
+    for e in start:
+        # Node one for start path.
+        g.node('%d' % (counter1), shape='point')
+        if e.getName() == '&':  # case for AND case.
+            first = stringName(e.pointFirst)
+            second = stringName(e.pointSec)
+            g.node('%d' % (counter1 - 1), label='', shape='diamond')
+            g.edge('%d' % (counter1), '%d' % (counter1 - 1))
+            g.edge('%d' % (counter1 - 1), first)
+            g.edge('%d' % (counter1 - 1), second)
+        else:
+            g.edge('%d' % (counter1), stringName(e))
+        counter1 -= 2
+    testCase = []
     counter0 = 0
-    colors = ['green', 'red', 'antiquewhite4', 'aquamarine4',
-              'brown', 'burlywood', 'cadetblue', 'chartreuse',
-              'chocolate', 'coral', 'cyan3', 'darkorchid1',
-              'deeppink1', 'darkslateblue', 'darkgreen', 'blue4'
-              'darkgoldenrod3', 'goldenrod', 'darksalmon', 'darkolivegreen']
     countColor = 0
     for p in edges:
-        # g.attr('edge', color=colors)
         for e in edges[p]:
+            if e in testCase:
+                continue
             if e[1][0] == '&':
                 first, second = splitString(e[1])
                 g.node('%d' % (counter0), label='', shape='diamond')
                 g.edge(e[0], '%d' % (counter0), color=colors[countColor])
                 g.edge('%d' % (counter0), first, color=colors[countColor])
                 g.edge('%d' % (counter0), second, color=colors[countColor])
+                testCase.append(e)
             else:
                 g.edge(e[0], e[1], color=colors[countColor])
+                testCase.append(e)
             if e[1] in goals:
                 g.node(e[1], shape='doublecircle')
             counter0 += 2
         countColor += 1
-    counter1 = 0
-    for e in start:
-        # Node one for start path.
-        g.node('%d' % (counter1), shape='point')
-        if e.pointFirst and e.pointSec:
-            first = stringName(e.pointFirst)
-            second = stringName(e.pointSec)
-            g.node('%d' % (counter1 + 1), label='', shape='diamond')
-            g.edge('%d' % (counter1), '%d' % (counter1 + 1))
-            g.edge('%d' % (counter1 + 1), first)
-            g.edge('%d' % (counter1 + 1), second)
-        else:  # case for one literal status.
-            g.edge('%d' % (counter1), stringName(e))
-        counter1 += 2
     g.view()
 
 

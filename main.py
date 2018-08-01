@@ -17,7 +17,6 @@ from LTL.tools.omegaAutomaton import Automaton
 from LTL.tools.omegaAutomaton import setTable
 from LTL.tools.omegaAutomaton import automat
 from LTL.tools.omegaAutomaton import writeAutomaton
-from LTL.tools.omegaAutomaton import printAutomaton
 from LTL.tools.derivative import derivatives
 from LTL.tools.tableauDecision import decisionTableGraph
 
@@ -43,6 +42,7 @@ if __name__ == "__main__":
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
     objects = toPnf('& p1 | p3 U X p4 R p2 p3')
+    # objects = toPnf('| p1 R X p2 p1')
     alphabet = returnAlphabet()  # get all atoms of object formel
     print(alphabet,  "alphabet")
 
@@ -51,24 +51,17 @@ if __name__ == "__main__":
     # decisionTableGraph(objects)
 
     test = automat(objects, alphabet)
-    # print(test.goal, "WAS")
-    # print(test.state, "WAS")
-    # print(test.start, "WAS")
-    # print(test.transition, "transition")
+    print(test.goal, "goal")
+    print(test.state, "state")
+    print(test.start, "start")
     print(test.transitionsTable)
-    printAuto = printAutomaton(objects, alphabet)
-    # print(printAuto.printStart, "WAS")
-    # print(printAuto.printState, "WAS")
-    # print(printAuto.printTransition, "WAS")
-    # print(printAuto.printGoal, "WAS")
-    # writeAutomaton(file_automat, objects, printAuto)
-
-    # dictionary = setTable(test.state)
-    # print(dictionary, "dictionary")
+    print(test.printStart, "\t \t \t START")
+    print(test.printState, "\t STATE")
+    print(test.printGoal, "\t \t \t GOAL")
+    writeAutomaton(file_automat, objects, test)
 
     liste = calcEdges(test.transitionsTable)
     print(liste, "HIER")
-    # print(liste)
-    toGraph(liste, printAuto.printGoal, test.start)
+    toGraph(liste, test.printGoal, test.start)
     print("test")
     testMain()

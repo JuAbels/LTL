@@ -7,8 +7,9 @@ from LTL.tools.lf import setBasedNorm
 from LTL.tools.derivative import derivatives
 from LTL.tools.iteratedDerivative import itePartialDeriv
 from LTL.tools.toPnfObjects import toObjects
-from LTL.tools.toPnfObjects import returnAlphabet
 import itertools as it
+from copy import deepcopy
+import texttable as tt
 
 """Class to generate the omega Automaton"""
 
@@ -20,16 +21,12 @@ class Automaton:
     def __init__(self, formula):
         self.formula = formula   # the formula with all the pointer
         self.state = set()       # set with state status
-        self.alphabet = []   # set of alphabet TODO: per input
-        self.transition = set()  # set for the transition of automaton
+        self.alphabet = []       # set of alphabet
         self.start = set()       # set of start status
         self.goal = set()        # set of the goal status
         self.transitionsTable = {}
 
-        self.alphabetTEST = []
-
         self.printState = set()
-        self.printTransition = set()
         self.printStart = set()
         self.printGoal = set()
 
@@ -53,14 +50,9 @@ class Automaton:
 
             return: set with pointer.
         """
-        states = self.state
+        states = deepcopy(self.state)
         states = calculateList(states)
         for j in self.alphabet:
-            '''for i in states:
-                derivative = derivatives(i, j)
-                self.transition = self.transition.union(derivative)
-                i = stringName(i)
-                self.transitionsTable[i] = derivative'''
             derivative = setTable(states, j)
             self.transitionsTable[j] = derivative
 
@@ -78,12 +70,10 @@ class Automaton:
         TT = toObjects("tt")[1]
         TT.setAtom()
         self.goal.add(TT)
-        releaseSet = Automaton(formula).setStatus()
-        print(releaseSet, "HIER")
+        releaseSet = deepcopy(self.state)
         rel = set()
         while releaseSet:           # Laufzeit ist so scheiße, muss evtl anders
             x = releaseSet.pop()    # gemacht, wenn relevant
-            # sprint(x.getName())
             print(x.getName())
             if x.getName() == 'R':
                 rel.add(x)
@@ -105,25 +95,19 @@ class Automaton:
             self.alphabet.append(stringAlpha)
 
     def setPrintState(self):
-        test = self.state
+        test = deepcopy(self.state)
         while test:
             element = test.pop()
             self.printState.add(stringName(element))
 
-    def setPrintTransition(self):
-        test = self.transition
-        while test:
-            element = test.pop()
-            self.printTransition.add(stringName(element))
-
     def setPrintStart(self):
-        test = self.start
+        test = deepcopy(self.start)
         while test:
             element = test.pop()
             self.printStart.add(stringName(element))
 
     def setPrintGoal(self):
-        test = self.goal
+        test = deepcopy(self.goal)
         while test:
             element = test.pop()
             self.printGoal.add(stringName(element))
@@ -142,21 +126,7 @@ def automat(objects, alphabet):
     automat.setTransition()
     automat.setStart()
     automat.setGoals(objects)
-    return automat
-
-
-def printAutomaton(objects, alphabet):
-    """
-    Compute elements of omega automat for printing.
-    """
-    automat = Automaton(objects)
-    automat.setAlpabet(alphabet)
-    automat.setStatus()
-    automat.setTransition()
-    automat.setStart()
-    automat.setGoals(objects)
     automat.setPrintState()
-    automat.setPrintTransition()
     automat.setPrintStart()
     automat.setPrintGoal()
     return automat
@@ -173,9 +143,7 @@ def setTable(state, setAtom):
             first position is the status of the second list etc.
     """
     dictionary = {}  # End Matrix
-    # state = calculateList(states)
     for i in state:
-        # state = calculateList(states)
         trans = derivatives(i, setAtom)  # calculate translation for state
         trans = [stringName(i) for i in trans]
         key = stringName(i)
@@ -229,23 +197,34 @@ def writeAutomaton(file_in, objects, automaton):
     with open(file_in, 'w') as out:
         out.write("States of the Automaton \n" +
                   "=" * 23 + '\n' + '\n' +
+                  "Alphabet: \t" + str(automaton.alphabet) + '\n' +
                   "Q: \t \t" + str(automaton.printState) + '\n' +
-                  "Transition: \t" + str(automaton.printTransition) + '\n' +
                   "Start:\t \t" + str(automaton.printStart) + '\n' +
                   "F:\t \t" + str(automaton.printGoal) + '\n' + '\n' + '\n' +
                   "Transition Table \n" +
-                  "=" * 16 + '\n' + '\n' +
-                  "States \t \t | " + Automaton(objects).alphabet +
-                  '\n' + "\t \t | \n"
+                  "=" * 16 + '\n' + '\n'
                   )
-        for i in automaton.transitionsTable:
-            value = set()
-            for j in automaton.transitionsTable[i]:
-                value.add(stringName(j))
-            if len(i) > 10:
-                out.write(i + "\t | " + str(value) + "\n")
-            else:
-                out.write(i + "\t \t | " + str(value) + "\n")
+        tab = tt.Texttable()
+        headings = ['States'] + automaton.alphabet
+        tab.header(headings)
+
+        states = deepcopy(automaton.printState)
+        states = list(states)
+        listCols = [8 for i in range(0, len(automaton.alphabet))]
+        listCols.append(8)
+
+        for i in automaton.printState:
+            row = []
+            row.append(i)
+            for j in automaton.alphabet:
+                element = automaton.transitionsTable[j][i]
+                element = set(element)
+                row.append(element)
+            tab.add_row(row)
+        tab.set_cols_width(listCols)
+        out.write(tab.draw())
+        s = tab.draw()
+        print(s)
 
 
 def calculateList(states):
