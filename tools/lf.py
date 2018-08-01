@@ -194,6 +194,8 @@ def release(firstCase, secondCase):
 
 
 def defSix(my, ny):
+    #print("in defsix")
+    #
     if type(my) == tuple or type(ny) == tuple:
         if type(my) == tuple:
             my = list(my)
@@ -204,23 +206,29 @@ def defSix(my, ny):
             my = {my}
         if type(ny) != frozenset:
             ny = {ny}
+    #print(my)
+    #print(ny)
     total = list(my) + list(ny)
+    #print(total)
     doubleNeg = False
     for i in total:
         for j in total:
             if (i.getName() == j.getName() and i.getNeg() != j.getNeg()):
                 doubleNeg = True
+    #print(list(my)[0].getName())
+    #print(list(ny)[0].getName())
     if(list(my)[0].getName() == 'ff' or list(ny)[0].getName() == 'ff'):
         return lFormula('ff')
     elif(doubleNeg is True):
         return lFormula('ff')
     else:
-        solution = []
+        #print("even in else")
+        solution = set()
         for x in list(my):
-            solution.append(x)
+            solution.add(x)
         for x in list(ny):
-            solution.append(x)
-        return solution
+            solution.add(x)
+        return frozenset(solution)
 
 
 def caseAnd(first, second):
@@ -229,11 +237,17 @@ def caseAnd(first, second):
     ofSet = set()
     for i in myPhi:
         for j in nyPsi:
+            #print("===>")
+            #print("i", i[0])
+            #print("j", j[0])
             if (defSix(i[0], j[0]) != 'ff'):
                 lAnd = lFormula("&")
                 lAnd.setFirst(i[1])
                 lAnd.setSec(j[1])
-                ofSet.add((frozenset(defSix(i[0], j[0])), lAnd))
+                solu = (defSix(i[0], j[0]))
+                #print("====>",type(solu), solu)
+                #print(type(lAnd))
+                ofSet.add((solu, lAnd))
     return ofSet
 
 
