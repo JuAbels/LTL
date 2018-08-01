@@ -2,9 +2,16 @@
 Authors: Julia Abels and Stefan Strang
          University of Freiburg - 2018
 
-editor notes:
+Operators:
+next: 		Xf - ()
+eventually 	Ff - <>
+always 		Gf - []
+strong until 	f U g
+weak until	f W g
+weak release 	f R g	f V g
+strong realase 	f M g
 
-toGraphViz is now the correct function to print graph
+& G p F ! p
 """
 
 import sys
@@ -31,10 +38,10 @@ from LTL.tests.testMain import testMain
 # import subprocess
 from LTL.tools.toGraphViz import toGraph
 from LTL.tools.toGraphViz import calcEdges
-
+from LTL.tools.tableauDecision import def17
 
 if __name__ == "__main__":
-    print(len(sys.argv))
+    #print(len(sys.argv))
     inp = getInp()
     formulare = translate(inp[0])
     file_automat = inp[2]
@@ -42,26 +49,32 @@ if __name__ == "__main__":
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
     objects = toPnf('& p1 | p3 U X p4 R p2 p3')
+
     # objects = toPnf('| p1 R X p2 p1')
     alphabet = returnAlphabet()  # get all atoms of object formel
-    print(alphabet,  "alphabet")
+    #print(alphabet,  "alphabet")
 
     derivatives(objects, inp[1])  # inp[1] gives x to the function
 
     # decisionTableGraph(objects)
 
-    test = automat(objects, alphabet)
-    print(test.goal, "goal")
+    #test = automat(objects, alphabet)
+    """print(test.goal, "goal")
     print(test.state, "state")
     print(test.start, "start")
     print(test.transitionsTable)
     print(test.printStart, "\t \t \t START")
     print(test.printState, "\t STATE")
     print(test.printGoal, "\t \t \t GOAL")
-    writeAutomaton(file_automat, objects, test)
+    writeAutomaton(file_automat, objects, test)"""
 
-    liste = calcEdges(test.transitionsTable)
-    print(liste, "HIER")
-    toGraph(liste, test.printGoal, test.start)
-    print("test")
-    testMain()
+    #liste = calcEdges(test.transitionsTable)
+    #print(liste, "HIER")
+    #toGraph(liste, test.printGoal, test.start)
+    #print("test")
+    #testMain()
+
+
+    #objects = toPnf('& G p F ! p')
+    def17('& G p F ! p')
+

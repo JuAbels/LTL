@@ -64,10 +64,49 @@ def getNames(formula):
             else:
                 print(y.getName())
 
+def checkForU(inp):
+    """ we need to check wheter there is an U p q in the formula. 
+    this will be done in a recursive way. """
+    if(inp.getName() == 'U'):
+        return True
+    else:
+        if(inp.getFirst() != None):
+            if(checkForU(inp.getFirst()) == True):
+                return True    
+        if(inp.getSec() != None):
+            if(checkForU(inp.getSec()) == True):
+                return True
+    return False
+
 def def17(formula):
+    """Implement Algorithm as explained in the annotation.
+    1. check if e3 is in formula
+    2. nodes that are upcomming have to be saved so that 
+       it can be checked if it allready exists
+    3. calculate lf
+    4. check if node state
+       yes => partial derivative
+       no  => e2
+    5. allready existing?
+       yes => error e3
+       no => go back to # 3.
+    6. a way to e3 exists and found
+       => valid
+    7. graphix
+    
+    """
+    # transfer it to PNF
+    # could also be given as input?!
     print(formula)
     pnf = toPnf(formula)
-    print(pnf.getName())
+
+    # 1.
+    # check if e3 is in formula
+    ifU = checkForU(pnf)
+    print(ifU)
+
+
+
     decomp = lf(pnf)
     #print(decomp)
     #getNames(decomp)
