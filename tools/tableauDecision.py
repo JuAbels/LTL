@@ -101,10 +101,11 @@ def def17(formula):
     pnf = toPnf(formula)
 
     # 1.
-    # check if e3 is in formula
+    # check if U is in formula
     ifU = checkForU(pnf)
     print(ifU)
-
+    # if true we need to apply e3 during the algorithmen
+    # in everycase we need to do the algorithm
 
 
     decomp = lf(pnf)
