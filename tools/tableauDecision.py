@@ -1,6 +1,15 @@
 """Author Stefan Strang, Julia Abels - Uni Freiburg.
 
+Operators:
+next: 		Xf - ()
+eventually 	Ff - <>
+always 		Gf - []
+strong until 	f U g
+weak until	f W g
+weak release 	f R g	f V g
+strong realase 	f M g
 
+!(p1 U (p2 & GFp3))
 """
 
 from graphviz import Digraph
@@ -43,3 +52,22 @@ def doDecomposition(formulare):
     liste.append(new)
     print(liste)
     return liste
+
+def getNames(formula):
+    """just helper to debug. from objects to obj.getName()"""
+    print("----")
+    for x in formula:
+        for y in x:
+            if(type(y) == frozenset):
+                for z in y:
+                    print(z.getName())
+            else:
+                print(y.getName())
+
+def def17(formula):
+    print(formula)
+    pnf = toPnf(formula)
+    print(pnf.getName())
+    decomp = lf(pnf)
+    #print(decomp)
+    #getNames(decomp)
