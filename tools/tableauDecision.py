@@ -101,14 +101,22 @@ def def17(formula):
     #print(formula)
     pnf = toPnf(formula)
 
-    # 1.
-    # check if U is in formula
+    # 1. & 2.  
+    # check if U is in formula. safing them to ifU so that they
+    # can be checked
     ifU = checkForU(pnf, set())
-    print(ifU)
+    # print(ifU)
     # so if an U.getSec() ist found we need to search for more than just tt
     # if there is a way to satisfy 
+        
 
+    # 3. 
+    # doing the linearfactor on it
     decomp = lf(pnf)
+    # in the minimal case of U q p it has to be.
+    # {({p}, tt),(q, U q p)}
+    # by checking for having p in it we now need check 4.
+
     #print(decomp)
     """for x in decomp:
         print("-----")
