@@ -76,5 +76,7 @@ if __name__ == "__main__":
 
 
     #objects = toPnf('& G p F ! p')
-    def17('& G p F ! p')
+    #def17('& G p F ! p')
+    #def17('& ! p & X ! p U q p')
+    def17('U q p')
 

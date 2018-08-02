@@ -64,23 +64,24 @@ def getNames(formula):
             else:
                 print(y.getName())
 
-def checkForU(inp):
+def checkForU(inp, aSet):
     """ we need to check wheter there is an U p q in the formula. 
     this will be done in a recursive way. """
     if(inp.getName() == 'U'):
-        return True
+        aSet.add(inp.getSec())
+        return aSet
     else:
         if(inp.getFirst() != None):
-            if(checkForU(inp.getFirst()) == True):
-                return True    
+            if(checkForU(inp.getFirst()) != False):
+                return checkForU(inp.getFirst())
         if(inp.getSec() != None):
-            if(checkForU(inp.getSec()) == True):
-                return True
+            if(checkForU(inp.getSec()) != False):
+                return checkForU(inp.getFirst())
     return False
 
 def def17(formula):
     """Implement Algorithm as explained in the annotation.
-    1. check if e3 is in formula
+    1. check if U is in formula
     2. nodes that are upcomming have to be saved so that 
        it can be checked if it allready exists
     3. calculate lf
@@ -97,17 +98,27 @@ def def17(formula):
     """
     # transfer it to PNF
     # could also be given as input?!
-    print(formula)
+    #print(formula)
     pnf = toPnf(formula)
 
     # 1.
     # check if U is in formula
-    ifU = checkForU(pnf)
+    ifU = checkForU(pnf, set())
     print(ifU)
-    # if true we need to apply e3 during the algorithmen
-    # in everycase we need to do the algorithm
-
+    # so if an U.getSec() ist found we need to search for more than just tt
+    # if there is a way to satisfy 
 
     decomp = lf(pnf)
     #print(decomp)
+    """for x in decomp:
+        print("-----")
+        #print(x)
+        for y in x:
+            if type(y) != frozenset:
+                print(y.getName())
+            else:
+                for z in y:
+                    print(z.getName())"""
+            #print(y)
+            #print(type(y))
     #getNames(decomp)
