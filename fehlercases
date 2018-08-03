@@ -1,9 +1,4 @@
 fehlercases
 
-fehler beim konkaten in lf
-R | q1 p2 p3
 
-getinput spinnt bei  - vllt nur wenn -demo angehängt ist
-('G F p', '{"p", "p2", "q1", "q2"}')
 
-fehler beim printen in files - die alten flags werden nichtmehr erkannt
