@@ -2,18 +2,18 @@
 import sys
 from LTL.tools.ltlPrint import ltlPrint
 from LTL.tests.testMain import testMain
-# from LTL.tools.demo import demo1
+from LTL.tools.demo import demo1
 import spot
 
 
 def usage():
     """Tell how to use."""
-    print("usage: python3 main.py <input> <automatPrint>")
+    print("usage: python3 main.py <input> <automatPrint> [<flag>}")
 
     print("input can be textfile(.txt) or string")
-    print("string-example: '& p1 p2 {'p1','q'}'")
+    print("string-example: \"('G F p'; '{'p', 'p2', 'q1', 'q2'}')\"")
     print("set flag if you want to reprint the formula")
-    print("To print: python3 main.py <input> <flag>")
+    print("To print: python3 main.py <input> <output> <flag>")
 
     print("possible Flags: -pp [menu]; -spot; -spin; -latex")
     print("Flags for testing: -test")
@@ -33,11 +33,13 @@ def getInp():
     # IMPORTANT: every int in sys.argv + 1, because new element in console,
     # if it isn't workling delete file_write and do -1 in for every sys_argv
     try:
+    #if(True):
+        
         if '.' in sys.argv[1]:
             inp = "LTL/" + sys.argv[1]
         else:
             inp = sys.argv[1]
-        # print(len(sys.argv))
+        #print(inp)
         if(len(sys.argv) == 3):  # +1
             if(len(inp.split(".")) > 1):
                 data = open(inp, "r")
@@ -46,12 +48,23 @@ def getInp():
                 file_write = sys.argv[2]
                 return(back, secBack, file_write)
             else:
-                print(inp)
-                inp = inp.split('{')
-                print(inp)
+                #print("here we are")
+                #print(inp)
+                inp = inp.strip("(")
+                inp = inp.strip(")")
+                inp = inp.split(";")
+                #print(inp)
+                retour = []
+                for i in inp:
+                    i = i.strip()
+                    i = i.strip("'")
+                    retour.append(i)
+                #print(retour)
                 file_write = sys.argv[2]
-                return inp[0], '{' + inp[1], file_write
-        elif(len(sys.argv) == 4):  # +1
+                return retour[0], retour[1], file_write
+        elif(len(sys.argv) == 4 and 1 < len(sys.argv[1].split("."))):  # +1
+            print(len(sys.argv[1].split(".")))
+            
             if(sys.argv[3] == "-pp"):
                 data = open(inp, "r")
                 back = data.readline().strip().strip("\"")
@@ -87,8 +100,32 @@ def getInp():
                 testMain()
 
             elif(sys.argv[3] == "-demo"):
+                demo1()
                 return 'demo', 'demo'
+        elif(len(sys.argv) == 4 ):
+            #print(sys.argv[1])
+            inp = inp.strip("(")
+            inp = inp.strip(")")
+            inp = inp.split(";")
+            #print(inp)
+            retour = []
+            for i in inp:
+                i = i.strip()
+                i = i.strip("'")
+                retour.append(i)
+            if(sys.argv[3] != "-pp"):
 
+                #print(retour)
+
+                #print(file_write)
+                #print(sys.argv[3][1:])
+                f = spot.formula(retour[0])
+                print(f.to_str(sys.argv[3][1:]))
+
+            else:
+                print(ltlPrint(retour[0]))
+            file_write = sys.argv[2]                
+            return retour[0], retour [1], file_write
         else:
             exit()
     except:

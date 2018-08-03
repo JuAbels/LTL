@@ -43,18 +43,18 @@ from LTL.tools.tableauDecision import def17
 if __name__ == "__main__":
     #print(len(sys.argv))
     inp = getInp()
-    formulare = translate(inp[0])
-    file_automat = inp[2]
+    #formulare = translate(inp[0])
+    #file_automat = inp[2]
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
-    objects = toPnf('& p1 | p3 U X p4 R p2 p3')
+    #objects = toPnf('& p1 | p3 U X p4 R p2 p3')
 
     # objects = toPnf('| p1 R X p2 p1')
-    alphabet = returnAlphabet()  # get all atoms of object formel
+    #alphabet = returnAlphabet()  # get all atoms of object formel
     #print(alphabet,  "alphabet")
 
-    derivatives(objects, inp[1])  # inp[1] gives x to the function
+    #derivatives(objects, inp[1])  # inp[1] gives x to the function
 
     # decisionTableGraph(objects)
 
@@ -74,9 +74,9 @@ if __name__ == "__main__":
     #print("test")
     #testMain()
 
-
+    
     #objects = toPnf('& G p F ! p')
     #def17('& G p F ! p')
     #def17('& ! p & X ! p U q p')
-    def17('U q p')
+    #def17('U q p')
 
