@@ -17,7 +17,7 @@ strong realase 	f M g
 import sys
 from LTL.tools.ltlToPred import translate
 from LTL.tools.getInp import getInp
-# from LTL.tools.lf import lf
+from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.toPnfObjects import returnAlphabet
 from LTL.tools.omegaAutomaton import Automaton
@@ -25,7 +25,7 @@ from LTL.tools.omegaAutomaton import setTable
 from LTL.tools.omegaAutomaton import automat
 from LTL.tools.omegaAutomaton import writeAutomaton
 from LTL.tools.derivative import derivatives
-from LTL.tools.tableauDecision import decisionTableGraph
+#from LTL.tools.tableauDecision import decisionTableGraph
 
 # import doctest
 # from LTL.tests.unitTests import test
@@ -43,6 +43,8 @@ from LTL.tools.tableauDecision import def17
 if __name__ == "__main__":
     #print(len(sys.argv))
     inp = getInp()
+    obs = toPnf('U q p')
+    def17(obs)
     #formulare = translate(inp[0])
     #file_automat = inp[2]
 
