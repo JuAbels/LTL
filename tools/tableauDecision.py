@@ -18,6 +18,134 @@ from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
 
 
+class preState:
+    def __init__(self, nameObj):
+        # written flag is 
+        # unwritten = 0 
+        # written = 1
+        self.written = 0
+        # state can vary betwenn State and preState
+
+        self.State = "preState"
+        # pointers to the next nodes
+        self.Pointers = set()
+        # getting the name of the node
+        # alias stripping objects to string
+        self.Name = obsToName(nameObj,"").strip()
+        # the unstripped name
+        self.nameObj = nameObj
+
+class State:
+    def __init__(self, nameObj):
+        # written flag is 
+        # unwritten = 0 
+        # written = 1
+        self.written = 0
+        # state can vary betwenn State and preState
+
+        self.State = "State"
+        # pointers to the next nodes
+        self.Pointers = set()
+        # getting the name of the node
+        # alias stripping objects to string
+        # self.Name = !!!!obsToName(nameObj,"")
+        # the unstripped name
+        self.nameObj = nameObj
+
+
+def obsToName(nameObj, string):
+    if(nameObj.getNeg() == True): 
+        string = string + "! "
+    string = string + nameObj.getName() + " "
+    if (nameObj.getFirst() != None):
+        string = obsToName(nameObj.getFirst(),string)
+    if (nameObj.getSec() != None):
+        string = obsToName(nameObj.getSec(),string)
+    return string
+
+def getNames(formula):
+    """just helper to debug. from objects to obj.getName()"""
+    print("----")
+    for x in formula:
+        for y in x:
+            if(type(y) == frozenset):
+                for z in y:
+                    print(z.getName())
+            else:
+                print(y.getName())
+
+def checkForU(inp, aSet):
+    """ we need to check wheter there is an U p q in the formula. 
+    this will be done in a recursive way. """
+    if(inp.getName() == 'U'):
+        aSet.add(inp.getSec().getName()) ### here maybe better not name
+        return aSet
+    else:
+        if(inp.getFirst() != None):
+            if(checkForU(inp.getFirst()) != False):
+                return checkForU(inp.getFirst())
+        if(inp.getSec() != None):
+            if(checkForU(inp.getSec()) != False):
+                return checkForU(inp.getFirst())
+    return False
+
+def checkEnd(node):
+    # if allready wisited => loop
+    # or found in the search for
+    # return true
+    actual = obsToName(node.nameObj[1],"").strip()
+    for x in visited:
+        if(actual == x):
+            print("allready visited")
+            return True
+    print("not visited:")
+    if(node.nameObj[1].getAtom() == True):
+        for x in node.nameObj[0]:
+            if x.getName() in checkForX:
+                print("searching for")
+                return True
+    pass
+
+def getGraph(node):
+    if(node.State == "preState"):
+        linFacs = lf(node.nameObj)
+        for x in linFacs:
+            newState = State(x)
+            node.Pointers.add(newState)
+        for x in node.Pointers:
+            getGraph(x)
+    else:
+        # check end
+        if (checkEnd(node) == True):
+
+            return # hopping return ist not to powerful
+        # go with second as new state
+        else:
+            pass # new prestate
+
+def def17(formula):
+    """Implement Algorithm as explained in the annotation.
+    TODO:
+    - für den fall, dass es sich um einen prestate als zwischenstadium handelt. den übergang im graph implementieren
+    - dafür muss auch gecheckt werden, ob es noch weitere reduktionsregeln gibt und welche dafür in betracht kommen.
+    - evtl müssen linearfaktoren geprüft werden, da sie im paperbaum anders zu sein scheinen.
+
+    """
+    global visited
+    visited = set()
+    global checkForX
+    checkForX = checkForU(formula, set())
+    # print("checkforx",checkForX)
+    firstState = preState(formula)
+    visited.add(firstState.Name)
+    #print(visited)
+    graph = getGraph(firstState)
+
+
+
+
+
+"""this may be not up to date
 def decisionTableGraph(formulare):
     '''
     Function to create decisionTable.
@@ -51,62 +179,5 @@ def doDecomposition(formulare):
         new.add(second)
     liste.append(new)
     print(liste)
-    return liste
+    return liste"""
 
-def getNames(formula):
-    """just helper to debug. from objects to obj.getName()"""
-    print("----")
-    for x in formula:
-        for y in x:
-            if(type(y) == frozenset):
-                for z in y:
-                    print(z.getName())
-            else:
-                print(y.getName())
-
-def checkForU(inp):
-    """ we need to check wheter there is an U p q in the formula. 
-    this will be done in a recursive way. """
-    if(inp.getName() == 'U'):
-        return True
-    else:
-        if(inp.getFirst() != None):
-            if(checkForU(inp.getFirst()) == True):
-                return True    
-        if(inp.getSec() != None):
-            if(checkForU(inp.getSec()) == True):
-                return True
-    return False
-
-def def17(formula):
-    """Implement Algorithm as explained in the annotation.
-    1. check if e3 is in formula
-    2. nodes that are upcomming have to be saved so that 
-       it can be checked if it allready exists
-    3. calculate lf
-    4. check if node state
-       yes => partial derivative
-       no  => e2
-    5. allready existing?
-       yes => error e3
-       no => go back to # 3.
-    6. a way to e3 exists and found
-       => valid
-    7. graphix
-    
-    """
-    # transfer it to PNF
-    # could also be given as input?!
-    print(formula)
-    pnf = toPnf(formula)
-
-    # 1.
-    # check if e3 is in formula
-    ifU = checkForU(pnf)
-    print(ifU)
-
-
-
-    decomp = lf(pnf)
-    #print(decomp)
-    #getNames(decomp)
