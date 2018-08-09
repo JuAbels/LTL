@@ -48,12 +48,40 @@ class State:
         self.Pointers = set()
         # getting the name of the node
         # alias stripping objects to string
-        # self.Name = !!!!obsToName(nameObj,"")
+        self.Name = tupleToName(nameObj,"")
         # the unstripped name
         self.nameObj = nameObj
 
+def tupleToName(obj, string):
+    """Convert the given set of linear factors to a readable string."""
+    # this may be buggy as a following of wrong depth in lf building
+    #print("objekt: ", obj)
+    string = string +"{"
+    for x in obj:
+        string = string +"("
+        for y in x:
+            if type(y) == frozenset:
+                string = string + "{"
+                for z in y:
+                    if z.getAtom() == True:
+                        string = string +(z.getName()) #+  " "
+                    else:
+                        string = string +(obsToName(z, "").strip()) #+  " "
+                string = string + "},"
+            else:
+                if y.getAtom() == True:
+                    string = string +(y.getName()) #+  " "
+                else:
+                    string = string +(obsToName(y, "").strip()) #+  " "
+        string = string +"),"
+    string = string +"}"
+    for x in range(0,len(string)-1):
+        if string[x] == "," and string[x+1] == "}":
+            string = string[:x] + "}"
+    return string
 
 def obsToName(nameObj, string):
+    """Convert the graph of formula objects to a readable string."""
     if(nameObj.getNeg() == True): 
         string = string + "! "
     string = string + nameObj.getName() + " "
@@ -90,26 +118,27 @@ def checkForU(inp, aSet):
     return False
 
 def checkEnd(node):
-    # if allready wisited => loop
+    # if allready visited => loop
     # or found in the search for
     # return true
     actual = obsToName(node.nameObj[1],"").strip()
-    for x in visited:
+    for x in globalVisited:
         if(actual == x):
             print("allready visited")
             return True
     print("not visited:")
     if(node.nameObj[1].getAtom() == True):
         for x in node.nameObj[0]:
-            if x.getName() in checkForX:
+            if x.getName() in globalCheckForX:
                 print("searching for")
                 return True
     pass
 
-def getGraph(node):
+def getGraph(node):# at this point we might need to add it to visited?! maybe allready in checkEnd
+    """Building a Graph from States and Prestates."""
     if(node.State == "preState"):
         linFacs = lf(node.nameObj)
-        for x in linFacs:
+        for x in linFacs: 
             newState = State(x)
             node.Pointers.add(newState)
         for x in node.Pointers:
@@ -131,15 +160,15 @@ def def17(formula):
     - evtl müssen linearfaktoren geprüft werden, da sie im paperbaum anders zu sein scheinen.
 
     """
-    global visited
-    visited = set()
-    global checkForX
-    checkForX = checkForU(formula, set())
-    # print("checkforx",checkForX)
+    global globalVisited
+    globalVisited = set()
+    global globalCheckForX
+    globalCheckForX = checkForU(formula, set())
+
     firstState = preState(formula)
-    visited.add(firstState.Name)
-    #print(visited)
-    graph = getGraph(firstState)
+    #globalVisited.add(firstState.Name)
+    # print(State(lf(formula)).nameObj)
+    #graph = getGraph(firstState)
 
 
 
