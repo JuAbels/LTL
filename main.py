@@ -45,7 +45,7 @@ if __name__ == "__main__":
     inp = getInp()
     obs = toPnf('U q p')
     def17(obs)
-    #formulare = translate(inp[0])
+    """#formulare = translate(inp[0])
     #file_automat = inp[2]
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
@@ -81,4 +81,4 @@ if __name__ == "__main__":
     def17('& G p F ! p')
     #def17('& G p F ! p')
     #def17('& ! p & X ! p U q p')
-    #def17('U q p')
+    #def17('U q p')"""
