@@ -77,7 +77,8 @@ def tupleToName(obj, string):
     string = string +"}"
     for x in range(0,len(string)-1):
         if string[x] == "," and string[x+1] == "}":
-            string = string[:x] + "}"
+            string = string[:x] +string[x+1:]
+    #print(string)
     return string
 
 def obsToName(nameObj, string):
@@ -166,7 +167,18 @@ def def17(formula):
     globalCheckForX = checkForU(formula, set())
 
     firstState = preState(formula)
-    #globalVisited.add(firstState.Name)
+    linfacs = lf(toPnf('& ! p U q p'))
+    for x in linfacs:
+        
+        print(">>>>>")
+        for y in x:
+            print("----")
+            if(type(y) == frozenset):
+                for z in y:
+                    print(z.getName())
+            else:
+                print(y.getName())
+            #globalVisited.add(firstState.Name)
     # print(State(lf(formula)).nameObj)
     #graph = getGraph(firstState)
 
