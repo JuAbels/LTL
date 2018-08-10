@@ -50,7 +50,8 @@ def toGraph(edges, goals, start):
         counter1 -= 2
 
     testCase = []
-    setAtoms = setLabels(edges)
+    number = len(edges)
+    setAtoms = setLabels(edges, number)
     counter0 = 0   # variable to create for AND cases diamonds
     countColor = 0
     for p in edges:
@@ -59,6 +60,7 @@ def toGraph(edges, goals, start):
                 continue
             key = deepcopy(e)
             key = tuple(key)
+            print(key, "key")
             if e[1][0] == '&':
                 first, second = splitString(e[1])
                 g.node('%d' % (counter0), label='', shape='diamond')
@@ -78,13 +80,14 @@ def toGraph(edges, goals, start):
     g.view()
 
 
-def setLabels(dictionary):
+def setLabels(dictionary, number):
     '''
     Helpfunction to calculate the labels for the arrows. Keys are the
     path from one edge to other edge. Values is a set of the atoms with which
     the transition is possible.
 
     dictionary: dictionary of edges.
+    number: number of length of subsets of alphabet.
     return: dictionary.
     '''
     dictLable = {}
@@ -92,10 +95,16 @@ def setLabels(dictionary):
         for j in dictionary[i]:
             j = tuple(j)
             if j in dictLable:
-                dictLable[j] = dictLable[j] + ", " + i
+                dictLable[j].append(i)  # dictLable[j] + ", " + i
                 continue
             else:
-                dictLable[j] = i
+                dictLable[j] = [i]
+    for i in dictLable:
+        if len(dictLable[i]) == number:
+            dictLable[i] = ""
+        else:
+            dictLable[i] = str(dictLable[i])
+    print(dictLable)
     return dictLable
 
 
