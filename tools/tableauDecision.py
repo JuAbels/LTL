@@ -34,6 +34,7 @@ class preState:
         self.Name = obsToName(nameObj,"").strip()
         # the unstripped name
         self.nameObj = nameObj
+        self.nextPre = set()
 
 class State:
     def __init__(self, nameObj):
@@ -51,12 +52,38 @@ class State:
         self.Name = tupleToName(nameObj,"")
         # the unstripped name
         self.nameObj = nameObj
+        
 
 def tupleToName(obj, string):
     """Convert the given set of linear factors to a readable string."""
     # this may be buggy as a following of wrong depth in lf building
     #print("objekt: ", obj)
-    string = string +"{"
+
+    string = string +"("
+    #print(obj)
+    #print(string)
+    for x in obj:
+        #string = string + "("
+        if type(x) == frozenset:
+            string = string +"{"
+            for y in x:
+                string = string + y.getName() + ","
+                #print(y)
+            string = string +"}"
+        else:
+            string = string + x.getName()
+        string = string + ","
+    string = string + ")"
+    #print(string)
+    length = len(string)-1
+    for x in range(0,length):
+        if string[x] == "," and string[x+1] == "}" :
+            string = string[:x] +" " + string[x+1:]
+    for x in range(0,length):
+        if string[x] == "," and string[x+1] == ")" :
+            string = string[:x] +" " + string[x+1:]
+    # print(string.strip())
+    """
     for x in obj:
         string = string +"("
         for y in x:
@@ -78,7 +105,7 @@ def tupleToName(obj, string):
     for x in range(0,len(string)-1):
         if string[x] == "," and string[x+1] == "}":
             string = string[:x] +string[x+1:]
-    #print(string)
+    #print(string)"""
     return string
 
 def obsToName(nameObj, string):
@@ -135,39 +162,94 @@ def checkEnd(node):
                 return True
     pass
 
-def getGraph(node):# at this point we might need to add it to visited?! maybe allready in checkEnd
-    """Building a Graph from States and Prestates."""
-    if(node.State == "preState"):
-        linFacs = lf(node.nameObj)
-        for x in linFacs: 
-            newState = State(x)
-            node.Pointers.add(newState)
-        for x in node.Pointers:
-            getGraph(x)
-    else:
-        # check end
-        if (checkEnd(node) == True):
 
-            return # hopping return ist not to powerful
-        # go with second as new state
+
+def makeGraph(node):
+    firstState = preState(node)
+    if firstState.Name in globalVisited or firstState.Name == 'tt': # or in found or as atom
+        return
+    #print(firstState.Name)
+    globalVisited.add(firstState.Name)
+    
+    for x in lf(firstState.nameObj):
+        actual = State(x)
+        firstState.Pointers.add(actual)
+        actual.Pointers.add(preState(actual.nameObj[1]))
+    print(firstState.Name)
+    print(firstState.Pointers)
+    for x in firstState.Pointers:
+        print("==>",x.Name)
+    for states in firstState.Pointers:
+        makeGraph(states.nameObj[1])
+         
+        
+
+    """#print(node.getName())
+    firstState = preState(node)
+    globalNodes.append(firstState)
+
+    #linfacs = lf(toPnf('& ! p U q p'))
+    #firstState = preState(toPnf('& ! p U q p'))
+    linfacs = lf(firstState.nameObj)
+    #linfacs.add("bla")
+    states = set()
+    for x in linfacs:
+        #print(x)
+        actual = State(x)
+        
+        states.add(actual)
+        globalNodes.append(actual)
+    firstState.Pointers = states
+    #print(states)
+    for x in states:
+        #print(x.Name)
+        #print(x.Pointers)
+        x.Pointers = preState(x.nameObj[1])
+        # print(x.Pointers)
+    for x in states:
+        # at this point there are three possible to abort building the tree.
+        # if the state is atomic, if the x is found or if there are loops
+        if x in globalCheckForX or firstState.nameObj.getAtom() == True or firstState.Name in globalVisited:
+            #globalVisited.add(firstState.Name)
+            return
         else:
-            pass # new prestate
+            #print(firstState.Name)
+            #print(firstState.nameObj.getAtom())
+            #input()
+            globalVisited.add(firstState.Name)
+            firstState.nextPre.add(preState(x.nameObj[1]))
+            makeGraph(x.nameObj[1])"""
+
+def printGraph(state):
+    print(state.Name)
+    print(state.Pointers)
+    for x in state.Pointers:
+        print(x.Name)
+    for x in state.nextPre:
+        printGraph(x)        
+    
+        
+    
 
 def def17(formula):
     """Implement Algorithm as explained in the annotation.
-    TODO:
-    - für den fall, dass es sich um einen prestate als zwischenstadium handelt. den übergang im graph implementieren
-    - dafür muss auch gecheckt werden, ob es noch weitere reduktionsregeln gibt und welche dafür in betracht kommen.
-    - evtl müssen linearfaktoren geprüft werden, da sie im paperbaum anders zu sein scheinen.
-
     """
+
     global globalVisited
     globalVisited = set()
+    #globalVisited.add('U q p')
     global globalCheckForX
     globalCheckForX = checkForU(formula, set())
-
-    firstState = preState(formula)
-    linfacs = lf(toPnf('& ! p U q p'))
+    global globalNodes
+    globalNodes = []
+    #globalVisited.add('U q p')
+    makeGraph(toPnf('& ! p U q p'))
+    #printGraph(globalNodes[0])
+    """print("=====")
+    #print(lf(toPnf('U p q')))
+    for x in lf(toPnf('& ! p U q p')): 
+        State(x)
+    #print(linfacs)
     print(linfacs)
     for x in linfacs:
         
@@ -186,7 +268,7 @@ def def17(formula):
                     print(y.getSec().getName())
                     
                 else:
-                    print(y.getName())
+                    print(y.getName())"""
             #globalVisited.add(firstState.Name)
     # print(State(lf(formula)).nameObj)
     #graph = getGraph(firstState)
