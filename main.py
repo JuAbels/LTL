@@ -44,6 +44,10 @@ if __name__ == "__main__":
     #print(len(sys.argv))
     inp = getInp()
     obs = toPnf('U q p')
+    linfacs = lf(toPnf('& ! p U q p'))
+    #linfacs = lf(toPnf('U q p'))
+    #print(linfacs)
+
     def17(obs)
     """#formulare = translate(inp[0])
     #file_automat = inp[2]

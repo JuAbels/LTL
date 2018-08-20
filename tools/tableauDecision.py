@@ -168,16 +168,25 @@ def def17(formula):
 
     firstState = preState(formula)
     linfacs = lf(toPnf('& ! p U q p'))
+    print(linfacs)
     for x in linfacs:
         
         print(">>>>>")
         for y in x:
             print("----")
+
             if(type(y) == frozenset):
                 for z in y:
+                    print(z.getNeg())
                     print(z.getName())
             else:
-                print(y.getName())
+                if(y.getName() == "U"):
+                    print(y.getName())
+                    print(y.getFirst().getName())
+                    print(y.getSec().getName())
+                    
+                else:
+                    print(y.getName())
             #globalVisited.add(firstState.Name)
     # print(State(lf(formula)).nameObj)
     #graph = getGraph(firstState)
