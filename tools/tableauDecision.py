@@ -83,29 +83,7 @@ def tupleToName(obj, string):
         if string[x] == "," and string[x+1] == ")" :
             string = string[:x] +" " + string[x+1:]
     # print(string.strip())
-    """
-    for x in obj:
-        string = string +"("
-        for y in x:
-            if type(y) == frozenset:
-                string = string + "{"
-                for z in y:
-                    if z.getAtom() == True:
-                        string = string +(z.getName()) #+  " "
-                    else:
-                        string = string +(obsToName(z, "").strip()) #+  " "
-                string = string + "},"
-            else:
-                if y.getAtom() == True:
-                    string = string +(y.getName()) #+  " "
-                else:
-                    string = string +(obsToName(y, "").strip()) #+  " "
-        string = string +"),"
-    string = string +"}"
-    for x in range(0,len(string)-1):
-        if string[x] == "," and string[x+1] == "}":
-            string = string[:x] +string[x+1:]
-    #print(string)"""
+    string = string.replace(" ", "")
     return string
 
 def obsToName(nameObj, string):
@@ -166,67 +144,39 @@ def checkEnd(node):
 
 def makeGraph(node):
     firstState = preState(node)
+    globalNodes.append(firstState)
     if firstState.Name in globalVisited or firstState.Name == 'tt': # or in found or as atom
-        return
+        return #firstState
     #print(firstState.Name)
     globalVisited.add(firstState.Name)
     
     for x in lf(firstState.nameObj):
         actual = State(x)
-        firstState.Pointers.add(actual)
-        actual.Pointers.add(preState(actual.nameObj[1]))
-    print(firstState.Name)
-    print(firstState.Pointers)
-    for x in firstState.Pointers:
-        print("==>",x.Name)
-    for states in firstState.Pointers:
-        makeGraph(states.nameObj[1])
-         
-        
-
-    """#print(node.getName())
-    firstState = preState(node)
-    globalNodes.append(firstState)
-
-    #linfacs = lf(toPnf('& ! p U q p'))
-    #firstState = preState(toPnf('& ! p U q p'))
-    linfacs = lf(firstState.nameObj)
-    #linfacs.add("bla")
-    states = set()
-    for x in linfacs:
-        #print(x)
-        actual = State(x)
-        
-        states.add(actual)
         globalNodes.append(actual)
-    firstState.Pointers = states
-    #print(states)
-    for x in states:
-        #print(x.Name)
-        #print(x.Pointers)
-        x.Pointers = preState(x.nameObj[1])
-        # print(x.Pointers)
-    for x in states:
-        # at this point there are three possible to abort building the tree.
-        # if the state is atomic, if the x is found or if there are loops
-        if x in globalCheckForX or firstState.nameObj.getAtom() == True or firstState.Name in globalVisited:
-            #globalVisited.add(firstState.Name)
-            return
-        else:
-            #print(firstState.Name)
-            #print(firstState.nameObj.getAtom())
-            #input()
-            globalVisited.add(firstState.Name)
-            firstState.nextPre.add(preState(x.nameObj[1]))
-            makeGraph(x.nameObj[1])"""
-
+        firstState.Pointers.add(actual)
+        #actual.Pointers.add(preState(actual.nameObj[1]))
+    #print(firstState.Pointers)
+    for x in firstState.Pointers:
+        x.Pointers.add(makeGraph(x.nameObj[1]))
+    """nextPres = set()
+    for x in firstState.Pointers:
+        for y in x.Pointers:
+           nextPres.add(y)
+    """
+    #firstState.nextPre = nextPres
+    
+    return firstState
+    
 def printGraph(state):
-    print(state.Name)
-    print(state.Pointers)
-    for x in state.Pointers:
-        print(x.Name)
-    for x in state.nextPre:
-        printGraph(x)        
+    #if 
+    if state != None:
+        print(state.Name)
+        #print(state.Pointers)
+        for x in state.Pointers:
+            print(x.Name)
+        for x in state.Pointers:
+            for y in x.Pointers:
+                printGraph(y)
     
         
     
@@ -244,72 +194,5 @@ def def17(formula):
     globalNodes = []
     #globalVisited.add('U q p')
     makeGraph(toPnf('& ! p U q p'))
-    #printGraph(globalNodes[0])
-    """print("=====")
-    #print(lf(toPnf('U p q')))
-    for x in lf(toPnf('& ! p U q p')): 
-        State(x)
-    #print(linfacs)
-    print(linfacs)
-    for x in linfacs:
-        
-        print(">>>>>")
-        for y in x:
-            print("----")
-
-            if(type(y) == frozenset):
-                for z in y:
-                    print(z.getNeg())
-                    print(z.getName())
-            else:
-                if(y.getName() == "U"):
-                    print(y.getName())
-                    print(y.getFirst().getName())
-                    print(y.getSec().getName())
-                    
-                else:
-                    print(y.getName())"""
-            #globalVisited.add(firstState.Name)
-    # print(State(lf(formula)).nameObj)
-    #graph = getGraph(firstState)
-
-
-
-
-
-"""this may be not up to date
-def decisionTableGraph(formulare):
-    '''
-    Function to create decisionTable.
-
-    formulare: is input formulare
-    '''
-    g = Digraph('G', filename='decision.gv')
-    start = stringName(formulare)
-    linearFactor = doDecomposition(formulare)
-    g.edge(start, linearFactor)
-    g.view()
-
-
-def doDecomposition(formulare):
-    '''
-    Helpfunction to calulate LF function.
-    '''
-    liste = []
-    start = stringName(formulare)
-    liste.append(start)
-    end = lf(formulare)
-    new = set()
-    for i in end:
-        if type(i[0]) is frozenset:
-            ele = i[0].pop()
-            new.add(stringName(ele))
-        else:
-            first = stringName(i[0])
-            new.add(first)
-        second = stringName(i[1])
-        new.add(second)
-    liste.append(new)
-    print(liste)
-    return liste"""
+    printGraph(globalNodes[0])
 
