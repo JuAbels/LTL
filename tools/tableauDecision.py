@@ -34,6 +34,7 @@ class preState:
         self.Name = obsToName(nameObj,"").strip()
         # the unstripped name
         self.nameObj = nameObj
+        self.nextPre = set()
 
 class State:
     def __init__(self, nameObj):
@@ -51,34 +52,38 @@ class State:
         self.Name = tupleToName(nameObj,"")
         # the unstripped name
         self.nameObj = nameObj
+        
 
 def tupleToName(obj, string):
     """Convert the given set of linear factors to a readable string."""
     # this may be buggy as a following of wrong depth in lf building
     #print("objekt: ", obj)
-    string = string +"{"
-    for x in obj:
-        string = string +"("
-        for y in x:
-            if type(y) == frozenset:
-                string = string + "{"
-                for z in y:
-                    if z.getAtom() == True:
-                        string = string +(z.getName()) #+  " "
-                    else:
-                        string = string +(obsToName(z, "").strip()) #+  " "
-                string = string + "},"
-            else:
-                if y.getAtom() == True:
-                    string = string +(y.getName()) #+  " "
-                else:
-                    string = string +(obsToName(y, "").strip()) #+  " "
-        string = string +"),"
-    string = string +"}"
-    for x in range(0,len(string)-1):
-        if string[x] == "," and string[x+1] == "}":
-            string = string[:x] +string[x+1:]
+
+    string = string +"("
+    #print(obj)
     #print(string)
+    for x in obj:
+        #string = string + "("
+        if type(x) == frozenset:
+            string = string +"{"
+            for y in x:
+                string = string + y.getName() + ","
+                #print(y)
+            string = string +"}"
+        else:
+            string = string + x.getName()
+        string = string + ","
+    string = string + ")"
+    #print(string)
+    length = len(string)-1
+    for x in range(0,length):
+        if string[x] == "," and string[x+1] == "}" :
+            string = string[:x] +" " + string[x+1:]
+    for x in range(0,length):
+        if string[x] == "," and string[x+1] == ")" :
+            string = string[:x] +" " + string[x+1:]
+    # print(string.strip())
+    string = string.replace(" ", "")
     return string
 
 def obsToName(nameObj, string):
@@ -135,90 +140,59 @@ def checkEnd(node):
                 return True
     pass
 
-def getGraph(node):# at this point we might need to add it to visited?! maybe allready in checkEnd
-    """Building a Graph from States and Prestates."""
-    if(node.State == "preState"):
-        linFacs = lf(node.nameObj)
-        for x in linFacs: 
-            newState = State(x)
-            node.Pointers.add(newState)
-        for x in node.Pointers:
-            getGraph(x)
-    else:
-        # check end
-        if (checkEnd(node) == True):
 
-            return # hopping return ist not to powerful
-        # go with second as new state
-        else:
-            pass # new prestate
+
+def makeGraph(node):
+    firstState = preState(node)
+    globalNodes.append(firstState)
+    if firstState.Name in globalVisited or firstState.Name == 'tt': # or in found or as atom
+        return #firstState
+    #print(firstState.Name)
+    globalVisited.add(firstState.Name)
+    
+    for x in lf(firstState.nameObj):
+        actual = State(x)
+        globalNodes.append(actual)
+        firstState.Pointers.add(actual)
+        #actual.Pointers.add(preState(actual.nameObj[1]))
+    #print(firstState.Pointers)
+    for x in firstState.Pointers:
+        x.Pointers.add(makeGraph(x.nameObj[1]))
+    """nextPres = set()
+    for x in firstState.Pointers:
+        for y in x.Pointers:
+           nextPres.add(y)
+    """
+    #firstState.nextPre = nextPres
+    
+    return firstState
+    
+def printGraph(state):
+    #if 
+    if state != None:
+        print(state.Name)
+        #print(state.Pointers)
+        for x in state.Pointers:
+            print(x.Name)
+        for x in state.Pointers:
+            for y in x.Pointers:
+                printGraph(y)
+    
+        
+    
 
 def def17(formula):
     """Implement Algorithm as explained in the annotation.
-    TODO:
-    - für den fall, dass es sich um einen prestate als zwischenstadium handelt. den übergang im graph implementieren
-    - dafür muss auch gecheckt werden, ob es noch weitere reduktionsregeln gibt und welche dafür in betracht kommen.
-    - evtl müssen linearfaktoren geprüft werden, da sie im paperbaum anders zu sein scheinen.
-
     """
+
     global globalVisited
     globalVisited = set()
+    #globalVisited.add('U q p')
     global globalCheckForX
     globalCheckForX = checkForU(formula, set())
-
-    firstState = preState(formula)
-    linfacs = lf(toPnf('& ! p U q p'))
-    for x in linfacs:
-        
-        print(">>>>>")
-        for y in x:
-            print("----")
-            if(type(y) == frozenset):
-                for z in y:
-                    print(z.getName())
-            else:
-                print(y.getName())
-            #globalVisited.add(firstState.Name)
-    # print(State(lf(formula)).nameObj)
-    #graph = getGraph(firstState)
-
-
-
-
-
-"""this may be not up to date
-def decisionTableGraph(formulare):
-    '''
-    Function to create decisionTable.
-
-    formulare: is input formulare
-    '''
-    g = Digraph('G', filename='decision.gv')
-    start = stringName(formulare)
-    linearFactor = doDecomposition(formulare)
-    g.edge(start, linearFactor)
-    g.view()
-
-
-def doDecomposition(formulare):
-    '''
-    Helpfunction to calulate LF function.
-    '''
-    liste = []
-    start = stringName(formulare)
-    liste.append(start)
-    end = lf(formulare)
-    new = set()
-    for i in end:
-        if type(i[0]) is frozenset:
-            ele = i[0].pop()
-            new.add(stringName(ele))
-        else:
-            first = stringName(i[0])
-            new.add(first)
-        second = stringName(i[1])
-        new.add(second)
-    liste.append(new)
-    print(liste)
-    return liste"""
+    global globalNodes
+    globalNodes = []
+    #globalVisited.add('U q p')
+    makeGraph(toPnf('& ! p U q p'))
+    printGraph(globalNodes[0])
 

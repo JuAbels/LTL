@@ -43,10 +43,14 @@ from LTL.tools.tableauDecision import def17
 if __name__ == "__main__":
     #print(len(sys.argv))
     inp = getInp()
-    # obs = toPnf('U q p')
-    # def17(obs)
-    #formulare = translate(inp[0])
-    file_automat = inp[2]
+    obs = toPnf('U q p')
+    linfacs = lf(toPnf('& ! p U q p'))
+    #linfacs = lf(toPnf('U q p'))
+    #print(linfacs)
+
+    def17(obs)
+    """#formulare = translate(inp[0])
+    #file_automat = inp[2]
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')

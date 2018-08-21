@@ -32,7 +32,7 @@ def lf(formula):
 
 
     """
-
+    #print(formula.getName())
     lfset = set()
     nameObj = formula.getName()
     if nameObj in doubles:
@@ -44,10 +44,14 @@ def lf(formula):
             secondForm = lf(second)
             lfset = firstForm.union(secondForm)
         elif nameObj == 'U':
+            #print("caseUntil")
             setUntil = lf(second)
             secSet = caseUntil(first, second)
-
+            #print(secSet)
+            #print(setUntil)
             lfset = lfset.union(setUntil, secSet)
+            #print(lfset)
+            #print(">>>>")
         elif nameObj == 'R':
             secSet = release(first, second)
             lfset = lfset.union(secSet)
@@ -69,7 +73,7 @@ def lf(formula):
         lfset = lfset.union(tup)
 
     flatten(lfset)
-
+    #print(lfset)
     return lfset
 
 
@@ -158,18 +162,44 @@ def setBasedNorm(form):
 def caseUntil(fromCase, untilCase):
     ''' definition for case UNTIL '''
     iterable = lf(fromCase)
+    """print(fromCase.getName())
+    print(untilCase.getName())
+    print(iterable)
+    for x in iterable:
+        for y in x:
+            if type(y)== frozenset:
+                for z in y:
+                    print(z.getName())
+            else:
+                print(y.getName())
+    """
     oneSet = set()
     while iterable:
         tup = iterable.pop()
         first = tup[0]
         second = tup[1]
+        #print("first n second",first, second)
         lAnd = lFormula("&")
         lUntil = lFormula("U")
-        lAnd.setFirst(second)
-        lAnd.setSec(lUntil)
         lUntil.setFirst(fromCase)
         lUntil.setSec(untilCase)
+        lAnd.setFirst(second)##
+        lAnd.setSec(lUntil)##
         oneSet.add((first, lAnd))
+    #print(oneSet)
+    """for x in oneSet:
+        for y in x:
+            if type(y)== frozenset:
+                for z in y:
+                    print(z.getName())
+            else:
+                print(y.getName())
+                print(y.getFirst().getName())
+                print(y.getSec().getName())
+                print(y.getSec().getFirst().getName())
+                print(y.getSec().getSec().getName())
+    """
+    
     return oneSet
 
 
@@ -233,22 +263,63 @@ def defSix(my, ny):
 
 def caseAnd(first, second):
     myPhi = list(lf(first))
+    #print("sec",second.getName())
     nyPsi = list(lf(second))
-    ofSet = set()
+    ofAndSet = set()
+    #print("myPhi:" , myPhi)
+    """for x in myPhi:
+        for y in x:
+            if type(y) == frozenset:
+                for z in y:
+                    print(z.getName())
+                    print(z.getNeg())
+            else:
+                print(y.getName())
+    print("nyPsi:" , nyPsi)
+    for x in nyPsi:
+        for y in x:
+            if type(y) == frozenset:
+                for z in y:
+                    print(z.getName())
+                    #print(z.getNeg())
+            else:
+                print(y.getName())"""
     for i in myPhi:
         for j in nyPsi:
             #print("===>")
             #print("i", i[0])
             #print("j", j[0])
-            if (defSix(i[0], j[0]) != 'ff'):
+
+            ### gosh this is ugly. maybe outsource it to another fkt.
+            if (type(defSix(i[0], j[0])) != frozenset):
+                if defSix(i[0], j[0]).getName() != 'ff':
+                    lAnd = lFormula("&")
+                    lAnd.setFirst(i[1])
+                    lAnd.setSec(j[1])
+                    solu = (defSix(i[0], j[0]))
+                    """print(">>> solution")
+                    if type(solu) == frozenset:
+                        for x in solu:
+                            print(x.getName()) 
+                    else:
+                        print(solu.getName())
+                    """#print(type(lAnd))
+                    ofAndSet.add((solu, lAnd))
+            if (type(defSix(i[0], j[0])) == frozenset):
+
                 lAnd = lFormula("&")
                 lAnd.setFirst(i[1])
                 lAnd.setSec(j[1])
                 solu = (defSix(i[0], j[0]))
-                #print("====>",type(solu), solu)
+                """print(">>> solution")
+                if type(solu) == frozenset:
+                    for x in solu:
+                        print(x.getName()) 
+                else:
+                    print(solu.getName())"""
                 #print(type(lAnd))
-                ofSet.add((solu, lAnd))
-    return ofSet
+                ofAndSet.add((solu, lAnd))
+    return ofAndSet
 
 
 def concat(inp):
