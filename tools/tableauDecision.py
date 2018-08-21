@@ -16,12 +16,15 @@ from graphviz import Digraph
 from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
+from LTL.tools.tableauDecisionGrafik import calcEdges
+from LTL.tools.tableauDecisionGrafik import calcEdgesDict
+from LTL.tools.tableauDecisionGrafik import tableauToGraph
 
 
 class preState:
     def __init__(self, nameObj):
-        # written flag is 
-        # unwritten = 0 
+        # written flag is
+        # unwritten = 0
         # written = 1
         self.written = 0
         # state can vary betwenn State and preState
@@ -38,8 +41,8 @@ class preState:
 
 class State:
     def __init__(self, nameObj):
-        # written flag is 
-        # unwritten = 0 
+        # written flag is
+        # unwritten = 0
         # written = 1
         self.written = 0
         # state can vary betwenn State and preState
@@ -52,7 +55,7 @@ class State:
         self.Name = tupleToName(nameObj,"")
         # the unstripped name
         self.nameObj = nameObj
-        
+
 
 def tupleToName(obj, string):
     """Convert the given set of linear factors to a readable string."""
@@ -88,7 +91,7 @@ def tupleToName(obj, string):
 
 def obsToName(nameObj, string):
     """Convert the graph of formula objects to a readable string."""
-    if(nameObj.getNeg() == True): 
+    if(nameObj.getNeg() == True):
         string = string + "! "
     string = string + nameObj.getName() + " "
     if (nameObj.getFirst() != None):
@@ -109,7 +112,7 @@ def getNames(formula):
                 print(y.getName())
 
 def checkForU(inp, aSet):
-    """ we need to check wheter there is an U p q in the formula. 
+    """ we need to check wheter there is an U p q in the formula.
     this will be done in a recursive way. """
     if(inp.getName() == 'U'):
         aSet.add(inp.getSec().getName()) ### here maybe better not name
@@ -149,7 +152,7 @@ def makeGraph(node):
         return #firstState
     #print(firstState.Name)
     globalVisited.add(firstState.Name)
-    
+
     for x in lf(firstState.nameObj):
         actual = State(x)
         globalNodes.append(actual)
@@ -164,11 +167,11 @@ def makeGraph(node):
            nextPres.add(y)
     """
     #firstState.nextPre = nextPres
-    
+
     return firstState
-    
+
 def printGraph(state):
-    #if 
+    #if
     if state != None:
         print(state.Name)
         #print(state.Pointers)
@@ -177,9 +180,9 @@ def printGraph(state):
         for x in state.Pointers:
             for y in x.Pointers:
                 printGraph(y)
-    
-        
-    
+
+
+
 
 def def17(formula):
     """Implement Algorithm as explained in the annotation.
@@ -195,4 +198,6 @@ def def17(formula):
     #globalVisited.add('U q p')
     makeGraph(toPnf('& ! p U q p'))
     printGraph(globalNodes[0])
-
+    results = calcEdgesDict(globalNodes[0])
+    edges = calcEdges(results)
+    tableauToGraph(edges)

@@ -40,6 +40,7 @@ from LTL.tools.toGraphViz import toGraph
 from LTL.tools.toGraphViz import calcEdges
 from LTL.tools.tableauDecision import def17
 
+
 if __name__ == "__main__":
     #print(len(sys.argv))
     inp = getInp()
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     #linfacs = lf(toPnf('U q p'))
     #print(linfacs)
 
-    def17(obs)
+    results = def17(obs)
     """#formulare = translate(inp[0])
     #file_automat = inp[2]
 
