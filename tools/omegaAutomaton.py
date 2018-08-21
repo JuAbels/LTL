@@ -74,7 +74,6 @@ class Automaton:
         rel = set()
         while releaseSet:           # Laufzeit ist so scheiße, muss evtl anders
             x = releaseSet.pop()    # gemacht, wenn relevant
-            print(x.getName())
             if x.getName() == 'R':
                 rel.add(x)
         self.goal = self.goal.union(rel)
@@ -87,7 +86,6 @@ class Automaton:
         """
         setAlpha = it.chain.from_iterable(it.combinations(listAlpha, n) for n in range(len(listAlpha)+1))
         for i in setAlpha:
-            print(i, "ELEMENR")
             stringAlpha = "{"
             counter = len(i)
             test = 1

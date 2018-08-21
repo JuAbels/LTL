@@ -8,8 +8,9 @@ from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 from copy import deepcopy
 import re
+from random import randint
 
-colors = ['green', 'red', 'antiquewhite4', 'aquamarine4',
+colors = ['black', 'green', 'red', 'antiquewhite4', 'aquamarine4',
           'brown', 'burlywood', 'cadetblue', 'chartreuse',
           'chocolate', 'coral', 'cyan3', 'darkorchid1',
           'deeppink1', 'darkslateblue', 'darkgreen', 'blue4'
@@ -51,28 +52,35 @@ def toGraph(edges, goals, start, alphabet):
 
     testCase = []
     number = len(edges)
+    # calculate optimisation of labels
     setAtoms = setLabels(edges, number, alphabet)
     counter0 = 0   # variable to create for AND cases diamonds
-    countColor = 0
+    countColor = 1
+    colour = ""
     for p in edges:
         for e in edges[p]:
-            if e in testCase:
+            if e in testCase:  # if path exists dont't draw it
                 continue
             key = deepcopy(e)
             key = tuple(key)
-            print(key, "key")
+            if setAtoms[key] == '':
+                colour = 'black'
+            else:
+                colour = colors[countColor]
+            # case if formulare has an AND and could go in two states.
             if e[1][0] == '&':
                 first, second = splitString(e[1])
                 g.node('%d' % (counter0), label='', shape='diamond')
-                g.edge(e[0], '%d' % (counter0), color=colors[countColor],
-                       label=setAtoms[key], fontcolor=colors[countColor])
-                g.edge('%d' % (counter0), first, color=colors[countColor])
-                g.edge('%d' % (counter0), second, color=colors[countColor])
+                g.edge(e[0], '%d' % (counter0), color=colour,
+                       label=setAtoms[key], fontcolor=colour)
+                g.edge('%d' % (counter0), first, color=colour)
+                g.edge('%d' % (counter0), second, color=colour)
                 testCase.append(e)
             else:
-                g.edge(e[0], e[1], color=colors[countColor],
-                       label=setAtoms[key], fontcolor=colors[countColor])
+                g.edge(e[0], e[1], color=colour,
+                       label=setAtoms[key], fontcolor=colour)
                 testCase.append(e)
+            # draw another figure (doublecircle) if state is an endstate
             if e[1] in goals:
                 g.node(e[1], shape='doublecircle')
             counter0 += 2
@@ -91,6 +99,8 @@ def setLabels(dictionary, number, alphabet):
     return: dictionary.
     '''
     dictLable = {}
+    # generate dictionary in which keys are the path and values is a list of
+    # alphabet which generate the path
     for i in dictionary:
         for j in dictionary[i]:
             j = tuple(j)
@@ -99,10 +109,8 @@ def setLabels(dictionary, number, alphabet):
                 continue
             else:
                 dictLable[j] = [i]
+    # simplyfy the pathes
     dictLable = helpSimplyFormulare(dictLable, number, alphabet)
-    for i in dictLable:
-        dictLable[i] = str(dictLable[i])
-    print(dictLable)
     return dictLable
 
 
@@ -118,31 +126,46 @@ def helpSimplyFormulare(dictLable, number, alphabet):
     # go through pathes for simplification
     alphabetList = [i.replace("{", "").replace("}", "") for i in alphabet]
     alphabetList.remove("")
+    print(dictLable)
     for i in dictLable:
-        solution = ""
         # counter to check if a element is in all subsets
         counter = len(dictLable[i])
-        if counter == number:  # check if all subsets of alphabet on this path
+        # check if all subsets of alphabet on this path
+        if counter == number:
             dictLable[i] = ""
             continue
-        print(dictLable[i])
-        dictPath = {}
-        for j in alphabetList:
-            print(j)
-            listTest = [x for x in dictLable[i] if re.search(j, x) is not None]
-            # test if a alphabet is in all other sets
-            if len(listTest) == counter:
-                solution = solution + j
-            else:
-                dictPath[(j, len(listTest))] = listTest
-        solList = []
-        while len(solList) != counter:
-            search = list(dictPath)
-            print(search)
-            solList.append(True)
-        dictLable[i] = solution
+        # simplify function
+        dictLable[i] = simplifyOneLable(dictLable[i], alphabetList)
     print(dictLable)
     return dictLable
+
+
+def simplifyOneLable(lable, alphabetList):
+    """ Simplify one Lable.
+    """
+    dictPath = []
+    solution = ""
+    for i in alphabetList:
+        listTest = [x for x in lable if re.search(i, x) is not None]
+        dictPath.append((i, listTest, len(listTest)))
+    # first tuple in list covering most subsets
+    dictPath = sorted(dictPath, key=lambda x: -x[2])
+    testList = []  # list to check if all sets are calculatet with formulare
+    deleteList = deepcopy(lable)
+    while deleteList:
+        firstFormulare = dictPath[0]  # first alphabet which depict most subsets
+        dictPath.pop(0)  # remve this, because it is used
+        for i in firstFormulare[1]:
+            if i in testList:
+                continue
+            testList.append(i)
+            deleteList.remove(i)
+        if solution == "":
+            solution = solution + firstFormulare[0]
+        else:
+            solution = solution + " | " + firstFormulare[0]
+    print(lable, solution)
+    return solution
 
 
 def splitString(formualre):
@@ -163,7 +186,6 @@ def calcEdges(dictionary):
     # states = len(dictionary)
     edgesDict = {}
     for x in dictionary:
-        print(x)
         edges = []
         for i in dictionary[x]:
             for j in dictionary[x][i]:
