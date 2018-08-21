@@ -85,12 +85,18 @@ class Automaton:
 
         listAlpha: set of all atoms in formulare.
         """
-        # TODO: empty set also?
         setAlpha = it.chain.from_iterable(it.combinations(listAlpha, n) for n in range(len(listAlpha)+1))
         for i in setAlpha:
+            print(i, "ELEMENR")
             stringAlpha = "{"
+            counter = len(i)
+            test = 1
             for j in i:
-                stringAlpha = stringAlpha + j + ","
+                if counter == test:
+                    stringAlpha = stringAlpha + j
+                    continue
+                stringAlpha = stringAlpha + j + ", "
+                test += 1
             stringAlpha = stringAlpha + "}"
             self.alphabet.append(stringAlpha)
 

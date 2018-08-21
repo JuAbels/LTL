@@ -7,7 +7,7 @@ from graphviz import Digraph
 from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 from copy import deepcopy
-
+import re
 
 colors = ['green', 'red', 'antiquewhite4', 'aquamarine4',
           'brown', 'burlywood', 'cadetblue', 'chartreuse',
@@ -18,7 +18,7 @@ colors = ['green', 'red', 'antiquewhite4', 'aquamarine4',
 # TODO: bessere Version für den Graphen
 
 
-def toGraph(edges, goals, start):
+def toGraph(edges, goals, start, alphabet):
     """Simplify to render the automat.
 
     Input: list of nodes and edges
@@ -51,7 +51,7 @@ def toGraph(edges, goals, start):
 
     testCase = []
     number = len(edges)
-    setAtoms = setLabels(edges, number)
+    setAtoms = setLabels(edges, number, alphabet)
     counter0 = 0   # variable to create for AND cases diamonds
     countColor = 0
     for p in edges:
@@ -80,7 +80,7 @@ def toGraph(edges, goals, start):
     g.view()
 
 
-def setLabels(dictionary, number):
+def setLabels(dictionary, number, alphabet):
     '''
     Helpfunction to calculate the labels for the arrows. Keys are the
     path from one edge to other edge. Values is a set of the atoms with which
@@ -99,11 +99,48 @@ def setLabels(dictionary, number):
                 continue
             else:
                 dictLable[j] = [i]
+    dictLable = helpSimplyFormulare(dictLable, number, alphabet)
     for i in dictLable:
-        if len(dictLable[i]) == number:
+        dictLable[i] = str(dictLable[i])
+    print(dictLable)
+    return dictLable
+
+
+def helpSimplyFormulare(dictLable, number, alphabet):
+    """
+    Helpfunction to Simplify Lable sets of a path.
+
+    dictLable<dictionary>: key    -> path of graph
+                           value  -> list of set of alphabet
+
+    return<dictionary>: simplified Dictionary
+    """
+    # go through pathes for simplification
+    alphabetList = [i.replace("{", "").replace("}", "") for i in alphabet]
+    alphabetList.remove("")
+    for i in dictLable:
+        solution = ""
+        # counter to check if a element is in all subsets
+        counter = len(dictLable[i])
+        if counter == number:  # check if all subsets of alphabet on this path
             dictLable[i] = ""
-        else:
-            dictLable[i] = str(dictLable[i])
+            continue
+        print(dictLable[i])
+        dictPath = {}
+        for j in alphabetList:
+            print(j)
+            listTest = [x for x in dictLable[i] if re.search(j, x) is not None]
+            # test if a alphabet is in all other sets
+            if len(listTest) == counter:
+                solution = solution + j
+            else:
+                dictPath[(j, len(listTest))] = listTest
+        solList = []
+        while len(solList) != counter:
+            search = list(dictPath)
+            print(search)
+            solList.append(True)
+        dictLable[i] = solution
     print(dictLable)
     return dictLable
 
