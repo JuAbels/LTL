@@ -50,8 +50,8 @@ if __name__ == "__main__":
     # print(linfacs)
 
     results = def17(obs)
-    """formulare = translate(inp[0])
-    file_automat = inp[2]
+    formulare = translate(inp[0])
+    """file_automat = inp[2]
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     liste = calcEdges(test.transitionsTable)
     # print(liste, "HIER")
-    toGraph(liste, test.printGoal, test.start, test.alphabet)
+    # toGraph(liste, test.printGoal, test.start, test.alphabet)
     print("test")
     #testMain()
 

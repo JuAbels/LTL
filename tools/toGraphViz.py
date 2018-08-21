@@ -8,15 +8,12 @@ from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 from copy import deepcopy
 import re
-from random import randint
 
 colors = ['black', 'green', 'red', 'antiquewhite4', 'aquamarine4',
           'brown', 'burlywood', 'cadetblue', 'chartreuse',
           'chocolate', 'coral', 'cyan3', 'darkorchid1',
           'deeppink1', 'darkslateblue', 'darkgreen', 'blue4'
           'darkgoldenrod3', 'goldenrod', 'darksalmon', 'darkolivegreen']
-
-# TODO: bessere Version für den Graphen
 
 
 def toGraph(edges, goals, start, alphabet):
@@ -30,47 +27,56 @@ def toGraph(edges, goals, start, alphabet):
     edges: dictionary of list of edges with path, key is set of atoms.
     goals: set of goal states (strings).
     start: set of states from automaton.
-
+    alphabet: power set of alphabetelements
     """
     global colors
     g = Digraph('G', filename='hello.gv')
 
-    counter1 = -1  # variable to create start arrow
-    for e in start:
-        # Node one for start path.
+    counter1 = -1    # variable to create start arrow
+    for e in start:  # creating start nodes with an arrow which point on start
+        # start point of the arrow
         g.node('%d' % (counter1), shape='point')
-        if e.getName() == '&':  # case for AND case.
-            first = stringName(e.pointFirst)
-            second = stringName(e.pointSec)
+        if e.getName() == '&':  # case for AND case -> arrow pict to diamond
+            first = stringName(e.pointFirst)   # first place of AND
+            second = stringName(e.pointSec)    # second place of AND
+            # diamond depict node which can go in two different states at
+            # same time
             g.node('%d' % (counter1 - 1), label='', shape='diamond')
+            # arrow from start node to diamond
             g.edge('%d' % (counter1), '%d' % (counter1 - 1))
             g.edge('%d' % (counter1 - 1), first)
             g.edge('%d' % (counter1 - 1), second)
         else:
+            # start point from arrow to node
             g.edge('%d' % (counter1), stringName(e))
-        counter1 -= 2
+        counter1 -= 2  # counting down -> no conflict with counter0
 
-    testCase = []
-    number = len(edges)
+    testCase = []  # list of edges which are drawn before
+
     # calculate optimisation of labels
+    number = len(edges)
     setAtoms = setLabels(edges, number, alphabet)
-    counter0 = 0   # variable to create for AND cases diamonds
-    countColor = 1
-    colour = ""
-    for p in edges:
+
+    counter0 = 0     # variable to create for AND cases diamonds
+    countColor = 1   # variable for get new index of colorList for new color
+    colour = ""      # deklarate color of an arrow
+    for p in edges:  # go through all edges with same Labeles
         for e in edges[p]:
-            if e in testCase:  # if path exists dont't draw it
+            if e in testCase:  # if path exists dont't draw it twice
                 continue
             key = deepcopy(e)
             key = tuple(key)
-            if setAtoms[key] == '':
+            if setAtoms[key] == '':  # case for arrow apply for all power sets
                 colour = 'black'
             else:
                 colour = colors[countColor]
             # case if formulare has an AND and could go in two states.
             if e[1][0] == '&':
+                # split string in first place and second place of AND
                 first, second = splitString(e[1])
+                # declarate diamond node for AND
                 g.node('%d' % (counter0), label='', shape='diamond')
+                # draw path from last node to diamond
                 g.edge(e[0], '%d' % (counter0), color=colour,
                        label=setAtoms[key], fontcolor=colour)
                 g.edge('%d' % (counter0), first, color=colour)
@@ -83,8 +89,8 @@ def toGraph(edges, goals, start, alphabet):
             # draw another figure (doublecircle) if state is an endstate
             if e[1] in goals:
                 g.node(e[1], shape='doublecircle')
-            counter0 += 2
-        countColor += 1
+            counter0 += 2  # new index for startarrow point
+        countColor += 1    # new index for new color
     g.view()
 
 
@@ -96,7 +102,8 @@ def setLabels(dictionary, number, alphabet):
 
     dictionary: dictionary of edges.
     number: number of length of subsets of alphabet.
-    return: dictionary.
+    return: dictionary with key -> pathes
+                            values -> optimizet string of formulare.
     '''
     dictLable = {}
     # generate dictionary in which keys are the path and values is a list of
@@ -105,7 +112,7 @@ def setLabels(dictionary, number, alphabet):
         for j in dictionary[i]:
             j = tuple(j)
             if j in dictLable:
-                dictLable[j].append(i)  # dictLable[j] + ", " + i
+                dictLable[j].append(i)
                 continue
             else:
                 dictLable[j] = [i]
@@ -126,7 +133,6 @@ def helpSimplyFormulare(dictLable, number, alphabet):
     # go through pathes for simplification
     alphabetList = [i.replace("{", "").replace("}", "") for i in alphabet]
     alphabetList.remove("")
-    print(dictLable)
     for i in dictLable:
         # counter to check if a element is in all subsets
         counter = len(dictLable[i])
@@ -136,22 +142,26 @@ def helpSimplyFormulare(dictLable, number, alphabet):
             continue
         # simplify function
         dictLable[i] = simplifyOneLable(dictLable[i], alphabetList)
-    print(dictLable)
     return dictLable
 
 
 def simplifyOneLable(lable, alphabetList):
     """ Simplify one Lable.
     """
-    dictPath = []
-    solution = ""
+
+    dictPath = []  # list of subsets of an lable and how many sets they covering
+    solution = ""  # optimized string of all sets
+    # generate tuple of each subset of alphabet with quantity of subsets they
+    # are included
     for i in alphabetList:
         listTest = [x for x in lable if re.search(i, x) is not None]
         dictPath.append((i, listTest, len(listTest)))
     # first tuple in list covering most subsets
     dictPath = sorted(dictPath, key=lambda x: -x[2])
     testList = []  # list to check if all sets are calculatet with formulare
+    # List to compare if all sets of labe are covered
     deleteList = deepcopy(lable)
+    # generate a formualre of alphabet which cover all sets of the lable
     while deleteList:
         firstFormulare = dictPath[0]  # first alphabet which depict most subsets
         dictPath.pop(0)  # remve this, because it is used
@@ -164,7 +174,6 @@ def simplifyOneLable(lable, alphabetList):
             solution = solution + firstFormulare[0]
         else:
             solution = solution + " | " + firstFormulare[0]
-    print(lable, solution)
     return solution
 
 
@@ -183,8 +192,16 @@ def splitString(formualre):
 
 
 def calcEdges(dictionary):
-    # states = len(dictionary)
+    """ Generate from transitionstable a Dictionary which have the infromation
+    with which subset is a transition possible.
+
+    return<dict>: Dictionary describes which edges are possible by transition
+            with the set of alphabet.
+            key   -> string of subset of alphabet power set
+            value -> List of edges
+    """
     edgesDict = {}
+    # go through tranisions Table and insert possible edges for this subset.s
     for x in dictionary:
         edges = []
         for i in dictionary[x]:

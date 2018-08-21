@@ -1,13 +1,10 @@
-"""Author Stefan Strang, Julia Abels - Uni Freiburg.
+"""
+File to draw Graph of Semantic Tableau.
 
-
+Author Stefan Strang, Julia Abels - Uni Freiburg.
 """
 
 from graphviz import Digraph
-# from LTL.tools.tableauDecision import def17
-# from LTL.tools.tableauDecision import printGraph
-# from LTL.tools.tableauDecision import makeGraph
-from LTL.tools.toPnfObjects import toPnf
 
 
 def tableauToGraph(edges):
@@ -16,7 +13,7 @@ def tableauToGraph(edges):
                  node, second place end node.
     """
     g = Digraph('G', filename='hello.gv')
-    # durchgehen der Edges und diese printen.
+    # Go through all edges and print them.
     for e in edges:
         g.edge(e[0], e[1])
     g.view()
@@ -28,26 +25,25 @@ def calcEdgesDict(firstNode):
     return<tuple>: with two places -> first place start nodes
                                    -> second place list of nodes which follow
     """
-    childList = []
+    childList = []  # list of the nodes which follow
     for x in firstNode.Pointers:
-        try:
+        try:  # if node has a child call child first
             if x.Pointers:
-                result = calcEdgesDict(x)  # calcEdges(x)
+                result = calcEdgesDict(x)
                 childList.append(result)
-        except:
+        except:  # insert node on that no other node follows.
             childList.append(x.Name)
-    dictEdges = (firstNode.Name, childList)
-    return dictEdges
+    return (firstNode.Name, childList)
 
 
 def calcEdges(liste):
     """ Calculate the list of states and prestates.
     """
-    workListe = liste
-    edges = []
-    firstNode = liste[0]
-    testList = []  # list to remember tuples which follow
-    counter = 0
+    workListe = liste     # list of actual subtree
+    edges = []            # insert all edges
+    firstNode = liste[0]  # first node of an edge
+    testList = []         # list to remember tuples which follow
+    counter = 0           # counter to end loop
     while counter == 0:
         # go through tree and expans edges with start node and childnodes
         for x in workListe[1]:
@@ -65,5 +61,4 @@ def calcEdges(liste):
         workListe = testList[0]
         firstNode = workListe[0]
         testList.pop(0)
-    print(edges)
     return edges
