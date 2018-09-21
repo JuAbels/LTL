@@ -52,7 +52,7 @@ if __name__ == "__main__":
     #results = def17(obs)
     #formulare = translate(inp[0])
     testMain()
-
+    #linfacs = lf(toPnf("| U q p | a b"))
     """file_automat = inp[2]
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare

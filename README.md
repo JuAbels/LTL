@@ -29,12 +29,12 @@ wurde das die junktion von endbedingungen angeht
 - [ ] idealerweise globale variblen ersetzen 
 - [ ] testfälle für omega automaten ausdenken
 - [ ] wenn alles fertig clean code konventionen durchsetzen. 
+- [ ] def 6 negativ testen
 
 ## Testfälle
 
 lf
-| U q p | a b
-X R q p & a b
+-müsste fertig sein
 
 derivatives 
 R | q1 p2 p3  	zu true und false

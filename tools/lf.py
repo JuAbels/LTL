@@ -40,6 +40,7 @@ def lf(formula):
         second = formula.getSec()
         # call for function
         if nameObj == '|':
+            #print("or")
             firstForm = lf(first)
             secondForm = lf(second)
             lfset = firstForm.union(secondForm)
@@ -225,6 +226,8 @@ def release(firstCase, secondCase):
 
 def defSix(my, ny):
     #print("in defsix")
+    #print(my)
+    #print(ny)
     #
     if type(my) == tuple or type(ny) == tuple:
         if type(my) == tuple:
