@@ -15,12 +15,28 @@
 - [ ] möglichen input für den code zusammen bekommen.
 - [ ] randfälle abdecken
 
-- [ ] + passende ableitungen klarmachen und implementieren
-- [ ] gedanken zu 5tens machen
-- [ ] syntax von ltlfilt
 - [ ] Fehler bei falscher eingabe von ltl formeln abfangen. etwa falsche klammerung
-- LF Definition:
-  * - [ ] lf crashtesten & kompatibel machen
-  * - [ ] Bei Definitionen abchecken ob auch längere funktionieren
-- [ ] Bei to objects die reihenfolge nochmals exzsesiv testen und evtl ausnahmen hinzufügen
-- [ ] bei input mittels konsolzeile ohne input.txt. das x noch implementieren
+- [ ] bei input mittels konsolzeile ohne input.txt. das x noch implementieren???
+
+neu:
+- [ ] Docstrings überall auf ein level bringen
+- [ ] Testfälle
+- [ ] wie möchten wir die speicherung des outputs haben?
+- [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten
+- [ ] doctest testfälle tuple/obs to name
+- [ ] klarmachen ob bei decission tableau richtig verstanden und implementiert
+wurde das die junktion von endbedingungen angeht
+- [ ] idealerweise globale variblen ersetzen 
+- [ ] testfälle für omega automaten ausdenken
+- [ ] wenn alles fertig clean code konventionen durchsetzen. 
+
+## Testfälle
+
+lf
+| U q p | a b
+X R q p & a b
+
+derivatives 
+R | q1 p2 p3  	zu true und false
+| U q p | a b 	zu true und false
+X R q p & a b 	zu true und false

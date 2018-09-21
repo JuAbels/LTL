@@ -67,7 +67,7 @@ class linfacs(unittest.TestCase):
     def testMedium(self):
         # 'U p1 & p2 G F p3'
         objects = toPnf('F p3')
-        print("================>")
+        # print("================>")
         # print(objects.getName())
         lines = lf(objects)
         # print("----")

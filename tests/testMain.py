@@ -25,7 +25,7 @@ from LTL.tests.concatError import concatErr
 
 
 def testMain():
-    """#print("stupid shit")
+    #print("stupid shit")
     doctest.testmod()
     # testing the strucutre
     doctest.testfile("../tools/getInp.py")
@@ -40,12 +40,12 @@ def testMain():
     test2()
     testgfp()
     lfMedium()
-    lfMedium2()"""
+    lfMedium2()
     concatErr()
 
     # testing partial derivatives
     #print("VERSTANDENFOFEOIJONCOIEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF?")
-    """test10()
+    test10()
     testEx()
     test10ex1()
-    pdMedium()"""
+    pdMedium()

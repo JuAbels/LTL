@@ -43,14 +43,16 @@ from LTL.tools.tableauDecision import def17
 
 if __name__ == "__main__":
     #print(len(sys.argv))
-    inp = getInp()
-    obs = toPnf('U q p')
+    #inp = getInp()
+    #obs = toPnf('U q p')
     # linfacs = lf(toPnf('& ! p U q p'))
     # linfacs = lf(toPnf('U q p'))
     # print(linfacs)
 
-    results = def17(obs)
-    formulare = translate(inp[0])
+    #results = def17(obs)
+    #formulare = translate(inp[0])
+    testMain()
+
     """file_automat = inp[2]
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
@@ -79,8 +81,7 @@ if __name__ == "__main__":
     # print(liste, "HIER")
     # toGraph(liste, test.printGoal, test.start, test.alphabet)
     print("test")
-    #testMain()
-
+    
 
     #objects = toPnf('& G p F ! p')
     # def17('& G p F ! p')
