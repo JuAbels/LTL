@@ -42,12 +42,12 @@ def testMain():
     testgfp()
     lfMedium()
     lfMedium2()"""
-    lfMedium3()
+    #lfMedium3()
     """concatErr()
 
     # testing partial derivatives
     #print("VERSTANDENFOFEOIJONCOIEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF?")
     test10()
     testEx()
-    test10ex1()
-    pdMedium()"""
+    test10ex1()"""
+    pdMedium()

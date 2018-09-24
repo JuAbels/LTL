@@ -17,7 +17,7 @@ xSet = "{p1, p2, q1, q2, p3, p4}"
 
 
 class Automaton:
-
+    """Basic class-structure for the automata"""
     def __init__(self, formula):
         self.formula = formula   # the formula with all the pointer
         self.state = set()       # set with state status

@@ -19,22 +19,29 @@
 - [ ] bei input mittels konsolzeile ohne input.txt. das x noch implementieren???
 
 neu:
-- [ ] Docstrings überall auf ein level bringen
 - [ ] Testfälle
 - [ ] wie möchten wir die speicherung des outputs haben?
 - [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten
 - [ ] doctest testfälle tuple/obs to name
 - [ ] klarmachen ob bei decission tableau richtig verstanden und implementiert
 wurde das die junktion von endbedingungen angeht
+- [ ] ebenso was bei einer junktion bei derivatives gemacht wurde und ob es richtig implementiert wurde.
 - [ ] idealerweise globale variblen ersetzen 
 - [ ] testfälle für omega automaten ausdenken
 - [ ] wenn alles fertig clean code konventionen durchsetzen. 
 - [ ] def 6 negativ testen
+- [ ] an der readme arbeiten.
+	=> hardqare requirements?!
+- [ ] Docstrings überall auf ein level bringen
+	=> lf case literal?! check nicht was passiert
+        => ist iterated derivatives und flat.py überhaupt noch aktuell? wenn ja auch hier nochmal docstrings überarbeiten. ansonsten fertig
+
 
 ## Testfälle
 
 lf
--müsste fertig sein
+- müsste fertig sein
+- vllt noch ein paar länge zufällige formeln. oder mit F und G
 
 derivatives 
 R | q1 p2 p3  	zu true und false

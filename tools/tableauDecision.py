@@ -22,13 +22,16 @@ from LTL.tools.tableauDecisionGrafik import tableauToGraph
 
 
 class preState:
+    """PreState is class that has to be teared down to 
+       the smallest parts. Aswell as root of the tree/graph. 
+       Each node of this has to be manipulated with linear factors.
+       Solution of lf gives input to generate states"""
     def __init__(self, nameObj):
         # written flag is
         # unwritten = 0
         # written = 1
         self.written = 0
         # state can vary betwenn State and preState
-
         self.State = "preState"
         # pointers to the next nodes
         self.Pointers = set()
@@ -40,13 +43,14 @@ class preState:
         self.nextPre = set()
 
 class State:
+    """Give Objects for the result of lf(preState).
+       these will be the leaves of the graph/tree."""
     def __init__(self, nameObj):
         # written flag is
         # unwritten = 0
         # written = 1
         self.written = 0
         # state can vary betwenn State and preState
-
         self.State = "State"
         # pointers to the next nodes
         self.Pointers = set()
@@ -58,26 +62,21 @@ class State:
 
 
 def tupleToName(obj, string):
-    """Convert the given set of linear factors to a readable string."""
-    # this may be buggy as a following of wrong depth in lf building
-    #print("objekt: ", obj)
-
+    """Convert the given set of linear factors to a readable string.
+    Input: a tuple given by linear factors. this is called obj. aswell
+           as an empty string.
+    Output: Gives back linear factor as readable."""
     string = string +"("
-    #print(obj)
-    #print(string)
     for x in obj:
-        #string = string + "("
         if type(x) == frozenset:
             string = string +"{"
             for y in x:
                 string = string + y.getName() + ","
-                #print(y)
             string = string +"}"
         else:
             string = string + x.getName()
         string = string + ","
     string = string + ")"
-    #print(string)
     length = len(string)-1
     for x in range(0,length):
         if string[x] == "," and string[x+1] == "}" :
@@ -85,12 +84,14 @@ def tupleToName(obj, string):
     for x in range(0,length):
         if string[x] == "," and string[x+1] == ")" :
             string = string[:x] +" " + string[x+1:]
-    # print(string.strip())
     string = string.replace(" ", "")
     return string
 
 def obsToName(nameObj, string):
-    """Convert the graph of formula objects to a readable string."""
+    """Convert the formula and realted objects to a readable string.
+    Input: An empty String and a ltl.Formula object.
+    Output: name of ltl formula object and the related following 
+            pointers."""
     if(nameObj.getNeg() == True):
         string = string + "! "
     string = string + nameObj.getName() + " "
@@ -102,7 +103,6 @@ def obsToName(nameObj, string):
 
 def getNames(formula):
     """just helper to debug. from objects to obj.getName()"""
-    print("----")
     for x in formula:
         for y in x:
             if(type(y) == frozenset):
@@ -112,8 +112,11 @@ def getNames(formula):
                 print(y.getName())
 
 def checkForU(inp, aSet):
-    """ we need to check wheter there is an U p q in the formula.
-    this will be done in a recursive way. """
+    """check wheter there is an U p q in the formula.
+    p and q are variable. 
+    this will be done in a recursive way. 
+    Input: Starting with empty set and a ltl-formula
+    Output: a set of all found U p q combinations."""
     if(inp.getName() == 'U'):
         aSet.add(inp.getSec().getName()) ### here maybe better not name
         return aSet
@@ -127,51 +130,43 @@ def checkForU(inp, aSet):
     return False
 
 def checkEnd(node):
-    # if allready visited => loop
-    # or found in the search for
-    # return true
+    """give back wheter allready visited, found in searched for. 
+       in that case return true.
+    Input: Node of Graph. Gotta be a State.
+    Output: True if found. None if not found."""
     actual = obsToName(node.nameObj[1],"").strip()
     for x in globalVisited:
         if(actual == x):
-            print("allready visited")
             return True
-    print("not visited:")
     if(node.nameObj[1].getAtom() == True):
         for x in node.nameObj[0]:
             if x.getName() in globalCheckForX:
-                print("searching for")
                 return True
     pass
 
 
 
 def makeGraph(node):
+    """Build a tree as seen in Example 6.
+    input is the formula and the Graph is build from the pointers.
+    This is done in a recursive way and is stopped when a loop is found
+    or maximal resolution is reached."""
     firstState = preState(node)
     globalNodes.append(firstState)
-    if firstState.Name in globalVisited or firstState.Name == 'tt': # or in found or as atom
+    if firstState.Name in globalVisited or firstState.Name == 'tt': 
         return #firstState
-    #print(firstState.Name)
     globalVisited.add(firstState.Name)
-
     for x in lf(firstState.nameObj):
         actual = State(x)
         globalNodes.append(actual)
         firstState.Pointers.add(actual)
-        #actual.Pointers.add(preState(actual.nameObj[1]))
-    #print(firstState.Pointers)
     for x in firstState.Pointers:
         x.Pointers.add(makeGraph(x.nameObj[1]))
-    """nextPres = set()
-    for x in firstState.Pointers:
-        for y in x.Pointers:
-           nextPres.add(y)
-    """
-    #firstState.nextPre = nextPres
-
     return firstState
 
 def printGraph(state):
-    #if
+    """This is a terminal output for the tree.
+       Graphical output is found in tableaudecisiongrapfik.py."""
     if state != None:
         print(state.Name)
         #print(state.Pointers)
@@ -185,19 +180,20 @@ def printGraph(state):
 
 
 def def17(formula):
-    """Implement Algorithm as explained in the annotation.
+    """Header function to build decision tableaus.
+    Setting up frame sets and lists and call the subfunctions.
+    Input: Concated LTL formula.
+    Output: None/ Saved decission tableau. 
     """
-
     global globalVisited
     globalVisited = set()
-    #globalVisited.add('U q p')
     global globalCheckForX
     globalCheckForX = checkForU(formula, set())
     global globalNodes
     globalNodes = []
-    #globalVisited.add('U q p')
     makeGraph(toPnf('& ! p U q p'))
     printGraph(globalNodes[0])
+    # From here call the building of the printable graph.
     results = calcEdgesDict(globalNodes[0])
     edges = calcEdges(results)
     tableauToGraph(edges)

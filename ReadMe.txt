@@ -33,6 +33,9 @@ Possible Flags are:
 	-latex
     	-test [for the testing and debugging]
         -demo[for the demonstraiton mode]
+Attention: 
+Use only with correct parentheses(e.g. not more than two connections on 
+one level) and correct arity. Otherwise program may reject.
 
 Requirements:
 -------------

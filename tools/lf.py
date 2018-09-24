@@ -32,7 +32,6 @@ def lf(formula):
 
 
     """
-    #print(formula.getName())
     lfset = set()
     nameObj = formula.getName()
     if nameObj in doubles:
@@ -40,24 +39,17 @@ def lf(formula):
         second = formula.getSec()
         # call for function
         if nameObj == '|':
-            #print("or")
             firstForm = lf(first)
             secondForm = lf(second)
             lfset = firstForm.union(secondForm)
         elif nameObj == 'U':
-            #print("caseUntil")
             setUntil = lf(second)
             secSet = caseUntil(first, second)
-            #print(secSet)
-            #print(setUntil)
             lfset = lfset.union(setUntil, secSet)
-            #print(lfset)
-            #print(">>>>")
         elif nameObj == 'R':
             secSet = release(first, second)
             lfset = lfset.union(secSet)
         elif nameObj == '&':
-
             secSet = caseAnd(first, second)
             lfset = lfset.union(secSet)
         elif nameObj == 'V':
@@ -72,13 +64,11 @@ def lf(formula):
         # appeal of helpfunction for new definiton
         tup = caseLiteral(nameObj, formula)
         lfset = lfset.union(tup)
-
     flatten(lfset)
-    #print(lfset)
     return lfset
 
 
-def caseLiteral(nameObj, formula):  # , lfs=set()):
+def caseLiteral(nameObj, formula):
     ''' HELPFunction for request of single dicate subformulares '''
     lfs = set()
     trueFalse = re.search(r"[ft]", nameObj)
@@ -95,7 +85,9 @@ def caseLiteral(nameObj, formula):  # , lfs=set()):
 
 
 def isTrue(tt):
-    ''' def for case True '''
+    '''Give back (tt, tt) if function called.
+    Input: A tt string
+    Output: Linear factor for tt => (tt, tt)'''
     tt = lFormula('tt')
     tt.setAtom()
     ttName = tt
@@ -103,7 +95,9 @@ def isTrue(tt):
 
 
 def literal(objects):
-    ''' def for one linteral for linear factors '''
+    '''Give back Linearfactors in case of literal.
+    Input: an ltl-formula literal
+    Output: (litera, tt)'''
     oneSet = set()  # declaration of set, so that objectname istn't seperate
     oneSet.add(objects)
     oneSet = frozenset(oneSet)  # set to frozenset, so that hashable
@@ -116,9 +110,10 @@ def literal(objects):
 def caseNext(formular):
     ''' definition for case Next
 
-    formular(object): is an object, so that information of pointFirst and
+    Input: formular is an object, so that information of pointFirst and
                       pointSec is also presented.
-    return: tuple of definition
+    Output: (tt, def7(formula))
+    
 
     '''
     oneSet = set()
@@ -134,9 +129,13 @@ def caseNext(formular):
 
 
 def setBasedNorm(form):
-    ''' HELPFunction for set-based conjunctive normal form for case Next '''
+    ''' HelpFunction for set-based conjunctive normal form for case Next
+    This is the def7.
+    Manipulates the "( ) formula" formula and gives it back
+    Input: the formula that has to be manipulated
+    Output: Cleaned formula.'''
     oneSet = set()
-    # case for formular is an OR and AND
+    # case for formular is an OR or AND
     if form.getName() == '&' or form.getName() == '|':
         if form.getName() == '|':  # case for OR
             first = setBasedNorm(form.pointFirst)
@@ -161,51 +160,30 @@ def setBasedNorm(form):
 
 
 def caseUntil(fromCase, untilCase):
-    ''' definition for case UNTIL '''
+    '''Generate linearfactors for the case that we are working on an 'U'.
+    Input: in polish normalform - first and second subject of the U.
+    Output: Second part of the linearfactor tuple.'''
     iterable = lf(fromCase)
-    """print(fromCase.getName())
-    print(untilCase.getName())
-    print(iterable)
-    for x in iterable:
-        for y in x:
-            if type(y)== frozenset:
-                for z in y:
-                    print(z.getName())
-            else:
-                print(y.getName())
-    """
     oneSet = set()
     while iterable:
         tup = iterable.pop()
         first = tup[0]
         second = tup[1]
-        #print("first n second",first, second)
         lAnd = lFormula("&")
         lUntil = lFormula("U")
         lUntil.setFirst(fromCase)
         lUntil.setSec(untilCase)
-        lAnd.setFirst(second)##
-        lAnd.setSec(lUntil)##
+        lAnd.setFirst(second)
+        lAnd.setSec(lUntil)
         oneSet.add((first, lAnd))
-    #print(oneSet)
-    """for x in oneSet:
-        for y in x:
-            if type(y)== frozenset:
-                for z in y:
-                    print(z.getName())
-            else:
-                print(y.getName())
-                print(y.getFirst().getName())
-                print(y.getSec().getName())
-                print(y.getSec().getFirst().getName())
-                print(y.getSec().getSec().getName())
-    """
-    
     return oneSet
 
 
 def release(firstCase, secondCase):
-    ''' definition for release form '''
+    '''Give back the linearfactors in case of 'R'
+    Input: in polish normalform - first and second subject of the U.
+    Output: Linearfactors for R x y
+    '''
     iterable = lf(secondCase)
     oneSet = set()
     while iterable:
@@ -225,10 +203,11 @@ def release(firstCase, secondCase):
 
 
 def defSix(my, ny):
-    #print("in defsix")
-    #print(my)
-    #print(ny)
-    #
+    """Check wheter calculation of linear factor is allowed.
+    if there are contradictory parts or a part is ff 
+    then reject and return false(ff)
+    Input: two ltl formulas
+    Output: Union of both or false """
     if type(my) == tuple or type(ny) == tuple:
         if type(my) == tuple:
             my = list(my)
@@ -239,23 +218,17 @@ def defSix(my, ny):
             my = {my}
         if type(ny) != frozenset:
             ny = {ny}
-    #print(my)
-    #print(ny)
     total = list(my) + list(ny)
-    #print(total)
     doubleNeg = False
     for i in total:
         for j in total:
             if (i.getName() == j.getName() and i.getNeg() != j.getNeg()):
                 doubleNeg = True
-    #print(list(my)[0].getName())
-    #print(list(ny)[0].getName())
     if(list(my)[0].getName() == 'ff' or list(ny)[0].getName() == 'ff'):
         return lFormula('ff')
     elif(doubleNeg is True):
         return lFormula('ff')
     else:
-        #print("even in else")
         solution = set()
         for x in list(my):
             solution.add(x)
@@ -265,48 +238,21 @@ def defSix(my, ny):
 
 
 def caseAnd(first, second):
+    """Build Linearfactors in case of &.
+    This function is called when & is found
+    Input: First and second location of &
+    Output: Linearfactors"""
     myPhi = list(lf(first))
-    #print("sec",second.getName())
     nyPsi = list(lf(second))
     ofAndSet = set()
-    #print("myPhi:" , myPhi)
-    """for x in myPhi:
-        for y in x:
-            if type(y) == frozenset:
-                for z in y:
-                    print(z.getName())
-                    print(z.getNeg())
-            else:
-                print(y.getName())
-    print("nyPsi:" , nyPsi)
-    for x in nyPsi:
-        for y in x:
-            if type(y) == frozenset:
-                for z in y:
-                    print(z.getName())
-                    #print(z.getNeg())
-            else:
-                print(y.getName())"""
     for i in myPhi:
         for j in nyPsi:
-            #print("===>")
-            #print("i", i[0])
-            #print("j", j[0])
-
-            ### gosh this is ugly. maybe outsource it to another fkt.
             if (type(defSix(i[0], j[0])) != frozenset):
                 if defSix(i[0], j[0]).getName() != 'ff':
                     lAnd = lFormula("&")
                     lAnd.setFirst(i[1])
                     lAnd.setSec(j[1])
                     solu = (defSix(i[0], j[0]))
-                    """print(">>> solution")
-                    if type(solu) == frozenset:
-                        for x in solu:
-                            print(x.getName()) 
-                    else:
-                        print(solu.getName())
-                    """#print(type(lAnd))
                     ofAndSet.add((solu, lAnd))
             if (type(defSix(i[0], j[0])) == frozenset):
 
@@ -314,18 +260,14 @@ def caseAnd(first, second):
                 lAnd.setFirst(i[1])
                 lAnd.setSec(j[1])
                 solu = (defSix(i[0], j[0]))
-                """print(">>> solution")
-                if type(solu) == frozenset:
-                    for x in solu:
-                        print(x.getName()) 
-                else:
-                    print(solu.getName())"""
-                #print(type(lAnd))
                 ofAndSet.add((solu, lAnd))
     return ofAndSet
 
 
 def concat(inp):
+    """search for & tt formula and reduce it to formula.
+    input: ltl formula in linear factors
+    output: none but manipulated linear factors."""
     if(type(inp) == tuple):
         return
     if(inp.getName() == '&'):
@@ -335,7 +277,6 @@ def concat(inp):
             inp.setSec(inp.getSec().getSec())
         if(inp.getSec() is None):
             return
-        # this part may be wrong but not likely
         if(inp.getSec().getName() == 'tt' and inp.getFirst() is not None):
             inp.setName(inp.getFirst().getName())
             if(inp.getName() in doubles or inp.getName() in singles):
@@ -346,6 +287,11 @@ def concat(inp):
 
 
 def flatten(linFacs):
+    """Reduce the & tt in the linear factors.
+    Iterates through the linearfactors
+    and calls for concating.
+    Input: Linearfactors
+    Output: None/ manipulated linear factors."""
     for x in linFacs:
         for j in x:
             if type(j) == frozenset:
