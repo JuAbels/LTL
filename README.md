@@ -21,13 +21,13 @@
 neu:
 - [ ] Testfälle
 - [ ] wie möchten wir die speicherung des outputs haben?
-- [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten
-- [ ] doctest testfälle tuple/obs to name
+- [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten (Julia)
+- [ ] doctest testfälle tuple/obs to name (Stefan)
 - [ ] klarmachen ob bei decission tableau richtig verstanden und implementiert
 wurde das die junktion von endbedingungen angeht
 - [ ] ebenso was bei einer junktion bei derivatives gemacht wurde und ob es richtig implementiert wurde.
 - [ ] idealerweise globale variblen ersetzen 
-- [ ] testfälle für omega automaten ausdenken
+- [ ] testfälle für omega automaten ausdenken (Julia)
 - [ ] wenn alles fertig clean code konventionen durchsetzen. 
 - [ ] def 6 negativ testen
 - [ ] an der readme arbeiten.
