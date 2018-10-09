@@ -26,9 +26,7 @@ neu:
 - [ ] klarmachen ob bei decission tableau richtig verstanden und implementiert
 wurde das die junktion von endbedingungen angeht
 - [ ] ebenso was bei einer junktion bei derivatives gemacht wurde und ob es richtig implementiert wurde.
-- [ ] idealerweise globale variblen ersetzen 
 - [ ] testfälle für omega automaten ausdenken (Julia)
-- [ ] wenn alles fertig clean code konventionen durchsetzen. 
 - [ ] def 6 negativ testen
 - [ ] an der readme arbeiten.
 	=> hardqare requirements?!
@@ -37,13 +35,17 @@ wurde das die junktion von endbedingungen angeht
         => ist iterated derivatives und flat.py überhaupt noch aktuell? wenn ja auch hier nochmal docstrings überarbeiten. ansonsten fertig
 
 
+- [ ] wenn alles fertig clean code konventionen durchsetzen. 
+- [ ] idealerweise globale variblen ersetzen 
+
 ## Testfälle
 
 lf
 - müsste fertig sein
 - vllt noch ein paar länge zufällige formeln. oder mit F und G
 
-derivatives 
+derivatives (stefan)
 R | q1 p2 p3  	zu true und false
 | U q p | a b 	zu true und false
 X R q p & a b 	zu true und false
+'& p2 | p3 U p4 p2' zu true und false
