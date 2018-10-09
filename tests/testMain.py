@@ -26,13 +26,14 @@ from LTL.tests.concatError import concatErr
 
 
 def testMain():
-    """#print("stupid shit")
+    #print("stupid shit")
     doctest.testmod()
     # testing the strucutre
     doctest.testfile("../tools/getInp.py")
     doctest.testfile("../tools/ltlToPred.py")
     doctest.testfile("../tools/toPnfObjects.py")
-    structure()
+    doctest.testfile("../tools/tableauDecision.py")
+    """structure()
     # testing linear factors
     doctest.testfile("../tools/lf.py")
     doctest.testfile("../tests/unitTestDef8ex2.py")
@@ -50,4 +51,4 @@ def testMain():
     test10()
     testEx()
     test10ex1()"""
-    pdMedium()
+    #pdMedium()

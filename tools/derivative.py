@@ -3,13 +3,14 @@ Authors: Julia Abels & Stefan Strang
 University of Freiburg - 2018
 
 """
-from LTL.tools.toPnfObjects import toObjects
+from LTL.tools.toPnfObjects import toObjects, toPnf
 from LTL.tools.lf import lf
 from collections import Iterable
 
 
 def derivatives(formulare, inp1):
     # fuction so that decides which part of the Defintion has to be applied.
+    #print("derivatives")
     solution = set()
     if(formulare.getName() == 'tt'):
         solution = caseTrue(formulare)
@@ -43,17 +44,23 @@ def getX(inp1):
 
 
 def checkX(my, inp1):  # can we propose that x is unsatisifable
-    if (isinstance(my, Iterable)):
-        for x in my:
-            if x.getName() == inp1:
-                return True
+    
     XXX = getX(inp1)
     XXX.add('tt')
-    if type(my) == frozenset:
+    # changed here a bit. dont know wheter is correct
+    if (isinstance(my, Iterable)):
+        # print(my)
         for x in my:
+            if x.getName() in XXX:# inp1:
+                return True
+    if type(my) == frozenset:
+        # print("frozenset")
+        for x in my:
+            print('>>>', x.getName())
             if(x.getName().strip("\"") in XXX and x.getNeg() is not True):
                 return True
     else:  # so we got a object
+        # print("object")
         if(((my.getName() in XXX) and (my.getName() is not True))):
             return True
     return False
@@ -61,26 +68,34 @@ def checkX(my, inp1):  # can we propose that x is unsatisifable
 
 def caseFormel(formular, inp1):
     # function for case literal
+    print('case formel', formular.getName())
     lfPhi = lf(formular)
+    #print(lfPhi)
     solution = set()
     for act in lfPhi:
         current = checkX(act[0], inp1)
+        print(current)
         if(current is True):
             solution.add(act[1])
+    #print('solution', solution)
     return solution
 
 
 def caseAnd(literal, inp1):
     # function for and operation of two formualas
     # Input has to be an & with the pointers to the interessting subformulas
-
+    #print('case and')
+    #print(inp1)
     partMy = caseFormel(literal.getFirst(), inp1)
     partPhi = caseFormel(literal.getSec(), inp1)
     solution = set()
     for i in partMy:
         for j in partPhi:
-            AND = toObjects("&")[1]
+            #print(toPnf("&"), "<<<<")
+            AND = toPnf("&")#toObject[1]
+            #print(AND.getName(), "<<<<<<")
             AND.setFirst(i)
             AND.setSec(j)
             solution.add(AND)
+            #print(AND.getName(), AND.getFirst().getName(), AND.getSec().getName())
     return solution

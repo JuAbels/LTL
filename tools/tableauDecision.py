@@ -91,7 +91,14 @@ def obsToName(nameObj, string):
     """Convert the formula and realted objects to a readable string.
     Input: An empty String and a ltl.Formula object.
     Output: name of ltl formula object and the related following 
-            pointers."""
+            pointers.
+    >>> from LTL.tools.toPnfObjects import toPnf
+    >>> from LTL.tools.tableauDecision import obsToName
+    >>> help = toPnf('& p | q a')
+    >>> print(obsToName(help, "").strip())
+    & p | q a
+
+    """
     if(nameObj.getNeg() == True):
         string = string + "! "
     string = string + nameObj.getName() + " "
