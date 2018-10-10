@@ -65,7 +65,16 @@ def tupleToName(obj, string):
     """Convert the given set of linear factors to a readable string.
     Input: a tuple given by linear factors. this is called obj. aswell
            as an empty string.
-    Output: Gives back linear factor as readable."""
+    Output: Gives back linear factor as readable.
+    >>> from LTL.tools.toPnfObjects import toPnf
+    >>> from LTL.tools.lf import lf
+    >>> from LTL.tools.tableauDecision import tupleToName
+    >>> linfacs = lf(toPnf('p'))
+    >>> for x in linfacs:
+    ...    print(tupleToName(x,""))
+    ({p},tt)
+
+    """
     string = string +"("
     for x in obj:
         if type(x) == frozenset:

@@ -44,20 +44,38 @@ def getX(inp1):
 
 
 def checkX(my, inp1):  # can we propose that x is unsatisifable
-    
+    """print('checkx')
+    print(my)
+    for x in my:
+        print(x.getName())
+    print(inp1)"""
     XXX = getX(inp1)
     XXX.add('tt')
+    # print(XXX)
     # changed here a bit. dont know wheter is correct
+    helper = set()
     if (isinstance(my, Iterable)):
-        # print(my)
+        
         for x in my:
             if x.getName() in XXX:# inp1:
-                return True
+                #print("isinstance and in xxx")
+                helper.add(True)
+            else:
+                helper.add(False)
+    #print(helper)
+    if False in helper:
+        return False
+    else:
+        return True
+
+
+
+    ### now this part may not be reached anymore ###
     if type(my) == frozenset:
         # print("frozenset")
         for x in my:
-            print('>>>', x.getName())
             if(x.getName().strip("\"") in XXX and x.getNeg() is not True):
+                #print('in frozenset')
                 return True
     else:  # so we got a object
         # print("object")
@@ -74,17 +92,17 @@ def caseFormel(formular, inp1):
     solution = set()
     for act in lfPhi:
         current = checkX(act[0], inp1)
-        print(current)
+        #print(current)
         if(current is True):
             solution.add(act[1])
-    #print('solution', solution)
+    # print('solution', solution)
     return solution
 
 
 def caseAnd(literal, inp1):
     # function for and operation of two formualas
     # Input has to be an & with the pointers to the interessting subformulas
-    #print('case and')
+    print('case and')
     #print(inp1)
     partMy = caseFormel(literal.getFirst(), inp1)
     partPhi = caseFormel(literal.getSec(), inp1)
