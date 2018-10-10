@@ -19,6 +19,7 @@
 - [ ] bei input mittels konsolzeile ohne input.txt. das x noch implementieren???
 
 neu:
+- [ ] Leeren String in inp abfangen
 - [ ] Testfälle
 - [ ] wie möchten wir die speicherung des outputs haben?
 - [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten (Julia)
