@@ -42,18 +42,19 @@ from LTL.tools.tableauDecision import def17
 
 
 if __name__ == "__main__":
-    #print(len(sys.argv))
-    #inp = getInp()
-    #obs = toPnf('U q p')
+    # print(len(sys.argv))
+    inp = getInp()
+    # obs = toPnf('U q p')
     # linfacs = lf(toPnf('& ! p U q p'))
     # linfacs = lf(toPnf('U q p'))
     # print(linfacs)
 
-    #results = def17(obs)
-    #formulare = translate(inp[0])
+    # results = def17(obs)
+    # formulare = translate(inp[0])
     testMain()
-    #linfacs = lf(toPnf("| U q p | a b"))
+    # linfacs = lf(toPnf("| U q p | a b"))
     """file_automat = inp[2]
+    # file_automat = inp
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
@@ -61,30 +62,22 @@ if __name__ == "__main__":
 
     # objects = toPnf('| p1 R X p2 p1')
     alphabet = returnAlphabet()  # get all atoms of object formel
-    print(alphabet,  "alphabet")
-    #objects = toPnf('& p1 | p3 U X p4 R p2 p3')
-    #derivatives(objects, inp[1])  # inp[1] gives x to the function
+    # objects = toPnf('& p1 | p3 U X p4 R p2 p3')
+    # derivatives(objects, inp[1])  # inp[1] gives x to the function
 
     # decisionTableGraph(objects)
 
     test = automat(objects, alphabet)
-    print(test.goal, "goal")
-    print(test.state, "state")
-    print(test.start, "start")
-    print(test.transitionsTable)
-    print(test.printStart, "\t \t \t START")
-    print(test.printState, "\t STATE")
-    print(test.printGoal, "\t \t \t GOAL")
+
     writeAutomaton(file_automat, objects, test)
 
     liste = calcEdges(test.transitionsTable)
     # print(liste, "HIER")
-    # toGraph(liste, test.printGoal, test.start, test.alphabet)
+    toGraph(liste, test.printGoal, test.start, test.alphabet)
     print("test")
-    
 
-    #objects = toPnf('& G p F ! p')
+    # objects = toPnf('& G p F ! p')
     # def17('& G p F ! p')
-    #def17('& G p F ! p')
-    #def17('& ! p & X ! p U q p')
-    #def17('U q p')"""
+    # def17('& G p F ! p')
+    # def17('& ! p & X ! p U q p')
+    # def17('U q p')"""
