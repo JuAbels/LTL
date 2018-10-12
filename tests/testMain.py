@@ -18,7 +18,11 @@ from LTL.tests.structureTest import structure
 from LTL.tests.pdMedium1 import pdMedium
 from LTL.tests.pdMedium2 import pdMedium2
 from LTL.tests.concatError import concatErr
+
 from LTL.tests.testDef6 import def6
+
+from LTL.tests.testOmegaAutomaton import testAuto
+
 
 #from LTL.tools.ltlToPred import translate
 #from LTL.tools.getInp import getInp
@@ -48,12 +52,20 @@ def testMain():
     #lfMedium3()
     """concatErr()
 
+
     # testing partial derivatives
     #print("VERSTANDENFOFEOIJONCOIEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF?")
     test10()
     testEx()
     test10ex1()"""
+
     #pdMedium()
     #pdMedium2()
     # def6()
     
+
+    pdMedium()
+    # test omega automaton
+    testAuto()
+    pdMedium2()
+
