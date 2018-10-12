@@ -20,6 +20,9 @@ def usage():
     print("Flags for demo-mode: -demo")
     sys.exit(1)
 
+def empty(back, secBack):
+    if back == "" or secBack == "":
+        sys.exit(1)
 
 def getInp():
     """Get the input via source or terminal.
@@ -46,6 +49,7 @@ def getInp():
                 back = (data.readline().strip().strip("\""))
                 secBack = data.readline().strip()
                 file_write = sys.argv[2]
+                empty(back, secBack)
                 return(back, secBack, file_write)
             else:
                 #print("here we are")
@@ -61,6 +65,7 @@ def getInp():
                     retour.append(i)
                 #print(retour)
                 file_write = sys.argv[2]
+                empty(retour[0], retour[1])
                 return retour[0], retour[1], file_write
         elif(len(sys.argv) == 4 and 1 < len(sys.argv[1].split("."))):  # +1
             print(len(sys.argv[1].split(".")))
@@ -71,6 +76,7 @@ def getInp():
                 print(ltlPrint(back))
                 secBack = data.readline().strip()
                 file_write = sys.argv[2]
+                empty(back, secBack)
                 return(back, secBack, file_write)
             elif(sys.argv[3] == "-spot"):
                 data = open(inp, "r")
@@ -79,6 +85,7 @@ def getInp():
                 print(f.to_str('spot'))
                 secBack = data.readline().strip()
                 file_write = sys.argv[2]
+                empty(back, secBack)
                 return(back, secBack, file_write)
             elif(sys.argv[3] == "-spin"):
                 data = open(inp, "r")
@@ -87,6 +94,7 @@ def getInp():
                 print(f.to_str('spin'))
                 secBack = data.readline().strip()
                 file_write = sys.argv[2]
+                empty(back, secBack)
                 return(back, secBack, file_write)
             elif(sys.argv[3] == "-latex"):
                 data = open(inp, "r")
@@ -95,6 +103,7 @@ def getInp():
                 print(f.to_str('latex'))
                 secBack = data.readline().strip()
                 file_write = sys.argv[2]
+                empty(back, secBack)
                 return(back, secBack, file_write)
             elif(sys.argv[3] == "-test"):
                 testMain()
@@ -124,7 +133,8 @@ def getInp():
 
             else:
                 print(ltlPrint(retour[0]))
-            file_write = sys.argv[2]                
+            file_write = sys.argv[2]
+            empty(retour[0], retour [1])                
             return retour[0], retour [1], file_write
         else:
             exit()

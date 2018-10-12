@@ -16,10 +16,9 @@
 - [ ] randfälle abdecken
 
 - [ ] Fehler bei falscher eingabe von ltl formeln abfangen. etwa falsche klammerung
-- [ ] bei input mittels konsolzeile ohne input.txt. das x noch implementieren???
+
 
 neu:
-- [ ] Leeren String in inp abfangen (stefan)
 - [ ] Testfälle
 - [ ] wie möchten wir die speicherung des outputs haben?
 - [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten (Julia)
@@ -35,6 +34,7 @@ wurde das die junktion von endbedingungen angeht
 
 - [ ] wenn alles fertig clean code konventionen durchsetzen. 
 - [ ] idealerweise globale variblen ersetzen 
+- [ ] git abgabe fertig machen
 
 ## Testfälle
 
