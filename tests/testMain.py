@@ -17,6 +17,7 @@ from LTL.tests.lfMedium3 import lfMedium3
 from LTL.tests.structureTest import structure
 from LTL.tests.pdMedium1 import pdMedium
 from LTL.tests.concatError import concatErr
+from LTL.tests.testOmegaAutomaton import testAuto
 
 #from LTL.tools.ltlToPred import translate
 #from LTL.tools.getInp import getInp
@@ -52,3 +53,5 @@ def testMain():
     testEx()
     test10ex1()"""
     #pdMedium()
+    #test omega automaton
+    testAuto()
