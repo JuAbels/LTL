@@ -19,16 +19,16 @@
 - [ ] bei input mittels konsolzeile ohne input.txt. das x noch implementieren???
 
 neu:
-- [ ] Leeren String in inp abfangen
+- [ ] Leeren String in inp abfangen (stefan)
 - [ ] Testfälle
 - [ ] wie möchten wir die speicherung des outputs haben?
 - [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten (Julia)
 - [ ] klarmachen ob bei decission tableau richtig verstanden und implementiert
 wurde das die junktion von endbedingungen angeht
 - [ ] testfälle für omega automaten ausdenken (Julia)
-- [ ] def 6 negativ testen
+- [ ] def 6 negativ testen (stefan)
 - [ ] an der readme arbeiten.
-	=> hardqare requirements?!
+	=> hardqare requirements?! (stefan)
 - [ ] Docstrings überall auf ein level bringen
 	=> lf case literal?! check nicht was passiert
         => ist iterated derivatives und flat.py überhaupt noch aktuell? wenn ja auch hier nochmal docstrings überarbeiten. ansonsten fertig
