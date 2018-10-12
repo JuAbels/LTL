@@ -23,15 +23,19 @@ class testAutomat(unittest.TestCase):
         self.assertEqual(testAutomat.printStart, {"p1"})
 
     def testAnd(self):
-        pass
+        """Test for two elements which are interwinded by AND operator"""
+        formulare = toPnf('& p1 p2')
 
     def testOr(self):
+        """Test for two elements which are interwinded by OR operator"""
         pass
 
     def testUntil(self):
+        """Test for two elements which are interwinded by UNTIL operator"""
         pass
 
     def testRelease(self):
+        """Test for two elements which are interwinded by RELEASE operator"""
         pass
 
 
