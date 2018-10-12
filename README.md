@@ -19,17 +19,16 @@
 - [ ] bei input mittels konsolzeile ohne input.txt. das x noch implementieren???
 
 neu:
+- [ ] Leeren String in inp abfangen (stefan)
 - [ ] Testfälle
 - [ ] wie möchten wir die speicherung des outputs haben?
 - [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten (Julia)
-- [ ] doctest testfälle tuple/obs to name (Stefan)
 - [ ] klarmachen ob bei decission tableau richtig verstanden und implementiert
 wurde das die junktion von endbedingungen angeht
-- [ ] ebenso was bei einer junktion bei derivatives gemacht wurde und ob es richtig implementiert wurde.
 - [ ] testfälle für omega automaten ausdenken (Julia)
-- [ ] def 6 negativ testen
+- [ ] def 6 negativ testen (stefan)
 - [ ] an der readme arbeiten.
-	=> hardqare requirements?!
+	=> hardqare requirements?! (stefan)
 - [ ] Docstrings überall auf ein level bringen
 	=> lf case literal?! check nicht was passiert
         => ist iterated derivatives und flat.py überhaupt noch aktuell? wenn ja auch hier nochmal docstrings überarbeiten. ansonsten fertig
@@ -44,8 +43,4 @@ lf
 - müsste fertig sein
 - vllt noch ein paar länge zufällige formeln. oder mit F und G
 
-derivatives (stefan)
-R | q1 p2 p3  	zu true und false
-| U q p | a b 	zu true und false
-X R q p & a b 	zu true und false
-'& p2 | p3 U p4 p2' zu true und false
+

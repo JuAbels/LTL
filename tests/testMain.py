@@ -16,6 +16,7 @@ from LTL.tests.lfMedium2 import lfMedium2
 from LTL.tests.lfMedium3 import lfMedium3
 from LTL.tests.structureTest import structure
 from LTL.tests.pdMedium1 import pdMedium
+from LTL.tests.pdMedium2 import pdMedium2
 from LTL.tests.concatError import concatErr
 from LTL.tests.testOmegaAutomaton import testAuto
 
@@ -28,11 +29,11 @@ from LTL.tests.testOmegaAutomaton import testAuto
 
 def testMain():
     #print("stupid shit")
-    doctest.testmod()
+    #doctest.testmod()
     # testing the strucutre
-    doctest.testfile("../tools/getInp.py")
-    doctest.testfile("../tools/ltlToPred.py")
-    doctest.testfile("../tools/toPnfObjects.py")
+    #doctest.testfile("../tools/getInp.py")
+    #doctest.testfile("../tools/ltlToPred.py")
+    #doctest.testfile("../tools/toPnfObjects.py")
     doctest.testfile("../tools/tableauDecision.py")
     """structure()
     # testing linear factors
@@ -52,6 +53,7 @@ def testMain():
     test10()
     testEx()
     test10ex1()"""
-    #pdMedium()
-    #test omega automaton
+    pdMedium()
+    # test omega automaton
     testAuto()
+    pdMedium2()
