@@ -26,7 +26,6 @@ neu:
 - [ ] klarmachen ob bei decission tableau richtig verstanden und implementiert
 wurde das die junktion von endbedingungen angeht
 - [ ] testfälle für omega automaten ausdenken (Julia)
-- [ ] def 6 negativ testen (stefan)
 - [ ] an der readme arbeiten.
 	=> hardqare requirements?! (stefan)
 - [ ] Docstrings überall auf ein level bringen
