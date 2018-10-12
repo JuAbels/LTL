@@ -39,12 +39,14 @@ def getInp():
     #if(True):
         
         if '.' in sys.argv[1]:
-            inp = "LTL/" + sys.argv[1]
+            #inp = "LTL/" + sys.argv[1]
+            inp = sys.argv[1]
         else:
             inp = sys.argv[1]
         #print(inp)
         if(len(sys.argv) == 3):  # +1
             if(len(inp.split(".")) > 1):
+                print(inp)
                 data = open(inp, "r")
                 back = (data.readline().strip().strip("\""))
                 secBack = data.readline().strip()
