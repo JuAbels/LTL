@@ -15,8 +15,6 @@
 - [ ] möglichen input für den code zusammen bekommen.
 - [ ] randfälle abdecken
 
-- [ ] Fehler bei falscher eingabe von ltl formeln abfangen. etwa falsche klammerung
-
 
 neu:
 - [ ] Testfälle

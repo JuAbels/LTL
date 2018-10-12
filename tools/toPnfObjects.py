@@ -5,6 +5,7 @@ University of Freiburg - 2018
 """
 
 from copy import deepcopy
+import sys
 
 single = "XFG!"
 
@@ -305,6 +306,33 @@ def pushIn(ele):
         pushIn(ele.getSec())
     return ele
 
+def obsToName(nameObj, string):
+    """Convert the formula and realted objects to a readable string.
+    Input: An empty String and a ltl.Formula object.
+    Output: name of ltl formula object and the related following 
+            pointers.
+    >>> from LTL.tools.toPnfObjects import toPnf
+    >>> from LTL.tools.tableauDecision import obsToName
+    >>> help = toPnf('& p | q a')
+    >>> print(obsToName(help, "").strip())
+    & p | q a
+
+    """
+    if(nameObj.getNeg() == True):
+        string = string + "! "
+    string = string + nameObj.getName() + " "
+    if (nameObj.getFirst() != None):
+        string = obsToName(nameObj.getFirst(),string)
+    if (nameObj.getSec() != None):
+        string = obsToName(nameObj.getSec(),string)
+    return string
+
+def checkValid(formula, inPut):
+    helper = obsToName(formula, "")
+    if (helper.strip() != inPut.strip()):
+        print("Wrong Formula input")
+        sys.exit(1)
+    
 
 def toPnf(inPut):
     """Head-function to get formula in positive normal form
@@ -329,6 +357,7 @@ def toPnf(inPut):
     dealXFG(first)
     lObjects, first = dealEM(lObjects, first)
     pushIn(first)
+    checkValid(first, inPut)
     return first
 
 
