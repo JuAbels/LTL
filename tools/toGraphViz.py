@@ -7,12 +7,13 @@ from graphviz import Digraph
 from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 from copy import deepcopy
+import random
 import re
 
 colors = ['black', 'green', 'red', 'antiquewhite4', 'aquamarine4',
           'brown', 'burlywood', 'cadetblue', 'chartreuse',
           'chocolate', 'coral', 'cyan3', 'darkorchid1',
-          'deeppink1', 'darkslateblue', 'darkgreen', 'blue4'
+          'deeppink1', 'darkslateblue', 'darkgreen', 'blue4',
           'darkgoldenrod3', 'goldenrod', 'darksalmon', 'darkolivegreen']
 
 
@@ -58,7 +59,6 @@ def toGraph(edges, goals, start, alphabet):
     setAtoms = setLabels(edges, number, alphabet)
 
     counter0 = 0     # variable to create for AND cases diamonds
-    countColor = 1   # variable for get new index of colorList for new color
     colour = ""      # deklarate color of an arrow
     for p in edges:  # go through all edges with same Labeles
         for e in edges[p]:
@@ -69,7 +69,8 @@ def toGraph(edges, goals, start, alphabet):
             if setAtoms[key] == '':  # case for arrow apply for all power sets
                 colour = 'black'
             else:
-                colour = colors[countColor]
+                colorNumber = random.randint(1, len(colors) - 1)
+                colour = colors[colorNumber]
             # case if formulare has an AND and could go in two states.
             if e[1][0] == '&':
                 # split string in first place and second place of AND
@@ -90,7 +91,6 @@ def toGraph(edges, goals, start, alphabet):
             if e[1] in goals:
                 g.node(e[1], shape='doublecircle')
             counter0 += 2  # new index for startarrow point
-        countColor += 1    # new index for new color
     g.view()
 
 
@@ -108,7 +108,8 @@ def setLabels(dictionary, number, alphabet):
     dictLable = {}
     # generate dictionary in which keys are the path and values is a list of
     # alphabet which generate the path
-    for i in dictionary:
+    for i in dictionary:  # go through subsets of alphabet
+        # go through pathes that are possible with the subset
         for j in dictionary[i]:
             j = tuple(j)
             if j in dictLable:
@@ -117,6 +118,7 @@ def setLabels(dictionary, number, alphabet):
             else:
                 dictLable[j] = [i]
     # simplyfy the pathes
+    print(dictLable)
     dictLable = helpSimplyFormulare(dictLable, number, alphabet)
     return dictLable
 
@@ -125,7 +127,7 @@ def helpSimplyFormulare(dictLable, number, alphabet):
     """
     Helpfunction to Simplify Lable sets of a path.
 
-    dictLable<dictionary>: key    -> path of graph
+    dictLable<dictionary>: key    -> path of graph as tupel (start, end)
                            value  -> list of set of alphabet
 
     return<dictionary>: simplified Dictionary
@@ -140,6 +142,11 @@ def helpSimplyFormulare(dictLable, number, alphabet):
         if counter == number:
             dictLable[i] = ""
             continue
+        elif len(dictLable[i]) == 1:
+            subset = dictLable[i].pop()
+            subset = subset.replace("{", "").replace("}", "").replace(",", " &")
+            dictLable[i] = subset
+            continue
         # simplify function
         dictLable[i] = simplifyOneLable(dictLable[i], alphabetList)
     return dictLable
@@ -147,9 +154,16 @@ def helpSimplyFormulare(dictLable, number, alphabet):
 
 def simplifyOneLable(lable, alphabetList):
     """ Simplify one Lable.
-    """
 
-    dictPath = []  # list of subsets of an lable and how many sets they covering
+    lable<list>: list of subsets of alphabet that represents the subsets of
+                 the transition
+    alphabetList<liste>: list of strings. Each string is an subset of power
+                         set.
+
+    return<string>: mathematical optimization of subsets.
+    """
+    # list of subsets of an lable and how many sets they covering
+    dictPath = []
     solution = ""  # optimized string of all sets
     # generate tuple of each subset of alphabet with quantity of subsets they
     # are included

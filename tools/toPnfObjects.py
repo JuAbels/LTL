@@ -123,6 +123,9 @@ def toObjects(inPut):
     inp = inPut.split()
     lObjects = []
     global alphabet
+    # Ensure that alphabet set is empty, if new formulare is called.
+    if alphabet != {}:
+        alphabet = set()
     """make the objects. stil empty and no pointer"""
     for x in inp:
         lObjects.append(lFormula(x))

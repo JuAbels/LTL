@@ -55,7 +55,7 @@ def checkX(my, inp1):  # can we propose that x is unsatisifable
     # changed here a bit. dont know wheter is correct
     helper = set()
     if (isinstance(my, Iterable)):
-        
+
         for x in my:
             if x.getName() in XXX:# inp1:
                 #print("isinstance and in xxx")
@@ -86,7 +86,7 @@ def checkX(my, inp1):  # can we propose that x is unsatisifable
 
 def caseFormel(formular, inp1):
     # function for case literal
-    print('case formel', formular.getName())
+    # print('case formel', formular.getName()) TODO: ändern
     lfPhi = lf(formular)
     #print(lfPhi)
     solution = set()
@@ -102,7 +102,7 @@ def caseFormel(formular, inp1):
 def caseAnd(literal, inp1):
     # function for and operation of two formualas
     # Input has to be an & with the pointers to the interessting subformulas
-    print('case and')
+    # print('case and') TODO: Ändern
     #print(inp1)
     partMy = caseFormel(literal.getFirst(), inp1)
     partPhi = caseFormel(literal.getSec(), inp1)

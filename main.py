@@ -53,12 +53,12 @@ if __name__ == "__main__":
     # formulare = translate(inp[0])
     testMain()
     # linfacs = lf(toPnf("| U q p | a b"))
-    """file_automat = inp[2]
-    # file_automat = inp
+    # file_automat = inp[2]
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
-    objects = toPnf('& p1 | p3 U X p4 R p2 p3')
+    # objects = toPnf('& p1 | p3 U X p4 R p2 p3')
+    objects = toPnf("R p1 p2")
 
     # objects = toPnf('| p1 R X p2 p1')
     alphabet = returnAlphabet()  # get all atoms of object formel
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     test = automat(objects, alphabet)
 
-    writeAutomaton(file_automat, objects, test)
+    # writeAutomaton(file_automat, objects, test)
 
     liste = calcEdges(test.transitionsTable)
     # print(liste, "HIER")

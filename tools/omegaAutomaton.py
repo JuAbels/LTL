@@ -13,8 +13,6 @@ import texttable as tt
 
 """Class to generate the omega Automaton"""
 
-xSet = "{p1, p2, q1, q2, p3, p4}"
-
 
 class Automaton:
     """Basic class-structure for the automata"""
