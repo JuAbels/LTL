@@ -61,9 +61,7 @@ def testMain():
 
     #pdMedium()
     #pdMedium2()
-    # def6()
-
-
+    def6()
     pdMedium()
     # test omega automaton
     testAuto()
