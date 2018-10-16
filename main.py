@@ -26,6 +26,8 @@ from LTL.tools.omegaAutomaton import automat
 from LTL.tools.omegaAutomaton import writeAutomaton
 from LTL.tools.derivative import derivatives
 #from LTL.tools.tableauDecision import decisionTableGraph
+from LTL.tools.tableauDecision import tableauToGraph
+
 
 # import doctest
 # from LTL.tests.unitTests import test
@@ -72,7 +74,7 @@ if __name__ == "__main__":
 
     liste = calcEdges(test.transitionsTable)
     # print(liste, "HIER")
-    toGraph(liste, test.printGoal, test.start, test.alphabet)
+    # toGraph(liste, test.printGoal, test.start, test.alphabet)
     print("test")
 
     # objects = toPnf('& G p F ! p')
@@ -80,3 +82,5 @@ if __name__ == "__main__":
     # def17('& G p F ! p')
     # def17('& ! p & X ! p U q p')
     # def17('U q p')"""
+    edges = def17('p1')
+    print(edges)

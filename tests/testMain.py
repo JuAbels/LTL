@@ -17,6 +17,7 @@ from LTL.tests.lfMedium3 import lfMedium3
 from LTL.tests.structureTest import structure
 from LTL.tests.pdMedium1 import pdMedium
 from LTL.tests.pdMedium2 import pdMedium2
+from LTL.tests.testTableauDecision import testTableau
 from LTL.tests.concatError import concatErr
 
 from LTL.tests.testDef6 import def6
@@ -65,4 +66,5 @@ def testMain():
     pdMedium()
     # test omega automaton
     testAuto()
+    testTableau()
     pdMedium2()

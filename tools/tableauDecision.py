@@ -11,9 +11,6 @@ strong realase 	f M g
 
 !(p1 U (p2 & GFp3))
 """
-
-from graphviz import Digraph
-from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
 from LTL.tools.tableauDecisionGrafik import calcEdges
@@ -22,8 +19,8 @@ from LTL.tools.tableauDecisionGrafik import tableauToGraph
 
 
 class preState:
-    """PreState is class that has to be teared down to 
-       the smallest parts. Aswell as root of the tree/graph. 
+    """PreState is class that has to be teared down to
+       the smallest parts. Aswell as root of the tree/graph.
        Each node of this has to be manipulated with linear factors.
        Solution of lf gives input to generate states"""
     def __init__(self, nameObj):
@@ -37,10 +34,11 @@ class preState:
         self.Pointers = set()
         # getting the name of the node
         # alias stripping objects to string
-        self.Name = obsToName(nameObj,"").strip()
+        self.Name = obsToName(nameObj, "").strip()
         # the unstripped name
         self.nameObj = nameObj
         self.nextPre = set()
+
 
 class State:
     """Give Objects for the result of lf(preState).
@@ -56,7 +54,7 @@ class State:
         self.Pointers = set()
         # getting the name of the node
         # alias stripping objects to string
-        self.Name = tupleToName(nameObj,"")
+        self.Name = tupleToName(nameObj, "")
         # the unstripped name
         self.nameObj = nameObj
 
@@ -75,31 +73,32 @@ def tupleToName(obj, string):
     ({p},tt)
 
     """
-    string = string +"("
+    string = string + "("
     for x in obj:
         if type(x) == frozenset:
-            string = string +"{"
+            string = string + "{"
             for y in x:
                 string = string + y.getName() + ","
-            string = string +"}"
+            string = string + "}"
         else:
             string = string + x.getName()
         string = string + ","
     string = string + ")"
     length = len(string)-1
-    for x in range(0,length):
-        if string[x] == "," and string[x+1] == "}" :
-            string = string[:x] +" " + string[x+1:]
-    for x in range(0,length):
-        if string[x] == "," and string[x+1] == ")" :
-            string = string[:x] +" " + string[x+1:]
+    for x in range(0, length):
+        if string[x] == "," and string[x+1] == "}":
+            string = string[:x] + " " + string[x+1:]
+    for x in range(0, length):
+        if string[x] == "," and string[x+1] == ")":
+            string = string[:x] + " " + string[x+1:]
     string = string.replace(" ", "")
     return string
+
 
 def obsToName(nameObj, string):
     """Convert the formula and realted objects to a readable string.
     Input: An empty String and a ltl.Formula object.
-    Output: name of ltl formula object and the related following 
+    Output: name of ltl formula object and the related following
             pointers.
     >>> from LTL.tools.toPnfObjects import toPnf
     >>> from LTL.tools.tableauDecision import obsToName
@@ -108,14 +107,15 @@ def obsToName(nameObj, string):
     & p | q a
 
     """
-    if(nameObj.getNeg() == True):
+    if(nameObj.getNeg() is True):
         string = string + "! "
     string = string + nameObj.getName() + " "
-    if (nameObj.getFirst() != None):
-        string = obsToName(nameObj.getFirst(),string)
-    if (nameObj.getSec() != None):
-        string = obsToName(nameObj.getSec(),string)
+    if (nameObj.getFirst() is not None):
+        string = obsToName(nameObj.getFirst(), string)
+    if (nameObj.getSec() is not None):
+        string = obsToName(nameObj.getSec(), string)
     return string
+
 
 def getNames(formula):
     """just helper to debug. from objects to obj.getName()"""
@@ -127,39 +127,40 @@ def getNames(formula):
             else:
                 print(y.getName())
 
+
 def checkForU(inp, aSet):
     """check wheter there is an U p q in the formula.
-    p and q are variable. 
-    this will be done in a recursive way. 
+    p and q are variable.
+    this will be done in a recursive way.
     Input: Starting with empty set and a ltl-formula
     Output: a set of all found U p q combinations."""
     if(inp.getName() == 'U'):
-        aSet.add(inp.getSec().getName()) ### here maybe better not name
+        aSet.add(inp.getSec().getName())  # here maybe better not name
         return aSet
     else:
-        if(inp.getFirst() != None):
-            if(checkForU(inp.getFirst()) != False):
+        if(inp.getFirst() is not None):
+            if(checkForU(inp.getFirst()) is not False):
                 return checkForU(inp.getFirst())
-        if(inp.getSec() != None):
-            if(checkForU(inp.getSec()) != False):
+        if(inp.getSec() is not None):
+            if(checkForU(inp.getSec()) is not False):
                 return checkForU(inp.getFirst())
     return False
 
+
 def checkEnd(node):
-    """give back wheter allready visited, found in searched for. 
+    """give back wheter allready visited, found in searched for.
        in that case return true.
     Input: Node of Graph. Gotta be a State.
     Output: True if found. None if not found."""
-    actual = obsToName(node.nameObj[1],"").strip()
+    actual = obsToName(node.nameObj[1], "").strip()
     for x in globalVisited:
         if(actual == x):
             return True
-    if(node.nameObj[1].getAtom() == True):
+    if(node.nameObj[1].getAtom() is True):
         for x in node.nameObj[0]:
             if x.getName() in globalCheckForX:
                 return True
     pass
-
 
 
 def makeGraph(node):
@@ -169,8 +170,8 @@ def makeGraph(node):
     or maximal resolution is reached."""
     firstState = preState(node)
     globalNodes.append(firstState)
-    if firstState.Name in globalVisited or firstState.Name == 'tt': 
-        return #firstState
+    if firstState.Name in globalVisited or firstState.Name == 'tt':
+        return  # firstState
     globalVisited.add(firstState.Name)
     for x in lf(firstState.nameObj):
         actual = State(x)
@@ -180,12 +181,12 @@ def makeGraph(node):
         x.Pointers.add(makeGraph(x.nameObj[1]))
     return firstState
 
+
 def printGraph(state):
     """This is a terminal output for the tree.
        Graphical output is found in tableaudecisiongrapfik.py."""
-    if state != None:
+    if state is not None:
         print(state.Name)
-        #print(state.Pointers)
         for x in state.Pointers:
             print(x.Name)
         for x in state.Pointers:
@@ -193,13 +194,11 @@ def printGraph(state):
                 printGraph(y)
 
 
-
-
 def def17(formula):
     """Header function to build decision tableaus.
     Setting up frame sets and lists and call the subfunctions.
     Input: Concated LTL formula.
-    Output: None/ Saved decission tableau. 
+    Output: None/ Saved decission tableau.
     """
     global globalVisited
     globalVisited = set()

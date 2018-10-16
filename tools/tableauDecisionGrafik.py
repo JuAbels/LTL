@@ -37,8 +37,7 @@ def calcEdgesDict(firstNode):
 
 
 def calcEdges(liste):
-    """ Calculate the list of states and prestates.
-    """
+    """ Calculate the list of states and prestates. """
     workListe = liste     # list of actual subtree
     edges = []            # insert all edges
     firstNode = liste[0]  # first node of an edge
