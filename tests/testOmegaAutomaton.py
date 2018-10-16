@@ -81,12 +81,49 @@ class testAutomat(unittest.TestCase):
 
     def testComplexityVer1(self):
         """Test more complex formulare"""
-        formulare = toPnf("R p1 p2")
+        formulare = toPnf("| R p2 p1 p3")
         alphabet = returnAlphabet()
         testAutomat = automat(formulare, alphabet)
-        self.assertEqual(testAutomat.printState, {"p1", "p2", "R p1 p2"})
-        self.assertEqual(testAutomat.printGoal, {"tt", "R p1 p2"})
-        self.assertEqual(testAutomat.printStart, {"R p1 p2"})
+        liste = calcEdges(testAutomat.transitionsTable)
+        setAtom = setLabels(liste, len(liste), testAutomat.alphabet)
+        self.assertEqual(testAutomat.printState, {"p1", "p2", "R p2 p1", "p3"})
+        self.assertEqual(testAutomat.printGoal, {"tt", "R p2 p1"})
+        self.assertEqual(testAutomat.printStart, {"R p2 p1", "p3"})
+        self.assertEqual(setAtom, {("p1", "tt"): "p1", ("p2", "tt"): "p2",
+                                   ("p3", "tt"): "p3",
+                                   ("R p1 p2", "tt"): "p1 & p2",
+                                   ("R p1 p2", "R p1 p2"): "p1"})
+
+    def testComplexityVer2(self):
+        """Test more complex formulare"""
+        formulare = toPnf("| R p2 p1 & p2 p3")
+        alphabet = returnAlphabet()
+        testAutomat = automat(formulare, alphabet)
+        liste = calcEdges(testAutomat.transitionsTable)
+        setAtom = setLabels(liste, len(liste), testAutomat.alphabet)
+        self.assertEqual(testAutomat.printState, {"p1", "p2", "R p2 p1", "p3"})
+        self.assertEqual(testAutomat.printGoal, {"tt", "R p2 p1"})
+        self.assertEqual(testAutomat.printStart, {"R p2 p1", "p3"})
+        self.assertEqual(setAtom, {("p1", "tt"): "p1", ("p2", "tt"): "p2",
+                                   ("p3", "tt"): "p3",
+                                   ("R p1 p2", "tt"): "p1 & p2",
+                                   ("R p1 p2", "R p1 p2"): "p1"})
+
+    def testComplexityVer3(self):
+        """Test more complex formulare"""
+        formulare = toPnf("& U p1 | p2 p3 p1")
+        alphabet = returnAlphabet()
+        testAutomat = automat(formulare, alphabet)
+        liste = calcEdges(testAutomat.transitionsTable)
+        setAtom = setLabels(liste, len(liste), testAutomat.alphabet)
+        self.assertEqual(testAutomat.printState, {"p1", "p2", "U p1 | p2 p3",
+                                                  "p3"})
+        self.assertEqual(testAutomat.printGoal, {"tt"})
+        self.assertEqual(testAutomat.printStart, {"R p2 p1", "p3"})
+        self.assertEqual(setAtom, {("p1", "tt"): "p1", ("p2", "tt"): "p2",
+                                   ("p3", "tt"): "p3",
+                                   ("U p1 | p2 p3", "tt"): "p2 | p3",
+                                   ("U p1 | p2 p3", "U p1 | p2 p3"): "p1"})
 
 
 def testAuto():

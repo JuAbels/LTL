@@ -8,7 +8,6 @@ from LTL.tools.omegaAutomaton import stringName
 from LTL.tools.toPnfObjects import toPnf
 from copy import deepcopy
 import random
-import re
 
 colors = ['black', 'green', 'red', 'antiquewhite4', 'aquamarine4',
           'brown', 'burlywood', 'cadetblue', 'chartreuse',
@@ -113,13 +112,15 @@ def setLabels(dictionary, number, alphabet):
         for j in dictionary[i]:
             j = tuple(j)
             if j in dictLable:
-                dictLable[j].append(i)
+                if i not in dictLable[j]:
+                    dictLable[j].append(i)
                 continue
             else:
                 dictLable[j] = [i]
+
     # simplyfy the pathes
-    print(dictLable)
     dictLable = helpSimplyFormulare(dictLable, number, alphabet)
+
     return dictLable
 
 
@@ -142,12 +143,6 @@ def helpSimplyFormulare(dictLable, number, alphabet):
         if counter == number:
             dictLable[i] = ""
             continue
-        elif len(dictLable[i]) == 1:
-            subset = dictLable[i].pop()
-            subset = subset.replace("{", "").replace("}", "").replace(",", " &")
-            dictLable[i] = subset
-            continue
-        # simplify function
         dictLable[i] = simplifyOneLable(dictLable[i], alphabetList)
     return dictLable
 
@@ -164,30 +159,67 @@ def simplifyOneLable(lable, alphabetList):
     """
     # list of subsets of an lable and how many sets they covering
     dictPath = []
-    solution = ""  # optimized string of all sets
+
     # generate tuple of each subset of alphabet with quantity of subsets they
     # are included
-    for i in alphabetList:
-        listTest = [x for x in lable if re.search(i, x) is not None]
-        dictPath.append((i, listTest, len(listTest)))
+    for subset in alphabetList:
+        activeTransitions = []
+        literals = subset.split(',') if subset.find(',') != -1 else [subset]
+        for transition in lable:
+            include = True
+            assert len(literals) > 0
+            for literal in literals:
+                include = include and literal in transition
+            if include:
+                activeTransitions.append(transition)
+        dictPath.append((subset, activeTransitions, len(activeTransitions)))
+
+    # Order active transition so that
     # first tuple in list covering most subsets
     dictPath = sorted(dictPath, key=lambda x: -x[2])
-    testList = []  # list to check if all sets are calculatet with formulare
-    # List to compare if all sets of labe are covered
+
+    maxFrequence = dictPath[0][2]
+    numCommas = 0
+    maxId = 0
+    for index, actTrans in enumerate(dictPath):
+        # merge of strings, if strings cover same transitions
+        # case:
+        # [('p1', ['{p1, p2}'], 1), ('p2', ['{p1, p2}'], 1), ('p1, p2',
+        # ['{p1, p2}'], 1)]
+        # because then not only elementary subset is enough, need of whole
+        if actTrans[2] == maxFrequence and actTrans[0].count(",") > numCommas:
+            maxId = index
+            numCommas = actTrans[0].count(",")
+
+    # Swap positions if active transistion in first place is shorter than
+    # any active transition with the same frequence
+    dictPath[0], dictPath[maxId] = dictPath[maxId], dictPath[0]
+
+    # optimized string of all sets
+    solution = ""
+
+    # list to check if all sets are calculatet with formulare
+    testList = []
+
+    # List to compare if all sets of label are covered
     deleteList = deepcopy(lable)
+
     # generate a formualre of alphabet which cover all sets of the lable
     while deleteList:
         firstFormulare = dictPath[0]  # first alphabet which depict most subsets
-        dictPath.pop(0)  # remve this, because it is used
+        dictPath.pop(0)  # remove this, because it is used
         for i in firstFormulare[1]:
             if i in testList:
                 continue
             testList.append(i)
             deleteList.remove(i)
+        test = firstFormulare[0]
+        if test.find(",") != -1:
+            test = firstFormulare[0].replace(", ", "&")
         if solution == "":
-            solution = solution + firstFormulare[0]
+            solution = solution + test
         else:
-            solution = solution + " | " + firstFormulare[0]
+            solution = solution + " | " + test
     return solution
 
 
@@ -206,7 +238,7 @@ def splitString(formualre):
 
 
 def calcEdges(dictionary):
-    """ Generate from transitionstable a Dictionary which have the infromation
+    """ Generate from transitionstable a Dictionary which have the information
     with which subset is a transition possible.
 
     return<dict>: Dictionary describes which edges are possible by transition

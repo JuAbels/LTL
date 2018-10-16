@@ -57,8 +57,7 @@ if __name__ == "__main__":
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
-    # objects = toPnf('& p1 | p3 U X p4 R p2 p3')
-    objects = toPnf("R p1 p2")
+    objects = toPnf('& p1 | p3 U X p4 R p2 p3')
 
     # objects = toPnf('| p1 R X p2 p1')
     alphabet = returnAlphabet()  # get all atoms of object formel
