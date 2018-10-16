@@ -22,7 +22,7 @@ neu:
 - [ ] mögliche testfälle für tableaudecissiongrafik herausarbeiten (Julia)
 - [ ] klarmachen ob bei decission tableau richtig verstanden und implementiert
 wurde das die junktion von endbedingungen angeht
-- [ ] testfälle für omega automaten ausdenken (Julia)
+- [x] testfälle für omega automaten ausdenken (Julia)
 - [ ] an der readme arbeiten.
 	=> hardqare requirements?! (stefan)
 - [ ] Docstrings überall auf ein level bringen
