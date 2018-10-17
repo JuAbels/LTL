@@ -1,6 +1,22 @@
-# LTL
+# LTL via ω-Automata
 
-## Struktur
+Implementierung eines ω-automata. Dabei wird eine Formel eingegeben und ein Automat, sowie die Gültigkeit der Formel ausgeben.
+Aufruf der Datei von Ordner über LTL:
+
+```bash
+# For start program
+python3 -m LTL.main <input> <output> 
+```
+* input: Textdatei in der die Formel, für die der Automat gebaut werden soll, steht.
+* output: Textdatei in der die Lösuing steht.
+
+## Aufbau des Gits
+
+* **Paper**: Ordner, in dem die Paper sind, auf dessen Basis das Programm geschrieben wurde.
+* **test**: Ordner mit allen test der verschiedenen Teildefinitionen und Funktionen.
+* **tool**: Ordner mit allen Funktionen und Pythondateien.
+
+## Struktur des Arbeitsvorgangs
 
 1. Definition einer Datenstruktur für die LTL Formeln
 2. Parser für LTL Formeln, also Einlesen von Datei (Syntax dafür gebe ich vor, da gibt es einen Standard)
@@ -39,5 +55,8 @@ wurde das die junktion von endbedingungen angeht
 lf
 - müsste fertig sein
 - vllt noch ein paar länge zufällige formeln. oder mit F und G
+
+tableauDecision:
+- Test ob richitig endet und nicht zu früh.
 
 
