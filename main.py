@@ -25,9 +25,6 @@ from LTL.tools.omegaAutomaton import setTable
 from LTL.tools.omegaAutomaton import automat
 from LTL.tools.omegaAutomaton import writeAutomaton
 from LTL.tools.derivative import derivatives
-#from LTL.tools.tableauDecision import decisionTableGraph
-from LTL.tools.tableauDecision import tableauToGraph
-
 
 # import doctest
 # from LTL.tests.unitTests import test
@@ -59,16 +56,15 @@ if __name__ == "__main__":
 
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
-    objects = toPnf('& p1 | p3 U X p4 R p2 p3')
+    # objects = toPnf('& p1 | p3 U X p4 R p2 p3')
+    def17(toPnf('R p q'), True)
 
     # objects = toPnf('| p1 R X p2 p1')
     alphabet = returnAlphabet()  # get all atoms of object formel
     # objects = toPnf('& p1 | p3 U X p4 R p2 p3')
     # derivatives(objects, inp[1])  # inp[1] gives x to the function
 
-    # decisionTableGraph(objects)
-
-    test = automat(objects, alphabet)
+    """test = automat(objects, alphabet)
 
     # writeAutomaton(file_automat, objects, test)
 
@@ -80,7 +76,4 @@ if __name__ == "__main__":
     # objects = toPnf('& G p F ! p')
     # def17('& G p F ! p')
     # def17('& G p F ! p')
-    # def17('& ! p & X ! p U q p')
-    # def17('U q p')"""
-    edges = def17('p1')
-    print(edges)
+    # def17('& ! p & X ! p U q p')"""

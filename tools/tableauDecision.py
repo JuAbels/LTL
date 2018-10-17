@@ -11,7 +11,6 @@ strong realase 	f M g
 
 !(p1 U (p2 & GFp3))
 """
-from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
 from LTL.tools.tableauDecisionGrafik import calcEdges
 from LTL.tools.tableauDecisionGrafik import calcEdgesDict
@@ -139,11 +138,11 @@ def checkForU(inp, aSet):
         return aSet
     else:
         if(inp.getFirst() is not None):
-            if(checkForU(inp.getFirst()) is not False):
-                return checkForU(inp.getFirst())
+            if(checkForU(inp.getFirst(), set()) is not False):
+                return checkForU(inp.getFirst(), set())
         if(inp.getSec() is not None):
-            if(checkForU(inp.getSec()) is not False):
-                return checkForU(inp.getFirst())
+            if(checkForU(inp.getSec(), set()) is not False):
+                return checkForU(inp.getFirst(), set())
     return False
 
 
@@ -194,10 +193,11 @@ def printGraph(state):
                 printGraph(y)
 
 
-def def17(formula):
-    """Header function to build decision tableaus.
+def def17(formula, draw):
+    """Header function to build decision tableau.
     Setting up frame sets and lists and call the subfunctions.
     Input: Concated LTL formula.
+    draw<boolean>: if true, then Graph should be drawn.
     Output: None/ Saved decission tableau.
     """
     global globalVisited
@@ -206,9 +206,12 @@ def def17(formula):
     globalCheckForX = checkForU(formula, set())
     global globalNodes
     globalNodes = []
-    makeGraph(toPnf('& ! p U q p'))
+    makeGraph(formula)
     printGraph(globalNodes[0])
+
     # From here call the building of the printable graph.
     results = calcEdgesDict(globalNodes[0])
     edges = calcEdges(results)
-    tableauToGraph(edges)
+    if draw:
+        tableauToGraph(edges)
+    return results
