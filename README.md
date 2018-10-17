@@ -1,4 +1,4 @@
-# LTL via omega - Automata
+# LTL via $\omega$ - Automata
 
 ## Struktur
 
