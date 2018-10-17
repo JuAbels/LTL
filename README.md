@@ -7,8 +7,8 @@ Aufruf der Datei von Ordner über LTL:
 # For start program
 python3 -m LTL.main <input> <output> 
 ```
-* <input>: Textdatei in der die Formel, für die der Automat gebaut werden soll, steht.
-* <output>: Textdatei in der die Lösuing steht.
+* input: Textdatei in der die Formel, für die der Automat gebaut werden soll, steht.
+* output: Textdatei in der die Lösuing steht.
 
 ## Aufbau des Gits
 
