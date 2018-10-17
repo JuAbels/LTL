@@ -1,6 +1,8 @@
-# LTL mit \Omega - Automaton
+# LTL via omega - Automata
 
 ## Struktur
+
+\omega
 
 1. Definition einer Datenstruktur für die LTL Formeln
 2. Parser für LTL Formeln, also Einlesen von Datei (Syntax dafür gebe ich vor, da gibt es einen Standard)
