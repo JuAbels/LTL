@@ -1,4 +1,4 @@
-# LTL
+# LTL with &omega
 
 ## Struktur
 
