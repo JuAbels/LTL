@@ -20,8 +20,7 @@ class testTableauDecision(unittest.TestCase):
     def testAnd(self):
         """test case with operator and."""
         testTableau = def17(toPnf('& p q'), False)
-        # self.assertEqual(testTableau, ('& p q', [('({p, q},tt)',
-        #                                         ['({p},tt)', '({q},tt)'])]))
+        self.assertEqual(testTableau, ('& p q', ['({p, q},tt)']))
 
     def testOr(self):
         """test case with operator and."""
@@ -36,9 +35,7 @@ class testTableauDecision(unittest.TestCase):
     def testRelease(self):
         """test case with operator and."""
         testTableau = def17(toPnf('R p q'), False)
-        self.assertEqual(testTableau, ('R p q', [('({p, q},tt)', ['({p},tt)',
-                                                  '({q},tt)']),
-                                                 ('({q},R)', ['({q},tt)'])]))
+        self.assertEqual(testTableau, ('R p q', ['({p, q},tt)', '({q},R)']))
 
 
 def testTableau():
