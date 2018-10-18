@@ -49,6 +49,8 @@ if __name__ == "__main__":
     # linfacs = lf(toPnf('U q p'))
     # print(linfacs)
 
+
+
     # results = def17(obs)
     # formulare = translate(inp[0])
     testMain()
