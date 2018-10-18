@@ -42,7 +42,8 @@ from LTL.tools.tableauDecision import def17
 
 if __name__ == "__main__":
     # print(len(sys.argv))
-    inp = getInp()
+    # inp = getInp()
+    # print(inp)
     # obs = toPnf('U q p')
     # linfacs = lf(toPnf('& ! p U q p'))
     # linfacs = lf(toPnf('U q p'))
@@ -57,10 +58,10 @@ if __name__ == "__main__":
     # objects = toPnf('& p2 | p3 U p4 p2')  # formulare
     # objects = toPnf('& R X p3 U p1 p3')
     # objects = toPnf('& p1 | p3 U X p4 R p2 p3')
-    def17(toPnf('R p q'), True)
+    # def17(toPnf('& p q'), True)
 
     # objects = toPnf('| p1 R X p2 p1')
-    alphabet = returnAlphabet()  # get all atoms of object formel
+    # alphabet = returnAlphabet()  # get all atoms of object formel
     # objects = toPnf('& p1 | p3 U X p4 R p2 p3')
     # derivatives(objects, inp[1])  # inp[1] gives x to the function
 

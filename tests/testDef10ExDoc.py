@@ -31,7 +31,7 @@ def test10ex1():
     """
     objects = toPnf('G F p1')
     # print(objects.getName())
-    derCaseAnd = derivatives(objects, 'p1')
+    derCaseAnd = derivatives(objects, '{p1}')
     solution = []
     # print(derCaseAnd)
     for x in derCaseAnd:

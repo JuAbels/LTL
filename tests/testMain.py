@@ -33,14 +33,14 @@ from LTL.tests.testOmegaAutomaton import testAuto
 
 
 def testMain():
-    #print("stupid shit")
-    #doctest.testmod()
+    """#print("stupid shit")
+    doctest.testmod()
     # testing the strucutre
-    #doctest.testfile("../tools/getInp.py")
-    #doctest.testfile("../tools/ltlToPred.py")
-    #doctest.testfile("../tools/toPnfObjects.py")
+    doctest.testfile("../tools/getInp.py")
+    doctest.testfile("../tools/ltlToPred.py")
+    doctest.testfile("../tools/toPnfObjects.py")
     doctest.testfile("../tools/tableauDecision.py")
-    """structure()
+    structure()
     # testing linear factors
     doctest.testfile("../tools/lf.py")
     doctest.testfile("../tests/unitTestDef8ex2.py")
@@ -49,22 +49,22 @@ def testMain():
     test2()
     testgfp()
     lfMedium()
-    lfMedium2()"""
-    #lfMedium3()
-    """concatErr()
+    lfMedium2()
+    lfMedium3()
+    concatErr()
 
 
     # testing partial derivatives
     #print("VERSTANDENFOFEOIJONCOIEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF?")
     test10()
     testEx()
-    test10ex1()"""
+    test10ex1()
 
-    #pdMedium()
-    #pdMedium2()
-    def6()
     pdMedium()
+    pdMedium2()
+    def6()
+    pdMedium()"""
     # test omega automaton
     testAuto()
-    testTableau()
-    pdMedium2()
+    #testTableau()
+    #pdMedium2()

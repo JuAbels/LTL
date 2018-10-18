@@ -47,11 +47,11 @@ def checkX(my, inp1):  # can we propose that x is unsatisifable
     """print('checkx')
     print(my)
     for x in my:
-        print(x.getName())
-    print(inp1)"""
+        print(x.getName(), inp1)
+    """
     XXX = getX(inp1)
     XXX.add('tt')
-    # print(XXX)
+    #print(XXX)
     # changed here a bit. dont know wheter is correct
     helper = set()
     if (isinstance(my, Iterable)):
@@ -86,8 +86,9 @@ def checkX(my, inp1):  # can we propose that x is unsatisifable
 
 def caseFormel(formular, inp1):
     # function for case literal
-    # print('case formel', formular.getName()) TODO: ändern
+    #print('case formel', formular.getName(), inp1) #TODO: ändern
     lfPhi = lf(formular)
+    
     #print(lfPhi)
     solution = set()
     for act in lfPhi:

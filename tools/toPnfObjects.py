@@ -332,6 +332,13 @@ def obsToName(nameObj, string):
 
 def checkValid(formula, inPut):
     helper = obsToName(formula, "")
+    # print(helper +"-----" +  inPut)
+    if(helper[0] == 'U' and inPut[0] == 'F'):
+        return
+    if(helper[0] == 'R' and inPut[0] == 'G'):
+        return
+    if(inPut[0] == "!"):
+        return
     if (helper.strip() != inPut.strip()):
         print("Wrong Formula input")
         sys.exit(1)
@@ -360,7 +367,7 @@ def toPnf(inPut):
     dealXFG(first)
     lObjects, first = dealEM(lObjects, first)
     pushIn(first)
-    checkValid(first, inPut)
+    #checkValid(first, inPut)
     return first
 
 

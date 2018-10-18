@@ -167,6 +167,7 @@ def makeGraph(node):
     input is the formula and the Graph is build from the pointers.
     This is done in a recursive way and is stopped when a loop is found
     or maximal resolution is reached."""
+    print(node.getName())
     firstState = preState(node)
     globalNodes.append(firstState)
     if firstState.Name in globalVisited or firstState.Name == 'tt':

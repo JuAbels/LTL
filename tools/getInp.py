@@ -8,7 +8,7 @@ import spot
 
 def usage():
     """Tell how to use."""
-    print("usage: python3 main.py <input> <automatPrint> [<flag>}")
+    print("usage: python3 - m LTL.main <input> <automatPrint> [<flag>}")
 
     print("input can be textfile(.txt) or string")
     print("string-example: \"('G F p'; '{'p', 'p2', 'q1', 'q2'}')\"")

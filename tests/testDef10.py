@@ -18,12 +18,13 @@ class testDefintion10(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testDummy(self):
+    def atestDummy(self):
         self.assertEqual(1, 1)
 
     def testCaseTrue(self):
         objects = toPnf('tt')
         derTT = derivatives(objects, 'tt')
+        #print("===>", derTT)
         solution = []
         for x in derTT:
             solution.append(x.getName())
@@ -31,8 +32,9 @@ class testDefintion10(unittest.TestCase):
 
     def testCaseFormula(self):
         objects = toPnf('p1')
-        derF = derivatives(objects, 'p1')
+        derF = derivatives(objects, '{p1}')
         solution = []
+        #print("!!!!!!!!!!!!!", derF)
         for x in derF:
             solution.append(x.getName())
         self.assertEqual(solution, ['tt'])
