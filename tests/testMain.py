@@ -33,7 +33,7 @@ from LTL.tests.testOmegaAutomaton import testAuto
 
 
 def testMain():
-    """#print("stupid shit")
+    #print("stupid shit")
     doctest.testmod()
     # testing the strucutre
     doctest.testfile("../tools/getInp.py")
@@ -63,7 +63,7 @@ def testMain():
     pdMedium()
     pdMedium2()
     def6()
-    pdMedium()"""
+    pdMedium()
     # test omega automaton
     testAuto()
     #testTableau()

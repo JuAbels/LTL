@@ -63,7 +63,9 @@ class lFormula:
 
 
 def pointers(obj, lObjects):
+    #print(obj.getName())
     if (obj.getName() in single and obj.getName() not in duo):
+        #print("in single")
         obj.setFirst(lObjects[0])
         lObjects = lObjects[1:]
         if (obj.getFirst().getAtom is not True):
@@ -71,16 +73,22 @@ def pointers(obj, lObjects):
 # lObjects is not returned and saved short. so diffuse values come in
     elif (obj.getName() not in single and obj.getName() in duo and
           len(lObjects) != 0):
+        #print("in duo")
         obj.setFirst(lObjects[0])
         if len(lObjects) > 0:
             lObjects = lObjects[1:]
         if (obj.getFirst().getAtom is not True):
-            lObjects = pointers(obj.getFirst(), lObjects)[0]
+            lObjects, lObj = pointers(obj.getFirst(), lObjects)#[0]
+        #print("!!!!",obj.getName())
         if len(lObjects) > 0:
+            #print(lObjects[0].getName())
             obj.setSec(lObjects[0])
-        if (obj.getSec().getAtom is not True):
-            lObjects = pointers(obj.getSec(), lObjects)[0]
-        lObjects = lObjects[1:]
+            lObjects = lObjects[1:]
+        if (obj.getSec() is not None):
+            if (obj.getSec().getAtom is not True):
+                lObjects, lObj = pointers(obj.getSec(), lObjects)#[0]
+        #print(">>>",obj.getName(), lObj.getName())
+        #lObjects = lObjects[1:]
 
     return lObjects, obj
 

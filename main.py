@@ -41,6 +41,7 @@ from LTL.tools.tableauDecision import def17
 
 
 if __name__ == "__main__":
+    testMain()
     # print(len(sys.argv))
     # inp = getInp()
     # print(inp)
@@ -48,12 +49,21 @@ if __name__ == "__main__":
     # linfacs = lf(toPnf('& ! p U q p'))
     # linfacs = lf(toPnf('U q p'))
     # print(linfacs)
+    """print("& U p1 | p2 p3 p4")
+    formulare = toPnf("& U p1 | p2 p3 p4")
+    print("-----")
+    print(formulare.getName())
+    print(formulare.getFirst().getName())
+    print(formulare.getFirst().getFirst().getName())
+    print(formulare.getFirst().getSec().getName())
+    print(formulare.getFirst().getSec().getFirst().getName())
+    # print(formulare.getFirst().getSec().getFirst().getFirst().getName())
+    print(formulare.getFirst().getSec().getSec().getName())
 
-
-
-    # results = def17(obs)
+    print(formulare.getSec().getName())
+    """
     # formulare = translate(inp[0])
-    testMain()
+
     # linfacs = lf(toPnf("| U q p | a b"))
     # file_automat = inp[2]
 
