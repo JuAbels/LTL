@@ -134,7 +134,7 @@ def checkForU(inp, aSet):
     Input: Starting with empty set and a ltl-formula
     Output: a set of all found U p q combinations."""
     if(inp.getName() == 'U'):
-        aSet.add(inp.getSec().getName())  # here maybe better not name
+        aSet.add(inp.getSec().getName())
         return aSet
     else:
         if(inp.getFirst() is not None):

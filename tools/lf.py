@@ -113,8 +113,6 @@ def caseNext(formular):
     Input: formular is an object, so that information of pointFirst and
                       pointSec is also presented.
     Output: (tt, def7(formula))
-    
-
     '''
     oneSet = set()
     solution = set()
@@ -204,10 +202,10 @@ def release(firstCase, secondCase):
 
 def defSix(my, ny):
     """Check wheter calculation of linear factor is allowed.
-    if there are contradictory parts or a part is ff 
+    if there are contradictory parts or a part is ff
     then reject and return false(ff)
     Input: two ltl formulas
-    Output: Union of both or false """
+    Output: Union of both or false."""
     if type(my) == tuple or type(ny) == tuple:
         if type(my) == tuple:
             my = list(my)
