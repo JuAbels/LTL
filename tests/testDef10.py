@@ -1,12 +1,10 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
 
 """
 
 import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.derivative import derivatives
 
@@ -24,7 +22,6 @@ class testDefintion10(unittest.TestCase):
     def testCaseTrue(self):
         objects = toPnf('tt')
         derTT = derivatives(objects, 'tt')
-        #print("===>", derTT)
         solution = []
         for x in derTT:
             solution.append(x.getName())
@@ -34,7 +31,6 @@ class testDefintion10(unittest.TestCase):
         objects = toPnf('p1')
         derF = derivatives(objects, '{p1}')
         solution = []
-        #print("!!!!!!!!!!!!!", derF)
         for x in derF:
             solution.append(x.getName())
         self.assertEqual(solution, ['tt'])
@@ -47,14 +43,12 @@ class testDefintion10(unittest.TestCase):
     def testCaseAndEmpty(self):
         objects = toPnf('& p1 p2')
         derCaseAnd = derivatives(objects, 'x')
-        # solution = []
         self.assertEqual(derCaseAnd, set())
 
     def testCaseAnd(self):
         objects = toPnf('& p1 p2')
         derCaseAnd = derivatives(objects, '{p1, p2}')
         solution = []
-        # print(derCaseAnd)
         for x in derCaseAnd:
             solution.append(x.getName())
             solution.append(x.getFirst().getName())
@@ -65,7 +59,6 @@ class testDefintion10(unittest.TestCase):
         objects = toPnf('& p1 p2')
         derCaseAnd = derivatives(objects, '{p1, p2}')
         solution = []
-        # print(derCaseAnd)
         for x in derCaseAnd:
             solution.append(x.getName())
             solution.append(x.getFirst().getName())

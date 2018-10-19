@@ -19,32 +19,24 @@ from LTL.tests.pdMedium1 import pdMedium
 from LTL.tests.pdMedium2 import pdMedium2
 from LTL.tests.testTableauDecision import testTableau
 from LTL.tests.concatError import concatErr
-
 from LTL.tests.testDef6 import def6
-
 from LTL.tests.testOmegaAutomaton import testAuto
 
 
-#from LTL.tools.ltlToPred import translate
-#from LTL.tools.getInp import getInp
-#from LTL.tools.lf import lf
-#from LTL.tools.toPnfObjects import toPnf
-#from LTL.tools.derivative import derivatives
-
-
 def testMain():
-    #print("stupid shit")
     doctest.testmod()
+
     # testing the strucutre
     doctest.testfile("../tools/getInp.py")
     doctest.testfile("../tools/ltlToPred.py")
     doctest.testfile("../tools/toPnfObjects.py")
     doctest.testfile("../tools/tableauDecision.py")
     structure()
+
     # testing linear factors
     doctest.testfile("../tools/lf.py")
     doctest.testfile("../tests/unitTestDef8ex2.py")
-    #doctest.testfile("../tests/testDef10ExDoc.py")
+    # doctest.testfile("../tests/testDef10ExDoc.py")
     test()
     test2()
     testgfp()
@@ -53,18 +45,16 @@ def testMain():
     lfMedium3()
     concatErr()
 
-
     # testing partial derivatives
-    #print("VERSTANDENFOFEOIJONCOIEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF?")
     test10()
     testEx()
     test10ex1()
-
     pdMedium()
     pdMedium2()
     def6()
     pdMedium()
+
     # test omega automaton
     testAuto()
-    #testTableau()
-    #pdMedium2()
+    # testTableau()
+    # pdMedium2()

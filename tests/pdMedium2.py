@@ -1,27 +1,14 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
-
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <> => tt U f
-always 		Gf - [] => ff R f
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-derivat = set()
 
 """
 
+
 import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
 from LTL.tools.derivative import derivatives
-# from LTL.tools.flat import flat
-# from LTL.tools.flat import toWords
 
 
 class pd(unittest.TestCase):
@@ -34,7 +21,7 @@ class pd(unittest.TestCase):
 
     def testDummy(self):
         self.assertEqual(1, 1)
-    
+
     def testRelease1(self):
         pd = derivatives(toPnf('R | q1 p2 p3'), "{p2, p3, q1}")
 
@@ -63,16 +50,16 @@ class pd(unittest.TestCase):
         self.assertEqual(len(pd), 2)
 
     def testOr1(self):
-        # | U q p | a b
+        """ | U q p | a b"""
         pd = derivatives(toPnf('| U q p | a b'), "{a, q, p, b}")
         self.assertEqual(len(pd), 4)
         solu = set()
         for x in pd:
             solu.add(x.getName())
-        self.assertEqual(solu, {'U','tt'})
+        self.assertEqual(solu, {'U', 'tt'})
 
     def testOr2(self):
-        # | U q p | a b
+        """| U q p | a b"""
         pd = derivatives(toPnf('| U q p | a b'), "{a, p, b}")
         self.assertEqual(len(pd), 3)
         solu = set()
@@ -81,13 +68,14 @@ class pd(unittest.TestCase):
         self.assertEqual(solu, {'tt'})
 
     def testX1(self):
-        #X R q p & a b
+        """X R q p & a b"""
         pd = derivatives(toPnf('X R q p & a b'), "{tt}")
-        self.assertEqual(len(pd),1)
+        self.assertEqual(len(pd), 1)
         solu = set()
         for x in pd:
             solu.add(x.getName())
         self.assertEqual(solu, {'R'})
+
 
 def pdMedium2():
     loader = unittest.TestLoader()
