@@ -1,30 +1,16 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
-
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <> => tt U f
-always 		Gf - [] => ff R f
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-derivat = set()
 
 """
 
+
 import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
-# from LTL.tools.flat import flat
-# from LTL.tools.flat import toWords
 
 
 class linfacs(unittest.TestCase):
-    # print("!!!!!!!!!!!!!!!!!!!!!!!")
     def setUp(self):
         pass
 
@@ -38,7 +24,6 @@ class linfacs(unittest.TestCase):
         objects = toPnf('U p1 p2')
         linFac = lf(objects)
         self.assertEqual(len(linFac), 2)
-        # print(linFac)
 
     def testMPart2(self):
         objects = toPnf('U p1 R p2 p3')
@@ -56,7 +41,6 @@ class linfacs(unittest.TestCase):
         fullterm = set()
         for x in linFac:
             for y in x:
-                # print(y)
                 if type(y) == tuple or type(y) == frozenset:
                     for z in y:
                         fullterm.add(z.getName())
@@ -67,10 +51,7 @@ class linfacs(unittest.TestCase):
     def testMedium(self):
         # 'U p1 & p2 G F p3'
         objects = toPnf('F p3')
-        # print("================>")
-        # print(objects.getName())
         lines = lf(objects)
-        # print("----")
         solution = set()
         for x in lines:
             for y in x:

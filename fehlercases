@@ -1,11 +1,4 @@
 fehlercases
 
-& ! p U q p ???????
-should be
-~({!p, q}, U q p)
-or({& !p q}, U q p)
 
 
-lf( X ! p) =={(tt, !p)} ??????????
-
-         formulare = toPnf("& p1 U p1 | p2 p3")

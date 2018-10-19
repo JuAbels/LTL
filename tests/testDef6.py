@@ -1,27 +1,13 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
-
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <> => tt U f
-always 		Gf - [] => ff R f
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-derivat = set()
 
 """
 
 import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf, defSix
 from LTL.tools.derivative import derivatives
-# from LTL.tools.flat import flat
-# from LTL.tools.flat import toWords
 
 
 class six(unittest.TestCase):
@@ -38,7 +24,7 @@ class six(unittest.TestCase):
     def testEmptyCase(self):
         first = toPnf('ff')
         second = toPnf('ff')
-        self.assertEqual(defSix(first,second).getName(), 'ff')
+        self.assertEqual(defSix(first, second).getName(), 'ff')
 
     def testEmptyCase2(self):
         second = toPnf('ff')
@@ -48,17 +34,16 @@ class six(unittest.TestCase):
     def testEmptyCase3(self):
         first = toPnf('! p')
         second = toPnf('p')
-        self.assertEqual(defSix(first,second).getName(), 'ff')
+        self.assertEqual(defSix(first, second).getName(), 'ff')
 
     def testEmptyMerge(self):
         first = toPnf('q')
         second = toPnf('p')
-        solu = defSix(first,second)
+        solu = defSix(first, second)
         soluSet = set()
         for x in solu:
             soluSet.add(x.getName())
-        self.assertEqual(soluSet, {'q','p'})
-
+        self.assertEqual(soluSet, {'q', 'p'})
 
 
 def def6():

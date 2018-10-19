@@ -1,16 +1,9 @@
-"""Author Stefan Strang, Julia Abels - Uni Freiburg.
-
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <>
-always 		Gf - []
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-
-!(p1 U (p2 & GFp3))
 """
+Authors: Julia Abels, Stefan Strang
+University of Freiburg - 2018
+
+"""
+
 from LTL.tools.lf import lf
 from LTL.tools.tableauDecisionGrafik import calcEdges
 from LTL.tools.tableauDecisionGrafik import calcEdgesDict
@@ -134,7 +127,7 @@ def checkForU(inp, aSet):
     Input: Starting with empty set and a ltl-formula
     Output: a set of all found U p q combinations."""
     if(inp.getName() == 'U'):
-        aSet.add(inp.getSec().getName())  # here maybe better not name
+        aSet.add(inp.getSec().getName())
         return aSet
     else:
         if(inp.getFirst() is not None):

@@ -2,13 +2,9 @@
 Authors: Stefan Strang
 University of Freiburg - 2018
 
-This is module for explicit testing of large functiosn of the fosaccs2018.
-
 """
 
 import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
 
@@ -28,7 +24,6 @@ class testLfex1(unittest.TestCase):
         objects = toPnf('F p')
         linFac = lf(objects)
         solution = set()
-        # print(linFac)
         for x in linFac:
             for y in x:
                 if type(y) == frozenset:
@@ -42,7 +37,6 @@ class testLfex1(unittest.TestCase):
         self.assertEqual({'tt', 'p', 'U'}, solution)
         first = objects.getFirst()
         sec = objects.getSec()
-        # print("!!!!!!!",objects.getName())
         del first
         del sec
         objects.setFirst(None)

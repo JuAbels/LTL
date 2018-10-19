@@ -1,7 +1,9 @@
 """
+Authors: Julia Abels, Stefan Strang
+University of Freiburg - 2018
+
 File to draw Graph of Semantic Tableau.
 
-Author Stefan Strang, Julia Abels - Uni Freiburg.
 """
 
 from graphviz import Digraph

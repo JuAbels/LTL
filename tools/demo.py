@@ -1,29 +1,13 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
 
 """
-# import doctest
-# from LTL.tests.unitTests import test
-# from LTL.tests.unitTest2 import test2
-# from LTL.tests.unitTestDef8ex2 import testgfp
-# from LTL.tests.testDef10 import test10
-# from LTL.tests.testDef10Ex import testEx
-# from LTL.tests.testDef10ExDoc import test10ex1
+
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
 from LTL.tools.derivative import derivatives
-# from LTL.tools.omegaAutomaton import Automaton
-# from LTL.tools.omegaAutomaton import printAutomaton
-# from LTL.tools.omegaAutomaton import setTable
-# from LTL.tools.omegaAutomaton import automat
-# from LTL.tools.ltlToPred import translate
 import os
-"""from LTL.tools.ltlToPred import translate
-from LTL.tools.getInp import getInp
-from LTL.tools.lf import lf
-from LTL.tools.toPnfObjects import toPnf
-from LTL.tools.derivative import derivatives"""
 
 
 def demo1():

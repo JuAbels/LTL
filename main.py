@@ -1,19 +1,8 @@
 """
-Authors: Julia Abels and Stefan Strang
-         University of Freiburg - 2018
+Authors: Julia Abels, Stefan Strang
+University of Freiburg - 2018
 
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <>
-always 		Gf - []
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-
-& G p F ! p
 """
-
 from LTL.tools.getInp import getInp
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.toPnfObjects import returnAlphabet

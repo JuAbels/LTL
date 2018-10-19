@@ -1,30 +1,16 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
-
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <> => tt U f
-always 		Gf - [] => ff R f
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-derivat = set()
 
 """
 
+
 import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.toPnfObjects import toPnf
 from LTL.tools.lf import lf
-# from LTL.tools.flat import flat
-# from LTL.tools.flat import toWords
 
 
 class linfacs(unittest.TestCase):
-    # print("jubjubjub")
     def setUp(self):
         pass
 
@@ -33,12 +19,11 @@ class linfacs(unittest.TestCase):
 
     def testDummy(self):
         self.assertEqual(1, 1)
-    # & R p2 X p3 U p1 p3
 
+    # & R p2 X p3 U p1 p3
     def testNext(self):
         objects = toPnf('U p1 p3')
         linFac = lf(objects)
-        # print(linFac)
         solu = set()
         for x in linFac:
             for y in x:
@@ -52,7 +37,6 @@ class linfacs(unittest.TestCase):
         self.assertEqual(solu, {'tt', 'p1', 'p3', 'U'})
         objects = toPnf('X p3')
         linFac = lf(objects)
-        # print(linFac)
         soluX = []
         for x in linFac:
             for y in x:
@@ -74,25 +58,19 @@ class linfacs(unittest.TestCase):
         objects = toPnf('& R p2 X p3 U p1 p3')
 
         linFac = lf(objects)
-        # total = set()
         self.assertEqual(len(linFac), 4)
         between = set()
         for x in linFac:
-            # between = set()
-            # print(x)
-            # helper = set()
             for y in x:
                 if type(y) == frozenset:
                     for z in y:
                         between.add(z.getName())
                 else:
                     between.add(y.getName())
-            # total.update(between)
         self.assertEqual({'&', 'p3', 'p1', 'p2', 'tt'}, between)
 
 
 def lfMedium2():
-    # print("=======> jub")
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
 

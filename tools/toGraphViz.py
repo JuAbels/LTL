@@ -1,5 +1,6 @@
-"""Author Stefan Strang, Julia Abels - Uni Freiburg.
-
+"""
+Authors: Julia Abels, Stefan Strang
+University of Freiburg - 2018
 
 """
 

@@ -1,5 +1,5 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
 
 """
@@ -68,19 +68,19 @@ def pointers(obj, lObjects):
         lObjects = lObjects[1:]
         if (obj.getFirst().getAtom is not True):
             pointers(obj.getFirst(), lObjects)
-# lObjects is not returned and saved short. so diffuse values come in
     elif (obj.getName() not in single and obj.getName() in duo and
           len(lObjects) != 0):
         obj.setFirst(lObjects[0])
         if len(lObjects) > 0:
             lObjects = lObjects[1:]
         if (obj.getFirst().getAtom is not True):
-            lObjects = pointers(obj.getFirst(), lObjects)[0]
+            lObjects, lObj = pointers(obj.getFirst(), lObjects)
         if len(lObjects) > 0:
             obj.setSec(lObjects[0])
-        if (obj.getSec().getAtom is not True):
-            lObjects = pointers(obj.getSec(), lObjects)[0]
-        lObjects = lObjects[1:]
+            lObjects = lObjects[1:]
+        if (obj.getSec() is not None):
+            if (obj.getSec().getAtom is not True):
+                lObjects, lObj = pointers(obj.getSec(), lObjects)
 
     return lObjects, obj
 
@@ -135,7 +135,6 @@ def toObjects(inPut):
             x.setAtom()
             if x.getName() not in alphabet:
                 alphabet.add(x.getName())
-            # x.setAlpabet()
     deepLObjects = deepcopy(lObjects)
     stuff = pointers(lObjects[0], lObjects[1:])
     lObjects = stuff[0]
@@ -309,10 +308,11 @@ def pushIn(ele):
         pushIn(ele.getSec())
     return ele
 
+
 def obsToName(nameObj, string):
     """Convert the formula and realted objects to a readable string.
     Input: An empty String and a ltl.Formula object.
-    Output: name of ltl formula object and the related following 
+    Output: name of ltl formula object and the related following
             pointers.
     >>> from LTL.tools.toPnfObjects import toPnf
     >>> from LTL.tools.tableauDecision import obsToName
@@ -321,18 +321,18 @@ def obsToName(nameObj, string):
     & p | q a
 
     """
-    if(nameObj.getNeg() == True):
+    if(nameObj.getNeg() is True):
         string = string + "! "
     string = string + nameObj.getName() + " "
-    if (nameObj.getFirst() != None):
-        string = obsToName(nameObj.getFirst(),string)
-    if (nameObj.getSec() != None):
-        string = obsToName(nameObj.getSec(),string)
+    if (nameObj.getFirst() is not None):
+        string = obsToName(nameObj.getFirst(), string)
+    if (nameObj.getSec() is not None):
+        string = obsToName(nameObj.getSec(), string)
     return string
+
 
 def checkValid(formula, inPut):
     helper = obsToName(formula, "")
-    # print(helper +"-----" +  inPut)
     if(helper[0] == 'U' and inPut[0] == 'F'):
         return
     if(helper[0] == 'R' and inPut[0] == 'G'):
@@ -342,7 +342,7 @@ def checkValid(formula, inPut):
     if (helper.strip() != inPut.strip()):
         print("Wrong Formula input")
         sys.exit(1)
-    
+
 
 def toPnf(inPut):
     """Head-function to get formula in positive normal form
@@ -367,7 +367,6 @@ def toPnf(inPut):
     dealXFG(first)
     lObjects, first = dealEM(lObjects, first)
     pushIn(first)
-    #checkValid(first, inPut)
     return first
 
 
