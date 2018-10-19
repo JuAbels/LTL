@@ -56,5 +56,5 @@ def testMain():
 
     # test omega automaton
     testAuto()
-    # testTableau()
-    # pdMedium2()
+    testTableau()
+    pdMedium2()
