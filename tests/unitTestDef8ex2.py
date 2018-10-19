@@ -2,13 +2,9 @@
 Authors: Stefan Strang
 University of Freiburg - 2018
 
-This is module for explicit testing of large functiosn of the fosaccs2018.
 
 """
 
-# import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
 

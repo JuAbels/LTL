@@ -1,14 +1,10 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
-
-This is module for explicit testing of large functiosn of the fosaccs2018.
 
 """
 
 import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.lf import lf
 from LTL.tools.toPnfObjects import toPnf
 
@@ -27,7 +23,6 @@ class testLfdef8(unittest.TestCase):
     def testlfL(self):
         objects = toPnf('l')
         linFac = lf(objects)
-        # testHelper = []
         for i in linFac:
             first = i[0]
             sec = i[1]
@@ -67,9 +62,7 @@ class testLfdef8(unittest.TestCase):
     def testLfAndSimple(self):
         objects = toPnf('& p q')
         linFac = lf(objects)
-        # print(linFac)
         check = set()
-        # print(linFac)
         for x in linFac:
             for y in x:
                 if type(y) == tuple or type(y) == frozenset:
@@ -77,7 +70,6 @@ class testLfdef8(unittest.TestCase):
                         check.add(z.getName())
                 else:
                     check.add(y.getName())
-        # print(check)
         self.assertEqual({'p', 'q', 'tt'}, check)
         first = objects.getFirst()
         second = objects.getSec()
@@ -87,18 +79,15 @@ class testLfdef8(unittest.TestCase):
         objects.setFirst(None)
         objects.setSec(None)
         del objects
-        # print(objects)
 
     def testlfNextSimple(self):
         objects = toPnf('X p')
         linFac = lf(objects)
-        # print(linFac)
         solution = []
         for x in linFac:
             for y in x:
                 solution.append(y.getName())
         self.assertEqual(['tt', 'p'], solution)
-        # print(objects.getName())
         first = objects.getFirst()
         del first
         objects.setFirst(None)
@@ -107,7 +96,6 @@ class testLfdef8(unittest.TestCase):
     def testlfUntilSimple(self):
         objects = toPnf('U p q')
         linFac = lf(objects)
-        # print(linFac)
         solution = set()
         for x in linFac:
             for y in x:
@@ -117,7 +105,6 @@ class testLfdef8(unittest.TestCase):
                 else:
                     solution.add(y.getName())
         self.assertEqual(solution, {'tt', 'U', 'p', 'q'})
-        # print(objects.getName())
         first = objects.getFirst()
         sec = objects.getSec()
         del first
@@ -129,7 +116,6 @@ class testLfdef8(unittest.TestCase):
     def testlfGFu(self):
         objects = toPnf('G F u')
         linFac = lf(objects)
-        # print(linFac)
         solution = set()
         for x in linFac:
             for y in x:
@@ -139,18 +125,10 @@ class testLfdef8(unittest.TestCase):
                 else:
                     solution.add(y.getName())
         self.assertEqual(solution, {'u', 'R', 'tt', '&'})
-        # print(objects.getName())
-        """first = objects.getFirst()
-        sec = objects.getSec()
-        del first
-        del sec
-        objects.setFirst(None)
-        objects.setSec(None)
-        del objects"""
+
     def testlfFu(self):
         objects = toPnf('F p')
         linFac = lf(objects)
-        # print(linFac)
         solution = set()
         for x in linFac:
             for y in x:
@@ -160,14 +138,6 @@ class testLfdef8(unittest.TestCase):
                 else:
                     solution.add(y.getName())
         self.assertEqual(solution, {'tt', 'p', 'U'})
-        # print(objects.getName())
-        """first = objects.getFirst()
-        sec = objects.getSec()
-        del first
-        del sec
-        objects.setFirst(None)
-        objects.setSec(None)
-        del objects"""
 
     def __del__(self):
         pass

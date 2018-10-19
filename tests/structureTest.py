@@ -1,30 +1,15 @@
 """
-Authors: Stefan Strang
+Authors: Julia Abels, Stefan Strang
 University of Freiburg - 2018
-
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <> => tt U f
-always 		Gf - [] => ff R f
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-derivat = set()
 
 """
 
+
 import unittest
-# import gc
-# from unittest.case import TestCase
 from LTL.tools.toPnfObjects import toPnf
-# from LTL.tools.lf import lf
-# from LTL.tools.flat import flat
-# from LTL.tools.flat import toWords
 
 
 class linfacs(unittest.TestCase):
-    # print("jubjubjub")
     def setUp(self):
         pass
 
@@ -45,7 +30,6 @@ class linfacs(unittest.TestCase):
 
 
 def structure():
-    # print("=======> jub")
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
 

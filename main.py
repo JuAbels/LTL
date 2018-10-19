@@ -1,18 +1,9 @@
 """
-Authors: Julia Abels and Stefan Strang
-         University of Freiburg - 2018
+Authors: Julia Abels, Stefan Strang
+University of Freiburg - 2018
 
-Operators:
-next: 		Xf - ()
-eventually 	Ff - <>
-always 		Gf - []
-strong until 	f U g
-weak until	f W g
-weak release 	f R g	f V g
-strong realase 	f M g
-
-& G p F ! p
 """
+
 
 import sys
 from LTL.tools.ltlToPred import translate
@@ -25,16 +16,7 @@ from LTL.tools.omegaAutomaton import setTable
 from LTL.tools.omegaAutomaton import automat
 from LTL.tools.omegaAutomaton import writeAutomaton
 from LTL.tools.derivative import derivatives
-
-# import doctest
-# from LTL.tests.unitTests import test
-# from LTL.tests.unitTest2 import test2
-# from LTL.tests.unitTestDef8ex2 import testgfp
 from LTL.tests.testMain import testMain
-# import gc
-# import os
-# import shutil
-# import subprocess
 from LTL.tools.toGraphViz import toGraph
 from LTL.tools.toGraphViz import calcEdges
 from LTL.tools.tableauDecision import def17
