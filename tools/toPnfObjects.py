@@ -135,7 +135,6 @@ def toObjects(inPut):
             x.setAtom()
             if x.getName() not in alphabet:
                 alphabet.add(x.getName())
-            # x.setAlpabet()
     deepLObjects = deepcopy(lObjects)
     stuff = pointers(lObjects[0], lObjects[1:])
     lObjects = stuff[0]
@@ -334,7 +333,6 @@ def obsToName(nameObj, string):
 
 def checkValid(formula, inPut):
     helper = obsToName(formula, "")
-    # print(helper +"-----" +  inPut)
     if(helper[0] == 'U' and inPut[0] == 'F'):
         return
     if(helper[0] == 'R' and inPut[0] == 'G'):

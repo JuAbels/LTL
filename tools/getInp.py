@@ -1,4 +1,9 @@
-"""Author Stefan Strang - Uni Freiburg."""
+"""
+Authors: Julia Abels, Stefan Strang
+University of Freiburg - 2018
+
+"""
+
 import sys
 from LTL.tools.ltlPrint import ltlPrint
 from LTL.tests.testMain import testMain
@@ -36,8 +41,6 @@ def getInp():
 
     """
 
-    # IMPORTANT: every int in sys.argv + 1, because new element in console,
-    # if it isn't workling delete file_write and do -1 in for every sys_argv
     try:
         if '.' in sys.argv[1]:
             inp = sys.argv[1]

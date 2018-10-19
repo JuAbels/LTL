@@ -70,8 +70,8 @@ class Automaton:
         self.goal.add(TT)
         releaseSet = deepcopy(self.state)
         rel = set()
-        while releaseSet:           # Laufzeit ist so scheiße, muss evtl anders
-            x = releaseSet.pop()    # gemacht, wenn relevant
+        while releaseSet:
+            x = releaseSet.pop()
             if x.getName() == 'R':
                 rel.add(x)
         self.goal = self.goal.union(rel)
@@ -195,7 +195,6 @@ def writeAutomaton(file_in, objects, automaton):
     object: formulare
     automaton: the Automat
     '''
-    # test = returnAlphabet()
     with open(file_in, 'w') as out:
         out.write("States of the Automaton \n" +
                   "=" * 23 + '\n' + '\n' +
