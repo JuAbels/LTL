@@ -46,22 +46,10 @@ if __name__ == "__main__":
     # inp = getInp()
     # print(inp)
     # obs = toPnf('U q p')
-    # linfacs = lf(toPnf('& ! p U q p'))
+    
     # linfacs = lf(toPnf('U q p'))
     # print(linfacs)
-    """print("& U p1 | p2 p3 p4")
-    formulare = toPnf("& U p1 | p2 p3 p4")
-    print("-----")
-    print(formulare.getName())
-    print(formulare.getFirst().getName())
-    print(formulare.getFirst().getFirst().getName())
-    print(formulare.getFirst().getSec().getName())
-    print(formulare.getFirst().getSec().getFirst().getName())
-    # print(formulare.getFirst().getSec().getFirst().getFirst().getName())
-    print(formulare.getFirst().getSec().getSec().getName())
 
-    print(formulare.getSec().getName())
-    """
     # formulare = translate(inp[0])
 
     # linfacs = lf(toPnf("| U q p | a b"))
