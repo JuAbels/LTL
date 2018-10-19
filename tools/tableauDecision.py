@@ -201,7 +201,7 @@ def def17(formula, draw):
     global globalNodes
     globalNodes = []
     makeGraph(formula)
-    printGraph(globalNodes[0])
+    # printGraph(globalNodes[0])
 
     # From here call the building of the printable graph.
     results = calcEdgesDict(globalNodes[0])
