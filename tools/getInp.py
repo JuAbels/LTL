@@ -5,7 +5,6 @@ University of Freiburg - 2018
 """
 
 import sys
-from LTL.tools.ltlPrint import ltlPrint
 from LTL.tests.testMain import testMain
 from LTL.tools.demo import demo1
 import spot
