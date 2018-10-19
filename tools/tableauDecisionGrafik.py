@@ -12,7 +12,7 @@ def tableauToGraph(edges):
     edges<list>: List of tuple. Tuple are pathes of nodes. First place start
                  node, second place end node.
     """
-    g = Digraph('G', filename='hello.gv')
+    g = Digraph('G', filename='tableauDecisionGrafik')
     # Go through all edges and print them.
     for e in edges:
         g.edge(e[0], e[1])

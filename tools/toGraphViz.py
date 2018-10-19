@@ -30,7 +30,7 @@ def toGraph(edges, goals, start, alphabet):
     alphabet: power set of alphabetelements
     """
     global colors
-    g = Digraph('G', filename='hello.gv')
+    g = Digraph('G', filename='omegaAutomaton')
 
     counter1 = -1    # variable to create start arrow
     for e in start:  # creating start nodes with an arrow which point on start
@@ -215,7 +215,7 @@ def simplifyOneLable(lable, alphabetList):
             deleteList.remove(i)
         test = firstFormulare[0]
         if test.find(",") != -1:
-            test = firstFormulare[0].replace(", ", "&")
+            test = firstFormulare[0].replace(",", " &")
         if solution == "":
             solution = solution + test
         else:
